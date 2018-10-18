@@ -69,7 +69,7 @@ serverWss.on('connection', (ws, req) => {
             }
             case 'message':
             default:
-                rootWss.sendToAll(data);
+                rootWss.sendToAll(msg);
                 break;
         }
     });
