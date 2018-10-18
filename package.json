@@ -1,8 +1,8 @@
 {
     "name": "IstrolidServer",
     "version": "0.1.0",
-    "description": "Istrolid Server",
-    "main": "server.js",
+    "description": "Istrolid Root Proxy",
+    "main": "rootProxy.js",
     "dependencies": {
         "ws": "^6.1.0"
     },

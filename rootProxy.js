@@ -2,7 +2,7 @@ var http = require('http');
 var url = require('url');
 var WebSocket = require('ws');
 
-const PORT = 8081;
+const PORT = 8080;
 const ROOT_ADDR = 'ws://198.199.109.223:88'
 
 var httpServer = http.createServer();
