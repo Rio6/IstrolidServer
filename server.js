@@ -109,6 +109,7 @@ global.Server = function() {
         });
 
         ws.on('close', e => {
+            players[id].connected = false;
             delete players[id];
         });
     });
@@ -151,7 +152,7 @@ global.Server = function() {
             let newInfo = {
                 name: SERVER_NAME,
                 address: "ws://" + ADDR + ":" + PORT + SERVER_PATH,
-                observers: sim.players.length,
+                observers: sim.players.filter(p => p.connected).length,
                 players: sim.players.map(p => { return {
                     name: p.name,
                     side: p.side,
