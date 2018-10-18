@@ -42,7 +42,13 @@ global.Server = function() {
     };
 
     this.say = msg => {
-        console.log(msg);
+        rootWss.sendToAll(['message', {
+            text: msg,
+            channel: SERVER_NAME,
+            color: "FFFFFF",
+            name: "Server",
+            server: true
+        }]);
     };
 
     rootWss.on('connection', (ws, req) => {
@@ -53,7 +59,8 @@ global.Server = function() {
             //console.log("root", data);
             if(ws.readyState === WebSocket.OPEN) {
                 ws.send(data);
-                if(JSON.parse(data)[0] === 'servers') {
+                let parsed = JSON.parse(data);
+                if(parsed[0] === 'servers') {
                     let data = {};
                     data[SERVER_NAME] = info;
                     ws.send(JSON.stringify(['serversDiff', data]));
