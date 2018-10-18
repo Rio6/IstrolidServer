@@ -1,16 +1,12 @@
 var WebSocket = require('ws');
-var http = require('http');
-var url = require('url');
-
 require('./fix');
 var Istrolid = require('./istrolid.js');
 
-const ADDR = 'localhost'
+const NAME = "R26";
 const PORT = 8080;
-const ROOT_ADDR = 'ws://198.199.109.223:88'
+const ADDR = "localhost";
 
-const SERVER_NAME = 'R26';
-const SERVER_PATH = '/server';
+const ROOT_ADDR = "ws://localhost:8081/server";
 
 global.sim = new Sim();
 sim.cheatSimInterval = -12;
@@ -18,9 +14,8 @@ sim.lastSimInterval = 0;
 
 global.Server = function() {
 
-    var httpServer = http.createServer();
-    var wss = new WebSocket.Server({noServer: true});
-    var rootWss = new WebSocket.Server({noServer: true});
+    var wss = new WebSocket.Server({port: PORT});
+    var root = null;
 
     var players = {};
     var info = {};
@@ -35,59 +30,45 @@ global.Server = function() {
 
     this.stop = () => {
         console.log("stopping server");
-        httpServer.close();
         wss.close();
-        rootWss.close();
         clearInterval(interval);
     };
 
     this.say = msg => {
-        rootWss.sendToAll(['message', {
+        root.sendData(['message', {
             text: msg,
-            channel: SERVER_NAME,
+            channel: NAME,
             color: "FFFFFF",
             name: "Server",
             server: true
         }]);
     };
 
-    rootWss.on('connection', (ws, req) => {
-        console.log("proxying", req.connection.remoteAddress);
-        let root = new WebSocket(ROOT_ADDR);
+    var connectToRoot = () => {
+        root = new WebSocket(ROOT_ADDR);
 
-        root.on('message', data => {
-            //console.log("root", data);
-            if(ws.readyState === WebSocket.OPEN) {
-                ws.send(data);
-                let parsed = JSON.parse(data);
-                if(parsed[0] === 'servers') {
-                    let data = {};
-                    data[SERVER_NAME] = info;
-                    ws.send(JSON.stringify(['serversDiff', data]));
-                }
+        root.on('open', () => {
+            console.log("connected to root proxy");
+            info = {};
+        });
+
+        root.on('close', () => {
+            console.log("cannot connect to root, retrying");
+            setTimeout(connectToRoot, 5000);
+        });
+
+        root.on('error', e => {
+            console.log("connection to root failed");
+        });
+
+        root.sendData = data => {
+            if(root.readyState === WebSocket.OPEN) {
+                root.send(JSON.stringify(data));
             }
-        });
-        root.on('close', e => {
-            ws.close();
-        });
-
-        ws.on('message', data => {
-            //console.log("client", data.substring(0, 100));
-            if(root.readyState === WebSocket.OPEN)
-                root.send(data);
-        });
-        ws.on('close', e => {
-            root.close();
-        });
-    });
-
-    rootWss.sendToAll = data => {
-        rootWss.clients.forEach(client => {
-            if(client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify(data));
-            }
-        });
+        }
     };
+
+    connectToRoot();
 
     wss.on('connection', (ws, req) => {
         console.log("connection from", req.connection.remoteAddress);
@@ -114,22 +95,6 @@ global.Server = function() {
         });
     });
 
-    httpServer.on('upgrade', (req, socket, head) => {
-        let path = url.parse(req.url).pathname;
-
-        if(path === '/') {
-            rootWss.handleUpgrade(req, socket, head, ws => {
-                rootWss.emit('connection', ws, req);
-            });
-        } else if(path === SERVER_PATH) {
-            wss.handleUpgrade(req, socket, head, ws => {
-                wss.emit('connection', ws, req);
-            });
-        } else {
-            socket.destroy();
-        }
-    });
-
     var interval = setInterval(() => {
         let rightNow = now();
         if(sim.lastSimInterval + 1000 / 16 + sim.cheatSimInterval <= rightNow) {
@@ -150,8 +115,8 @@ global.Server = function() {
 
             // Send server info
             let newInfo = {
-                name: SERVER_NAME,
-                address: "ws://" + ADDR + ":" + PORT + SERVER_PATH,
+                name: NAME,
+                address: "ws://" + ADDR + ":" + PORT,
                 observers: sim.players.filter(p => p.connected).length,
                 players: sim.players.map(p => { return {
                     name: p.name,
@@ -162,6 +127,7 @@ global.Server = function() {
                 version: VERSION,
                 state: sim.state
             };
+
             let diffInfo = {};
             for(let k in newInfo) {
                 if(!simpleEquals(info[k], newInfo[k])) {
@@ -170,15 +136,11 @@ global.Server = function() {
             }
 
             if(Object.keys(diffInfo).length > 0) {
-                let data = {};
-                data[SERVER_NAME] = diffInfo;
-                rootWss.sendToAll(['serversDiff', data]);
+                root.sendData(['info', NAME, diffInfo]);
                 info = newInfo;
             }
         }
     }, 17);
-
-    httpServer.listen(PORT);
 };
 
 global.server = new Server();
