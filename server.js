@@ -1,12 +1,7 @@
+var config = require('./config.json');
 var WebSocket = require('ws');
 require('./fix');
 var Istrolid = require('./istrolid.js');
-
-const NAME = "R26";
-const PORT = 8080;
-const ADDR = "localhost";
-
-const ROOT_ADDR = "ws://localhost:8081/server";
 
 global.sim = new Sim();
 sim.cheatSimInterval = -12;
@@ -14,7 +9,7 @@ sim.lastSimInterval = 0;
 
 global.Server = function() {
 
-    var wss = new WebSocket.Server({port: PORT});
+    var wss = new WebSocket.Server({port: config.port});
     var root = null;
 
     var players = {};
@@ -37,7 +32,7 @@ global.Server = function() {
     this.say = msg => {
         root.sendData(['message', {
             text: msg,
-            channel: NAME,
+            channel: config.name,
             color: "FFFFFF",
             name: "Server",
             server: true
@@ -45,7 +40,7 @@ global.Server = function() {
     };
 
     var connectToRoot = () => {
-        root = new WebSocket(ROOT_ADDR);
+        root = new WebSocket(config.root_addr);
 
         root.on('open', () => {
             console.log("connected to root proxy");
@@ -115,8 +110,8 @@ global.Server = function() {
 
             // Send server info
             let newInfo = {
-                name: NAME,
-                address: "ws://" + ADDR + ":" + PORT,
+                name: config.name,
+                address: "ws://" + config.addr + ":" + config.port,
                 observers: sim.players.filter(p => p.connected).length,
                 players: sim.players.map(p => { return {
                     name: p.name,
@@ -136,7 +131,7 @@ global.Server = function() {
             }
 
             if(Object.keys(diffInfo).length > 0) {
-                root.sendData(['info', NAME, diffInfo]);
+                root.sendData(['info', config.name, diffInfo]);
                 info = newInfo;
             }
         }
