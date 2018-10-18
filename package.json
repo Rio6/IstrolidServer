@@ -1,14 +1,14 @@
 {
     "name": "IstrolidServer",
     "version": "0.1.0",
-    "description": "Istrolid Server",
-    "main": "server.js",
+    "description": "Istrolid Root Proxy",
+    "main": "rootProxy.js",
     "dependencies": {
         "ws": "^6.1.0"
     },
     "devDependencies": {},
     "scripts": {
-        "start": "node server.js",
+        "start": "node rootProxy.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "R26"
