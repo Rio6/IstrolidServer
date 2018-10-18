@@ -1,6 +1,9 @@
+var WebSocket = require('ws');
 var http = require('http');
 var url = require('url');
+
 require('./fix');
+var Istrolid = require('./istrolid.js');
 
 const ADDR = 'localhost'
 const PORT = 8080;
@@ -8,9 +11,6 @@ const ROOT_ADDR = 'ws://198.199.109.223:88'
 
 const SERVER_NAME = 'R26';
 const SERVER_PATH = '/server';
-
-var Istrolid = require('./istrolid.js');
-var WebSocket = require('ws');
 
 global.sim = new Sim();
 sim.cheatSimInterval = -12;
@@ -183,5 +183,4 @@ global.Server = function() {
 
 global.server = new Server();
 
-var repl = require('repl');
-var ctx = repl.start().context;
+require('repl').start();
