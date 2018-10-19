@@ -80,7 +80,6 @@ global.Server = function() {
                 let player = sim.playerJoin(...data);
                 player.ws = ws;
                 players[id] = player;
-                sim.clearNetState();
             } else if(CMD_WHITELIST.includes(data[0])) {
                 sim[data[0]].apply(sim, [players[id],...data.slice(1)]);
             }

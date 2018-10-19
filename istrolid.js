@@ -4014,7 +4014,7 @@ zjson - binary json sirelizer with some strange features
         if (this.local) {
           sim.clearNetState();
         }
-      } else {
+      //} else { // R26
         sim.clearNetState();
       }
       this.playerEdit(_, pid, name, color, buildBar, aiRules, ai);
