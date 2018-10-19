@@ -142,4 +142,13 @@ global.Server = function() {
 
 global.server = new Server();
 
-require('repl').start();
+// Remote repl
+var repl = require('repl');
+var net = require('net');
+net.createServer(function (socket) {
+    repl.start({
+        input: socket,
+        output: socket,
+        terminal: true
+    }).on('exit', () => socket.end());
+}).listen(5001, "localhost");
