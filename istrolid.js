@@ -1777,8 +1777,7 @@ zjson - binary json sirelizer with some strange features
       if (strTable == null) {
         strTable = null;
       }
-      //this.buffSize = 1024 * 1024;
-      this.buffSize = 1073741824; // R26
+      this.buffSize = 1024 * 1024;
       this.buffer = new ArrayBuffer(this.buffSize);
       this.dv = new DataView(this.buffer);
       this.str2num = new Map();
