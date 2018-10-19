@@ -3,6 +3,8 @@ var WebSocket = require('ws');
 require('./fix');
 var Istrolid = require('./istrolid.js');
 
+const CMD_WHITELIST = ["alpha", "mouseMove", "playerSelected", "setRallyPoint", "buildRq", "stopOrder", "holdPositionOrder", "followOrder", "selfDestructOrder", "moveOrder", "buildRq"];
+
 global.sim = new Sim();
 sim.cheatSimInterval = -12;
 sim.lastSimInterval = 0;
@@ -79,7 +81,7 @@ global.Server = function() {
                 player.ws = ws;
                 players[id] = player;
                 sim.clearNetState();
-            } else if(sim[data[0]]) {
+            } else if(CMD_WHITELIST.includes(data[0])) {
                 sim[data[0]].apply(sim, [players[id],...data.slice(1)]);
             }
         });
