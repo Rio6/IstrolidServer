@@ -119,7 +119,7 @@ global.Server = function() {
                 name: config.name,
                 address: "ws://" + config.addr + ":" + config.port,
                 observers: sim.players.filter(p => p.connected).length,
-                players: sim.players.map(p => { return {
+                players: sim.players.filter(p => p.connected).map(p => { return {
                     name: p.name,
                     side: p.side,
                     ai: p.ai
