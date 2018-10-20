@@ -25,6 +25,10 @@ global.Server = function() {
         }
     };
 
+    this.sendToRoot = (data) => {
+        root.sendData(data);
+    };
+
     this.stop = () => {
         console.log("stopping server");
         wss.close();
