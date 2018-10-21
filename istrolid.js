@@ -3879,7 +3879,7 @@ zjson - binary json sirelizer with some strange features
       this.winningSide = null;
       this.lastId = 0;
       this.counting = 0;
-      this.generateMap();
+      this.generateMap(this.mapScale, this.numComPoints);
       if (this.players == null) {
         this.players = {};
       } else {
@@ -6770,6 +6770,8 @@ General Game Objects live here
 
     Unit.prototype.jump = 0;
 
+    Unit.prototype.maxJumpDistance = 500;
+
     Unit.prototype.limitBonus = 0;
 
     Unit.prototype.cost = 100;
@@ -6884,7 +6886,7 @@ General Game Objects live here
       this.maxSpeed = thrust / this.mass * 9;
       this.maxShield = this.shield;
       this.damageRatio = 1;
-      this.jumpDistance = this.jump = Math.min(1, 41 * this.jumpCount / this.mass) * 500;
+      this.jumpDistance = this.jump = Math.min(1, 41 * this.jumpCount / this.mass) * this.maxJumpDistance;
       this.computeCenter();
       ref1 = this.parts;
       for (l = 0, len1 = ref1.length; l < len1; l++) {
@@ -11465,6 +11467,8 @@ General Game Objects live here
 
     JumpEngine.prototype.useEnergy = 1;
 
+    JumpEngine.prototype.rechargeRate = 160;
+
     JumpEngine.prototype.exhaust = false;
 
     JumpEngine.prototype.image = "engineJump.png";
@@ -11480,7 +11484,7 @@ General Game Objects live here
     JumpEngine.prototype.tab = "engines";
 
     JumpEngine.prototype.tick = function() {
-      this.unit.jump += 160 / this.unit.mass;
+      this.unit.jump += this.rechargeRate / this.unit.mass;
       return this.working = this.unit.jump > this.unit.jumpDistance && this.unit.energy > this.unit.jumpCount * 250;
     };
 
