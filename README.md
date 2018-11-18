@@ -21,7 +21,7 @@ cd IstrolidServer
   - `name` to your server name
   - `port` to the port you want your server to run on
   - `addr` is your public ip
-  - `root_addr` is the ip to root server's proxy, in the form of `ws://address:port/path`
+  - `root_addr` is the ip to root server's proxy, in would look like `ws://address:port/server`
 
 3. Install missing dependencies
 ```
@@ -36,7 +36,7 @@ npm start
 ## Root server proxy
 In order to make your server to show up and use the chat, you'll need to set up a root proxy as well.
 
-You can host your own root proxy or use someone else's like bk's (ws://istrolid.bkmix.com:8080) (if he lets you)
+You can host your own root proxy, or you can use this one [ws://istrolid-root.herokuapp.com/server](ws://istrolid-root.herokuapp.com/server)
 
 To host your own:
 
@@ -56,7 +56,9 @@ npm install .
 npm start
 ```
 
-Now, go to `http://istrolid.com/game.html?rootAddress=<YOUR ROOT PROXY IP>`. Your game server should be added in the server list.
+## Join the server
+Now, go to `http://istrolid.com/game.html?rootAddress=<YOUR ROOT PROXY IP>` eg. [http://istrolid.com/game.html?rootAddress=ws://istrolid-root.herokuapp.com](http://istrolid.com/game.html?rootAddress=ws://istrolid-root.herokuapp.com).
+Your game server should be added in the server list.
 
 **Dont forget to open holes on your router**
 
