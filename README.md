@@ -36,7 +36,7 @@ npm start
 ## Root server proxy
 In order to make your server to show up and use the chat, you'll need to set up a root proxy as well.
 
-You can host your own root proxy, or you can use this one [ws://istrolid-root.herokuapp.com/server](ws://istrolid-root.herokuapp.com/server)
+You can host your own root proxy, or you can use this one `ws://istrolid-root.herokuapp.com/server`
 
 To host your own:
 
