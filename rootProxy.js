@@ -2,7 +2,7 @@ var http = require('http');
 var url = require('url');
 var WebSocket = require('ws');
 
-const PORT = process.env.PORT || 8080;
+const PORT = 8080;
 const ROOT_ADDR = 'ws://198.199.109.223:88'
 
 var httpServer = http.createServer();
@@ -57,6 +57,8 @@ serverWss.on('connection', (ws, req) => {
                 let name = data[1];
                 let infoDiff = data[2];
                 if(name && infoDiff) {
+                    ws.name = name;
+
                     // Broadcast to clients
                     let data = {};
                     data[name] = infoDiff;
@@ -69,8 +71,17 @@ serverWss.on('connection', (ws, req) => {
             }
             case 'message':
             default:
-                rootWss.sendToAll(data);
+                rootWss.sendToAll(msg);
                 break;
+        }
+    });
+
+    ws.on('close', () => {
+        if(ws.name) {
+            let data = {};
+            data[ws.name] = null;
+            rootWss.sendToAll(JSON.stringify(['serversDiff', data]));
+            delete servers[ws.name];
         }
     });
 });
