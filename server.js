@@ -3,7 +3,7 @@ var WebSocket = require('ws');
 require('./fix');
 var Istrolid = require('./istrolid.js');
 
-const CMD_WHITELIST = ["alpha", "mouseMove", "playerSelected", "setRallyPoint", "buildRq", "stopOrder", "holdPositionOrder", "followOrder", "selfDestructOrder", "moveOrder", "buildRq", "configGame", "startGame", "addAi", "switchSide", "switchSide", "kickPlayer", "surrender"];
+const allowedCmds = ["gameKey", "playerJoin", "alpha", "mouseMove", "playerSelected", "setRallyPoint", "buildRq", "stopOrder", "holdPositionOrder", "followOrder", "selfDestructOrder", "moveOrder", "configGame", "startGame", "addAi", "switchSide", "kickPlayer", "surrender"]
 
 global.sim = new Sim();
 sim.cheatSimInterval = -12;
@@ -85,7 +85,7 @@ global.Server = function() {
                 player.ws = ws;
                 players[id] = player;
                 sim.clearNetState();
-            } else if(CMD_WHITELIST.includes(data[0])) {
+            } else if(allowedCmds.includes(data[0])) {
                 sim[data[0]].apply(sim, [players[id],...data.slice(1)]);
             }
         });
