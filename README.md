@@ -3,9 +3,7 @@
 **Istrolid game server reverse engineered!!**
 
 ## How does it work
-It basically just listens on a web socket server and dumps everything it got to sim
-
-A root proxy is neede to make the server show up in client's server list and to use chat
+It basically just listens on a web socket server and sends everything it got to sim
 
 ## What's needed
 - [nodejs](https://nodejs.org/en/)
@@ -21,7 +19,7 @@ cd IstrolidServer
   - `name` to your server name
   - `port` to the port you want your server to run on
   - `addr` is your public ip
-  - `root_addr` is the ip to root server's proxy, in would look like `ws://address:port/server`
+  - `root_addr` is the ip to root server or proxy, in would look like `ws://address:port/server`
 
 3. Install missing dependencies
 ```
@@ -34,31 +32,10 @@ npm start
 ```
 
 ## Root server proxy
-In order to make your server to show up and use the chat, you'll need to set up a root proxy as well.
+Root proxy is no longer required, but can still be used.
+I have one set up here `ws://istrolid-root.herokuapp.com/server`
 
-You can host your own root proxy, or you can use this one `ws://istrolid-root.herokuapp.com/server`
-
-To host your own:
-
-1. Get the root proxy code
-```
-git clone -b rootProxy https://github.com/Rio6/IstrolidServer.git IstrolidRootProxy
-cd IstrolidRootProxy
-```
-
-2. Install missing dependencies
-```
-npm install .
-```
-
-3. Run the proxy
-```
-npm start
-```
-
-## Join the server
-Now, go to `http://istrolid.com/game.html?rootAddress=<YOUR ROOT PROXY IP>` eg. [http://istrolid.com/game.html?rootAddress=ws://istrolid-root.herokuapp.com](http://istrolid.com/game.html?rootAddress=ws://istrolid-root.herokuapp.com).
-Your game server should be added in the server list.
+Just put it in root\_addr field in config.json, then you can access it through `http://istrolid.com/game.html?rootAddress=ws://istrolid-root.herokuapp.com`
 
 **Dont forget to open holes on your router**
 
