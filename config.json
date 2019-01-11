@@ -2,5 +2,5 @@
     "name": "Server",
     "port": 8080,
     "addr": "localhost",
-    "root_addr": "ws://istrolid-root.herokuapp.com/server"
+    "root_addr": "ws://198.199.109.223:88"
 }

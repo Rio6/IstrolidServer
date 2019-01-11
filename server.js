@@ -15,7 +15,7 @@ global.Server = function() {
     var root = null;
 
     var players = {};
-    var info = {};
+    var info = null;
 
     this.send = (player, data) => {
         let packet = sim.zJson.dumpDv(data);
@@ -49,8 +49,8 @@ global.Server = function() {
         root = new WebSocket(config.root_addr);
 
         root.on('open', () => {
-            console.log("connected to root proxy");
-            info = {};
+            console.log("connected to root");
+            info = null;
         });
 
         root.on('close', () => {
@@ -129,15 +129,8 @@ global.Server = function() {
                 state: sim.state
             };
 
-            let diffInfo = {};
-            for(let k in newInfo) {
-                if(!simpleEquals(info[k], newInfo[k])) {
-                    diffInfo[k] = newInfo[k];
-                }
-            }
-
-            if(Object.keys(diffInfo).length > 0) {
-                root.sendData(['info', config.name, diffInfo]);
+            if(!simpleEquals(info, newInfo)) {
+                root.sendData(['setServer', newInfo]);
                 info = newInfo;
             }
         }
