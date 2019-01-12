@@ -1,7 +1,5 @@
 
 
-//from lib/lz-string.min.js
-var LZString={_f:String.fromCharCode,_keyStrBase64:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",_keyStrUriSafe:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$",_getBaseValue:function(r,e){if(LZString._baseReverseDic||(LZString._baseReverseDic={}),!LZString._baseReverseDic[r]){LZString._baseReverseDic[r]={};for(var n=0;n<r.length;n++)LZString._baseReverseDic[r][r[n]]=n}return LZString._baseReverseDic[r][e]},compressToBase64:function(r){if(null==r)return"";var e=LZString._compress(r,6,function(r){return LZString._keyStrBase64.charAt(r)});switch(e.length%4){default:case 0:return e;case 1:return e+"===";case 2:return e+"==";case 3:return e+"="}},decompressFromBase64:function(r){return null==r?"":""==r?null:LZString._decompress(r.length,32,function(e){return LZString._getBaseValue(LZString._keyStrBase64,r.charAt(e))})},compressToUTF16:function(r){return null==r?"":LZString._compress(r,15,function(r){return String.fromCharCode(r+32)})+" "},decompressFromUTF16:function(r){return null==r?"":""==r?null:LZString._decompress(r.length,16384,function(e){return r.charCodeAt(e)-32})},compressToUint8Array:function(r){for(var e=LZString.compress(r),n=new Uint8Array(2*e.length),o=0,t=e.length;t>o;o++){var i=e.charCodeAt(o);n[2*o]=i>>>8,n[2*o+1]=i%256}return n},decompressFromUint8Array:function(r){if(null===r||void 0===r)return LZString.decompress(r);for(var e=new Array(r.length/2),n=0,o=e.length;o>n;n++)e[n]=256*r[2*n]+r[2*n+1];var t=[];return e.forEach(function(r){t.push(String.fromCharCode(r))}),LZString.decompress(t.join(""))},compressToEncodedURIComponent:function(r){return null==r?"":LZString._compress(r,6,function(r){return LZString._keyStrUriSafe.charAt(r)})},decompressFromEncodedURIComponent:function(r){return null==r?"":""==r?null:(r=r.replace(/ /g,"+"),LZString._decompress(r.length,32,function(e){return LZString._getBaseValue(LZString._keyStrUriSafe,r.charAt(e))}))},compress:function(r){return LZString._compress(r,16,function(r){return String.fromCharCode(r)})},_compress:function(r,e,n){if(null==r)return"";{var o,t,i,s={},a={},p="",u="",c="",l=2,f=3,h=2,g=[],d=0,S=0;LZString._f}for(i=0;i<r.length;i+=1)if(p=r[i],Object.prototype.hasOwnProperty.call(s,p)||(s[p]=f++,a[p]=!0),u=c+p,Object.prototype.hasOwnProperty.call(s,u))c=u;else{if(Object.prototype.hasOwnProperty.call(a,c)){if(c.charCodeAt(0)<256){for(o=0;h>o;o++)d<<=1,S==e-1?(S=0,g.push(n(d)),d=0):S++;for(t=c.charCodeAt(0),o=0;8>o;o++)d=d<<1|1&t,S==e-1?(S=0,g.push(n(d)),d=0):S++,t>>=1}else{for(t=1,o=0;h>o;o++)d=d<<1|t,S==e-1?(S=0,g.push(n(d)),d=0):S++,t=0;for(t=c.charCodeAt(0),o=0;16>o;o++)d=d<<1|1&t,S==e-1?(S=0,g.push(n(d)),d=0):S++,t>>=1}l--,0==l&&(l=Math.pow(2,h),h++),delete a[c]}else for(t=s[c],o=0;h>o;o++)d=d<<1|1&t,S==e-1?(S=0,g.push(n(d)),d=0):S++,t>>=1;l--,0==l&&(l=Math.pow(2,h),h++),s[u]=f++,c=String(p)}if(""!==c){if(Object.prototype.hasOwnProperty.call(a,c)){if(c.charCodeAt(0)<256){for(o=0;h>o;o++)d<<=1,S==e-1?(S=0,g.push(n(d)),d=0):S++;for(t=c.charCodeAt(0),o=0;8>o;o++)d=d<<1|1&t,S==e-1?(S=0,g.push(n(d)),d=0):S++,t>>=1}else{for(t=1,o=0;h>o;o++)d=d<<1|t,S==e-1?(S=0,g.push(n(d)),d=0):S++,t=0;for(t=c.charCodeAt(0),o=0;16>o;o++)d=d<<1|1&t,S==e-1?(S=0,g.push(n(d)),d=0):S++,t>>=1}l--,0==l&&(l=Math.pow(2,h),h++),delete a[c]}else for(t=s[c],o=0;h>o;o++)d=d<<1|1&t,S==e-1?(S=0,g.push(n(d)),d=0):S++,t>>=1;l--,0==l&&(l=Math.pow(2,h),h++)}for(t=2,o=0;h>o;o++)d=d<<1|1&t,S==e-1?(S=0,g.push(n(d)),d=0):S++,t>>=1;for(;;){if(d<<=1,S==e-1){g.push(n(d));break}S++}return g.join("")},decompress:function(r){return null==r?"":""==r?null:LZString._decompress(r.length,32768,function(e){return r.charCodeAt(e)})},_decompress:function(r,e,n){var o,t,i,s,a,p,u,c,l=[],f=4,h=4,g=3,d="",S=[],m=LZString._f,v={val:n(0),position:e,index:1};for(t=0;3>t;t+=1)l[t]=t;for(s=0,p=Math.pow(2,2),u=1;u!=p;)a=v.val&v.position,v.position>>=1,0==v.position&&(v.position=e,v.val=n(v.index++)),s|=(a>0?1:0)*u,u<<=1;switch(o=s){case 0:for(s=0,p=Math.pow(2,8),u=1;u!=p;)a=v.val&v.position,v.position>>=1,0==v.position&&(v.position=e,v.val=n(v.index++)),s|=(a>0?1:0)*u,u<<=1;c=m(s);break;case 1:for(s=0,p=Math.pow(2,16),u=1;u!=p;)a=v.val&v.position,v.position>>=1,0==v.position&&(v.position=e,v.val=n(v.index++)),s|=(a>0?1:0)*u,u<<=1;c=m(s);break;case 2:return""}for(l[3]=c,i=c,S.push(c);;){if(v.index>r)return"";for(s=0,p=Math.pow(2,g),u=1;u!=p;)a=v.val&v.position,v.position>>=1,0==v.position&&(v.position=e,v.val=n(v.index++)),s|=(a>0?1:0)*u,u<<=1;switch(c=s){case 0:for(s=0,p=Math.pow(2,8),u=1;u!=p;)a=v.val&v.position,v.position>>=1,0==v.position&&(v.position=e,v.val=n(v.index++)),s|=(a>0?1:0)*u,u<<=1;l[h++]=m(s),c=h-1,f--;break;case 1:for(s=0,p=Math.pow(2,16),u=1;u!=p;)a=v.val&v.position,v.position>>=1,0==v.position&&(v.position=e,v.val=n(v.index++)),s|=(a>0?1:0)*u,u<<=1;l[h++]=m(s),c=h-1,f--;break;case 2:return S.join("")}if(0==f&&(f=Math.pow(2,g),g++),l[c])d=l[c];else{if(c!==h)return null;d=i+i[0]}S.push(d),l[h++]=i+d[0],f--,i=d,0==f&&(f=Math.pow(2,g),g++)}}};"undefined"!=typeof module&&null!=module&&(module.exports=LZString);
 
 //from lib/detect.min.js
 (function(e){Array.prototype.map||(Array.prototype.map=function(e,r){var a,o,i;if(null==this)throw new TypeError(" this is null or not defined");var n=Object(this),t=n.length>>>0;if("function"!=typeof e)throw new TypeError(e+" is not a function");for(r&&(a=r),o=Array(t),i=0;t>i;){var l,c;i in n&&(l=n[i],c=e.call(a,l,i,n),o[i]=c),i++}return o});var r=e.detect=function(){var e=function(){},r={browser_parsers:[{regex:"^(Opera)/(\\d+)\\.(\\d+) \\(Nintendo Wii",family_replacement:"Wii",manufacturer:"Nintendo"},{regex:"(SeaMonkey|Camino)/(\\d+)\\.(\\d+)\\.?([ab]?\\d+[a-z]*)",family_replacement:"Camino",other:!0},{regex:"(Pale[Mm]oon)/(\\d+)\\.(\\d+)\\.?(\\d+)?",family_replacement:"Pale Moon (Firefox Variant)",other:!0},{regex:"(Fennec)/(\\d+)\\.(\\d+)\\.?([ab]?\\d+[a-z]*)",family_replacement:"Firefox Mobile"},{regex:"(Fennec)/(\\d+)\\.(\\d+)(pre)",family_replacment:"Firefox Mobile"},{regex:"(Fennec)/(\\d+)\\.(\\d+)",family_replacement:"Firefox Mobile"},{regex:"Mobile.*(Firefox)/(\\d+)\\.(\\d+)",family_replacement:"Firefox Mobile"},{regex:"(Namoroka|Shiretoko|Minefield)/(\\d+)\\.(\\d+)\\.(\\d+(?:pre)?)",family_replacement:"Firefox ($1)"},{regex:"(Firefox)/(\\d+)\\.(\\d+)(a\\d+[a-z]*)",family_replacement:"Firefox Alpha"},{regex:"(Firefox)/(\\d+)\\.(\\d+)(b\\d+[a-z]*)",family_replacement:"Firefox Beta"},{regex:"(Firefox)-(?:\\d+\\.\\d+)?/(\\d+)\\.(\\d+)(a\\d+[a-z]*)",family_replacement:"Firefox Alpha"},{regex:"(Firefox)-(?:\\d+\\.\\d+)?/(\\d+)\\.(\\d+)(b\\d+[a-z]*)",family_replacement:"Firefox Beta"},{regex:"(Namoroka|Shiretoko|Minefield)/(\\d+)\\.(\\d+)([ab]\\d+[a-z]*)?",family_replacement:"Firefox ($1)"},{regex:"(Firefox).*Tablet browser (\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"MicroB",tablet:!0},{regex:"(MozillaDeveloperPreview)/(\\d+)\\.(\\d+)([ab]\\d+[a-z]*)?"},{regex:"(Flock)/(\\d+)\\.(\\d+)(b\\d+?)",family_replacement:"Flock",other:!0},{regex:"(RockMelt)/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Rockmelt",other:!0},{regex:"(Navigator)/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Netscape"},{regex:"(Navigator)/(\\d+)\\.(\\d+)([ab]\\d+)",family_replacement:"Netscape"},{regex:"(Netscape6)/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Netscape"},{regex:"(MyIBrow)/(\\d+)\\.(\\d+)",family_replacement:"My Internet Browser",other:!0},{regex:"(Opera Tablet).*Version/(\\d+)\\.(\\d+)(?:\\.(\\d+))?",family_replacement:"Opera Tablet",tablet:!0},{regex:"(Opera)/.+Opera Mobi.+Version/(\\d+)\\.(\\d+)",family_replacement:"Opera Mobile"},{regex:"Opera Mobi",family_replacement:"Opera Mobile"},{regex:"(Opera Mini)/(\\d+)\\.(\\d+)",family_replacement:"Opera Mini"},{regex:"(Opera Mini)/att/(\\d+)\\.(\\d+)",family_replacement:"Opera Mini"},{regex:"(Opera)/9.80.*Version/(\\d+)\\.(\\d+)(?:\\.(\\d+))?",family_replacement:"Opera"},{regex:"(webOSBrowser)/(\\d+)\\.(\\d+)",family_replacement:"webOS"},{regex:"(webOS)/(\\d+)\\.(\\d+)",family_replacement:"webOS"},{regex:"(wOSBrowser).+TouchPad/(\\d+)\\.(\\d+)",family_replacement:"webOS TouchPad"},{regex:"(luakit)",family_replacement:"LuaKit",other:!0},{regex:"(Lightning)/(\\d+)\\.(\\d+)([ab]?\\d+[a-z]*)",family_replacement:"Lightning",other:!0},{regex:"(Firefox)/(\\d+)\\.(\\d+)\\.(\\d+(?:pre)?) \\(Swiftfox\\)",family_replacement:"Swiftfox",other:!0},{regex:"(Firefox)/(\\d+)\\.(\\d+)([ab]\\d+[a-z]*)? \\(Swiftfox\\)",family_replacement:"Swiftfox",other:!0},{regex:"rekonq",family_replacement:"Rekonq",other:!0},{regex:"(conkeror|Conkeror)/(\\d+)\\.(\\d+)\\.?(\\d+)?",family_replacement:"Conkeror",other:!0},{regex:"(konqueror)/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Konqueror",other:!0},{regex:"(WeTab)-Browser",family_replacement:"WeTab",other:!0},{regex:"(Comodo_Dragon)/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Comodo Dragon",other:!0},{regex:"(YottaaMonitor)",family_replacement:"Yottaa Monitor",other:!0},{regex:"(Kindle)/(\\d+)\\.(\\d+)",family_replacement:"Kindle"},{regex:"(Symphony) (\\d+).(\\d+)",family_replacement:"Symphony",other:!0},{regex:"Minimo",family_replacement:"Minimo",other:!0},{regex:"(CrMo)/(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Chrome Mobile"},{regex:"(CriOS)/(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Chrome Mobile iOS"},{regex:"(Chrome)/(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+) Mobile",family_replacement:"Chrome Mobile"},{regex:"(chromeframe)/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Chrome Frame"},{regex:"(UC Browser)(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"UC Browser",other:!0},{regex:"(SLP Browser)/(\\d+)\\.(\\d+)",family_replacement:"Tizen Browser",other:!0},{regex:"(Epiphany)/(\\d+)\\.(\\d+).(\\d+)",family_replacement:"Epiphany",other:!0},{regex:"(SE 2\\.X) MetaSr (\\d+)\\.(\\d+)",family_replacement:"Sogou Explorer",other:!0},{regex:"(Pingdom.com_bot_version_)(\\d+)\\.(\\d+)",family_replacement:"PingdomBot",other:!0},{regex:"(facebookexternalhit)/(\\d+)\\.(\\d+)",family_replacement:"FacebookBot"},{regex:"(Twitterbot)/(\\d+)\\.(\\d+)",family_replacement:"TwitterBot"},{regex:"(AdobeAIR|Chromium|FireWeb|Jasmine|ANTGalio|Midori|Fresco|Lobo|PaleMoon|Maxthon|Lynx|OmniWeb|Dillo|Camino|Demeter|Fluid|Fennec|Shiira|Sunrise|Chrome|Flock|Netscape|Lunascape|WebPilot|NetFront|Netfront|Konqueror|SeaMonkey|Kazehakase|Vienna|Iceape|Iceweasel|IceWeasel|Iron|K-Meleon|Sleipnir|Galeon|GranParadiso|Opera Mini|iCab|NetNewsWire|ThunderBrowse|Iron|Iris|UP\\.Browser|Bunjaloo|Google Earth|Raven for Mac)/(\\d+)\\.(\\d+)\\.(\\d+)"},{regex:"(Bolt|Jasmine|IceCat|Skyfire|Midori|Maxthon|Lynx|Arora|IBrowse|Dillo|Camino|Shiira|Fennec|Phoenix|Chrome|Flock|Netscape|Lunascape|Epiphany|WebPilot|Opera Mini|Opera|NetFront|Netfront|Konqueror|Googlebot|SeaMonkey|Kazehakase|Vienna|Iceape|Iceweasel|IceWeasel|Iron|K-Meleon|Sleipnir|Galeon|GranParadiso|iCab|NetNewsWire|Iron|Space Bison|Stainless|Orca|Dolfin|BOLT|Minimo|Tizen Browser|Polaris)/(\\d+)\\.(\\d+)"},{regex:"(iRider|Crazy Browser|SkipStone|iCab|Lunascape|Sleipnir|Maemo Browser) (\\d+)\\.(\\d+)\\.(\\d+)"},{regex:"(iCab|Lunascape|Opera|Android|Jasmine|Polaris|BREW) (\\d+)\\.(\\d+)\\.?(\\d+)?"},{regex:"(Android) Donut",v2_replacement:"2",v1_replacement:"1"},{regex:"(Android) Eclair",v2_replacement:"1",v1_replacement:"2"},{regex:"(Android) Froyo",v2_replacement:"2",v1_replacement:"2"},{regex:"(Android) Gingerbread",v2_replacement:"3",v1_replacement:"2"},{regex:"(Android) Honeycomb",v1_replacement:"3"},{regex:"(IEMobile)[ /](\\d+)\\.(\\d+)",family_replacement:"IE Mobile"},{regex:"(MSIE) (\\d+)\\.(\\d+).*XBLWP7",family_replacement:"IE Large Screen"},{regex:"(Firefox)/(\\d+)\\.(\\d+)\\.(\\d+)"},{regex:"(Firefox)/(\\d+)\\.(\\d+)(pre|[ab]\\d+[a-z]*)?"},{regex:"(Obigo)InternetBrowser",other:!0},{regex:"(Obigo)\\-Browser",other:!0},{regex:"(Obigo|OBIGO)[^\\d]*(\\d+)(?:.(\\d+))?",other:!0},{regex:"(MAXTHON|Maxthon) (\\d+)\\.(\\d+)",family_replacement:"Maxthon",other:!0},{regex:"(Maxthon|MyIE2|Uzbl|Shiira)",v1_replacement:"0",other:!0},{regex:"(PLAYSTATION) (\\d+)",family_replacement:"PlayStation",manufacturer:"Sony"},{regex:"(PlayStation Portable)[^\\d]+(\\d+).(\\d+)",manufacturer:"Sony"},{regex:"(BrowseX) \\((\\d+)\\.(\\d+)\\.(\\d+)",other:!0},{regex:"(POLARIS)/(\\d+)\\.(\\d+)",family_replacement:"Polaris",other:!0},{regex:"(Embider)/(\\d+)\\.(\\d+)",family_replacement:"Polaris",other:!0},{regex:"(BonEcho)/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Bon Echo",other:!0},{regex:"(iPod).+Version/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Mobile Safari",manufacturer:"Apple"},{regex:"(iPod).*Version/(\\d+)\\.(\\d+)",family_replacement:"Mobile Safari",manufacturer:"Apple"},{regex:"(iPod)",family_replacement:"Mobile Safari",manufacturer:"Apple"},{regex:"(iPhone).*Version/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Mobile Safari",manufacturer:"Apple"},{regex:"(iPhone).*Version/(\\d+)\\.(\\d+)",family_replacement:"Mobile Safari",manufacturer:"Apple"},{regex:"(iPhone)",family_replacement:"Mobile Safari",manufacturer:"Apple"},{regex:"(iPad).*Version/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Mobile Safari",tablet:!0,manufacturer:"Apple"},{regex:"(iPad).*Version/(\\d+)\\.(\\d+)",family_replacement:"Mobile Safari",tablet:!0,manufacturer:"Apple"},{regex:"(iPad)",family_replacement:"Mobile Safari",tablet:!0,manufacturer:"Apple"},{regex:"(AvantGo) (\\d+).(\\d+)",other:!0},{regex:"(Avant)",v1_replacement:"1",other:!0},{regex:"^(Nokia)",family_replacement:"Nokia Services (WAP) Browser",manufacturer:"Nokia"},{regex:"(NokiaBrowser)/(\\d+)\\.(\\d+).(\\d+)\\.(\\d+)",manufacturer:"Nokia"},{regex:"(NokiaBrowser)/(\\d+)\\.(\\d+).(\\d+)",manufacturer:"Nokia"},{regex:"(NokiaBrowser)/(\\d+)\\.(\\d+)",manufacturer:"Nokia"},{regex:"(BrowserNG)/(\\d+)\\.(\\d+).(\\d+)",family_replacement:"NokiaBrowser",manufacturer:"Nokia"},{regex:"(Series60)/5\\.0",v2_replacement:"0",v1_replacement:"7",family_replacement:"NokiaBrowser",manufacturer:"Nokia"},{regex:"(Series60)/(\\d+)\\.(\\d+)",family_replacement:"Nokia OSS Browser",manufacturer:"Nokia"},{regex:"(S40OviBrowser)/(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Nokia Series 40 Ovi Browser",manufacturer:"Nokia"},{regex:"(Nokia)[EN]?(\\d+)",manufacturer:"Nokia"},{regex:"(PlayBook).+RIM Tablet OS (\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Blackberry WebKit",tablet:!0,manufacturer:"Nokia"},{regex:"(Black[bB]erry).+Version/(\\d+)\\.(\\d+)\\.(\\d+)",family_replacement:"Blackberry WebKit",manufacturer:"RIM"},{regex:"(Black[bB]erry)\\s?(\\d+)",family_replacement:"Blackberry",manufacturer:"RIM"},{regex:"(OmniWeb)/v(\\d+)\\.(\\d+)",other:!0},{regex:"(Blazer)/(\\d+)\\.(\\d+)",family_replacement:"Palm Blazer",manufacturer:"Palm"},{regex:"(Pre)/(\\d+)\\.(\\d+)",family_replacement:"Palm Pre",manufacturer:"Palm"},{regex:"(Links) \\((\\d+)\\.(\\d+)",other:!0},{regex:"(QtWeb) Internet Browser/(\\d+)\\.(\\d+)",other:!0},{regex:"(Silk)/(\\d+)\\.(\\d+)(?:\\.([0-9\\-]+))?",other:!0,tablet:!0},{regex:"(AppleWebKit)/(\\d+)\\.?(\\d+)?\\+ .* Version/\\d+\\.\\d+.\\d+ Safari/",family_replacement:"WebKit Nightly"},{regex:"(Version)/(\\d+)\\.(\\d+)(?:\\.(\\d+))?.*Safari/",family_replacement:"Safari"},{regex:"(Safari)/\\d+"},{regex:"(OLPC)/Update(\\d+)\\.(\\d+)",other:!0},{regex:"(OLPC)/Update()\\.(\\d+)",v1_replacement:"0",other:!0},{regex:"(SEMC\\-Browser)/(\\d+)\\.(\\d+)",other:!0},{regex:"(Teleca)",family_replacement:"Teleca Browser",other:!0},{regex:"Trident(.*)rv.(\\d+)\\.(\\d+)",family_replacement:"IE"},{regex:"(MSIE) (\\d+)\\.(\\d+)",family_replacement:"IE"}],os_parsers:[{regex:"(Android) (\\d+)\\.(\\d+)(?:[.\\-]([a-z0-9]+))?"},{regex:"(Android)\\-(\\d+)\\.(\\d+)(?:[.\\-]([a-z0-9]+))?"},{regex:"(Android) Donut",os_v2_replacement:"2",os_v1_replacement:"1"},{regex:"(Android) Eclair",os_v2_replacement:"1",os_v1_replacement:"2"},{regex:"(Android) Froyo",os_v2_replacement:"2",os_v1_replacement:"2"},{regex:"(Android) Gingerbread",os_v2_replacement:"3",os_v1_replacement:"2"},{regex:"(Android) Honeycomb",os_v1_replacement:"3"},{regex:"(Silk-Accelerated=[a-z]{4,5})",os_replacement:"Android"},{regex:"(Windows Phone 6\\.5)"},{regex:"(Windows (?:NT 5\\.2|NT 5\\.1))",os_replacement:"Windows XP"},{regex:"(XBLWP7)",os_replacement:"Windows Phone OS"},{regex:"(Windows NT 6\\.1)",os_replacement:"Windows 7"},{regex:"(Windows NT 6\\.0)",os_replacement:"Windows Vista"},{regex:"(Windows 98|Windows XP|Windows ME|Windows 95|Windows CE|Windows 7|Windows NT 4\\.0|Windows Vista|Windows 2000)"},{regex:"(Windows NT 6\\.2)",os_replacement:"Windows 8"},{regex:"(Windows Phone 8)",os_replacement:"Windows Phone 8"},{regex:"(Windows NT 5\\.0)",os_replacement:"Windows 2000"},{regex:"(Windows Phone OS) (\\d+)\\.(\\d+)"},{regex:"(Windows ?Mobile)",os_replacement:"Windows Mobile"},{regex:"(WinNT4.0)",os_replacement:"Windows NT 4.0"},{regex:"(Win98)",os_replacement:"Windows 98"},{regex:"(Tizen)/(\\d+)\\.(\\d+)",other:!0},{regex:"(Mac OS X) (\\d+)[_.](\\d+)(?:[_.](\\d+))?",manufacturer:"Apple"},{regex:"(?:PPC|Intel) (Mac OS X)",manufacturer:"Apple"},{regex:"(CPU OS|iPhone OS) (\\d+)_(\\d+)(?:_(\\d+))?",os_replacement:"iOS",manufacturer:"Apple"},{regex:"(iPhone|iPad|iPod); Opera",os_replacement:"iOS",manufacturer:"Apple"},{regex:"(iPad); Opera",tablet:!0,manufacturer:"Apple"},{regex:"(iPhone|iPad|iPod).*Mac OS X.*Version/(\\d+)\\.(\\d+)",os_replacement:"iOS",manufacturer:"Apple"},{regex:"(CrOS) [a-z0-9_]+ (\\d+)\\.(\\d+)(?:\\.(\\d+))?",os_replacement:"Chrome OS"},{regex:"(Debian)-(\\d+)\\.(\\d+)\\.(\\d+)(?:\\.(\\d+))?",other:!0},{regex:"(Linux Mint)(?:/(\\d+))?",other:!0},{regex:"(Mandriva)(?: Linux)?/(\\d+)\\.(\\d+)\\.(\\d+)(?:\\.(\\d+))?",other:!0},{regex:"(Symbian[Oo][Ss])/(\\d+)\\.(\\d+)",os_replacement:"Symbian OS"},{regex:"(Symbian/3).+NokiaBrowser/7\\.3",os_replacement:"Symbian^3 Anna"},{regex:"(Symbian/3).+NokiaBrowser/7\\.4",os_replacement:"Symbian^3 Belle"},{regex:"(Symbian/3)",os_replacement:"Symbian^3"},{regex:"(Series 60|SymbOS|S60)",os_replacement:"Symbian OS"},{regex:"(MeeGo)",other:!0},{regex:"Symbian [Oo][Ss]",os_replacement:"Symbian OS"},{regex:"(Black[Bb]erry)[0-9a-z]+/(\\d+)\\.(\\d+)\\.(\\d+)(?:\\.(\\d+))?",os_replacement:"BlackBerry OS",manufacturer:"RIM"},{regex:"(Black[Bb]erry).+Version/(\\d+)\\.(\\d+)\\.(\\d+)(?:\\.(\\d+))?",os_replacement:"BlackBerry OS",manufacturer:"RIM"},{regex:"(RIM Tablet OS) (\\d+)\\.(\\d+)\\.(\\d+)",os_replacement:"BlackBerry Tablet OS",tablet:!0,manufacturer:"RIM"},{regex:"(Play[Bb]ook)",os_replacement:"BlackBerry Tablet OS",tablet:!0,manufacturer:"RIM"},{regex:"(Black[Bb]erry)",os_replacement:"Blackberry OS",manufacturer:"RIM"},{regex:"(webOS|hpwOS)/(\\d+)\\.(\\d+)(?:\\.(\\d+))?",os_replacement:"webOS"},{regex:"(SUSE|Fedora|Red Hat|PCLinuxOS)/(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)",other:!0},{regex:"(SUSE|Fedora|Red Hat|Puppy|PCLinuxOS|CentOS)/(\\d+)\\.(\\d+)\\.(\\d+)",other:!0},{regex:"(Ubuntu|Kindle|Bada|Lubuntu|BackTrack|Red Hat|Slackware)/(\\d+)\\.(\\d+)"},{regex:"(Windows|OpenBSD|FreeBSD|NetBSD|Ubuntu|Kubuntu|Android|Arch Linux|CentOS|WeTab|Slackware)"},{regex:"(Linux|BSD)",other:!0}],mobile_os_families:["Windows Phone 6.5","Windows CE","Symbian OS"],device_parsers:[{regex:"HTC ([A-Z][a-z0-9]+) Build",device_replacement:"HTC $1",manufacturer:"HTC"},{regex:"HTC ([A-Z][a-z0-9 ]+) \\d+\\.\\d+\\.\\d+\\.\\d+",device_replacement:"HTC $1",manufacturer:"HTC"},{regex:"HTC_Touch_([A-Za-z0-9]+)",device_replacement:"HTC Touch ($1)",manufacturer:"HTC"},{regex:"USCCHTC(\\d+)",device_replacement:"HTC $1 (US Cellular)",manufacturer:"HTC"},{regex:"Sprint APA(9292)",device_replacement:"HTC $1 (Sprint)",manufacturer:"HTC"},{regex:"HTC ([A-Za-z0-9]+ [A-Z])",device_replacement:"HTC $1",manufacturer:"HTC"},{regex:"HTC-([A-Za-z0-9]+)",device_replacement:"HTC $1",manufacturer:"HTC"},{regex:"HTC_([A-Za-z0-9]+)",device_replacement:"HTC $1",manufacturer:"HTC"},{regex:"HTC ([A-Za-z0-9]+)",device_replacement:"HTC $1",manufacturer:"HTC"},{regex:"(ADR[A-Za-z0-9]+)",device_replacement:"HTC $1",manufacturer:"HTC"},{regex:"(HTC)",manufacturer:"HTC"},{regex:"SonyEricsson([A-Za-z0-9]+)/",device_replacement:"Ericsson $1",other:!0,manufacturer:"Sony"},{regex:"Android[\\- ][\\d]+\\.[\\d]+\\; [A-Za-z]{2}\\-[A-Za-z]{2}\\; WOWMobile (.+) Build"},{regex:"Android[\\- ][\\d]+\\.[\\d]+\\.[\\d]+; [A-Za-z]{2}\\-[A-Za-z]{2}\\; (.+) Build"},{regex:"Android[\\- ][\\d]+\\.[\\d]+\\-update1\\; [A-Za-z]{2}\\-[A-Za-z]{2}\\; (.+) Build"},{regex:"Android[\\- ][\\d]+\\.[\\d]+\\; [A-Za-z]{2}\\-[A-Za-z]{2}\\; (.+) Build"},{regex:"Android[\\- ][\\d]+\\.[\\d]+\\.[\\d]+; (.+) Build"},{regex:"NokiaN([0-9]+)",device_replacement:"Nokia N$1",manufacturer:"Nokia"},{regex:"Nokia([A-Za-z0-9\\v-]+)",device_replacement:"Nokia $1",manufacturer:"Nokia"},{regex:"NOKIA ([A-Za-z0-9\\-]+)",device_replacement:"Nokia $1",manufacturer:"Nokia"},{regex:"Nokia ([A-Za-z0-9\\-]+)",device_replacement:"Nokia $1",manufacturer:"Nokia"},{regex:"Lumia ([A-Za-z0-9\\-]+)",device_replacement:"Lumia $1",manufacturer:"Nokia"},{regex:"Symbian",device_replacement:"Nokia",manufacturer:"Nokia"},{regex:"(PlayBook).+RIM Tablet OS",device_replacement:"Blackberry Playbook",tablet:!0,manufacturer:"RIM"},{regex:"(Black[Bb]erry [0-9]+);",manufacturer:"RIM"},{regex:"Black[Bb]erry([0-9]+)",device_replacement:"BlackBerry $1",manufacturer:"RIM"},{regex:"(Pre)/(\\d+)\\.(\\d+)",device_replacement:"Palm Pre",manufacturer:"Palm"},{regex:"(Pixi)/(\\d+)\\.(\\d+)",device_replacement:"Palm Pixi",manufacturer:"Palm"},{regex:"(Touchpad)/(\\d+)\\.(\\d+)",device_replacement:"HP Touchpad",manufacturer:"HP"},{regex:"HPiPAQ([A-Za-z0-9]+)/(\\d+).(\\d+)",device_replacement:"HP iPAQ $1",manufacturer:"HP"},{regex:"Palm([A-Za-z0-9]+)",device_replacement:"Palm $1",manufacturer:"Palm"},{regex:"Treo([A-Za-z0-9]+)",device_replacement:"Palm Treo $1",manufacturer:"Palm"},{regex:"webOS.*(P160UNA)/(\\d+).(\\d+)",device_replacement:"HP Veer",manufacturer:"HP"},{regex:"(Kindle Fire)",manufacturer:"Amazon"},{regex:"(Kindle)",manufacturer:"Amazon"},{regex:"(Silk)/(\\d+)\\.(\\d+)(?:\\.([0-9\\-]+))?",device_replacement:"Kindle Fire",tablet:!0,manufacturer:"Amazon"},{regex:"(iPad) Simulator;",manufacturer:"Apple"},{regex:"(iPad);",manufacturer:"Apple"},{regex:"(iPod);",manufacturer:"Apple"},{regex:"(iPhone) Simulator;",manufacturer:"Apple"},{regex:"(iPhone);",manufacturer:"Apple"},{regex:"Nexus\\ ([A-Za-z0-9\\-]+)",device_replacement:"Nexus $1"},{regex:"acer_([A-Za-z0-9]+)_",device_replacement:"Acer $1",manufacturer:"Acer"},{regex:"acer_([A-Za-z0-9]+)_",device_replacement:"Acer $1",manufacturer:"Acer"},{regex:"Amoi\\-([A-Za-z0-9]+)",device_replacement:"Amoi $1",other:!0,manufacturer:"Amoi"},{regex:"AMOI\\-([A-Za-z0-9]+)",device_replacement:"Amoi $1",other:!0,manufacturer:"Amoi"},{regex:"Asus\\-([A-Za-z0-9]+)",device_replacement:"Asus $1",manufacturer:"Asus"},{regex:"ASUS\\-([A-Za-z0-9]+)",device_replacement:"Asus $1",manufacturer:"Asus"},{regex:"BIRD\\-([A-Za-z0-9]+)",device_replacement:"Bird $1",other:!0},{regex:"BIRD\\.([A-Za-z0-9]+)",device_replacement:"Bird $1",other:!0},{regex:"BIRD ([A-Za-z0-9]+)",device_replacement:"Bird $1",other:!0},{regex:"Dell ([A-Za-z0-9]+)",device_replacement:"Dell $1",manufacturer:"Dell"},{regex:"DoCoMo/2\\.0 ([A-Za-z0-9]+)",device_replacement:"DoCoMo $1",other:!0},{regex:"([A-Za-z0-9]+)\\_W\\;FOMA",device_replacement:"DoCoMo $1",other:!0},{regex:"([A-Za-z0-9]+)\\;FOMA",device_replacement:"DoCoMo $1",other:!0},{regex:"vodafone([A-Za-z0-9]+)",device_replacement:"Huawei Vodafone $1",other:!0},{regex:"i\\-mate ([A-Za-z0-9]+)",device_replacement:"i-mate $1",other:!0},{regex:"Kyocera\\-([A-Za-z0-9]+)",device_replacement:"Kyocera $1",other:!0},{regex:"KWC\\-([A-Za-z0-9]+)",device_replacement:"Kyocera $1",other:!0},{regex:"Lenovo\\-([A-Za-z0-9]+)",device_replacement:"Lenovo $1",manufacturer:"Lenovo"},{regex:"Lenovo\\_([A-Za-z0-9]+)",device_replacement:"Lenovo $1",manufacturer:"Levovo"},{regex:"LG/([A-Za-z0-9]+)",device_replacement:"LG $1",manufacturer:"LG"},{regex:"LG-LG([A-Za-z0-9]+)",device_replacement:"LG $1",manufacturer:"LG"},{regex:"LGE-LG([A-Za-z0-9]+)",device_replacement:"LG $1",manufacturer:"LG"},{regex:"LGE VX([A-Za-z0-9]+)",device_replacement:"LG $1",manufacturer:"LG"},{regex:"LG ([A-Za-z0-9]+)",device_replacement:"LG $1",manufacturer:"LG"},{regex:"LGE LG\\-AX([A-Za-z0-9]+)",device_replacement:"LG $1",manufacturer:"LG"},{regex:"LG\\-([A-Za-z0-9]+)",device_replacement:"LG $1",manufacturer:"LG"},{regex:"LGE\\-([A-Za-z0-9]+)",device_replacement:"LG $1",manufacturer:"LG"},{regex:"LG([A-Za-z0-9]+)",device_replacement:"LG $1",manufacturer:"LG"},{regex:"(KIN)\\.One (\\d+)\\.(\\d+)",device_replacement:"Microsoft $1"},{regex:"(KIN)\\.Two (\\d+)\\.(\\d+)",device_replacement:"Microsoft $1"},{regex:"(Motorola)\\-([A-Za-z0-9]+)",manufacturer:"Motorola"},{regex:"MOTO\\-([A-Za-z0-9]+)",device_replacement:"Motorola $1",manufacturer:"Motorola"},{regex:"MOT\\-([A-Za-z0-9]+)",device_replacement:"Motorola $1",manufacturer:"Motorola"},{regex:"Philips([A-Za-z0-9]+)",device_replacement:"Philips $1",manufacturer:"Philips"},{regex:"Philips ([A-Za-z0-9]+)",device_replacement:"Philips $1",manufacturer:"Philips"},{regex:"SAMSUNG-([A-Za-z0-9\\-]+)",device_replacement:"Samsung $1",manufacturer:"Samsung"},{regex:"SAMSUNG\\; ([A-Za-z0-9\\-]+)",device_replacement:"Samsung $1",manufacturer:"Samsung"},{regex:"Softbank/1\\.0/([A-Za-z0-9]+)",device_replacement:"Softbank $1",other:!0},{regex:"Softbank/2\\.0/([A-Za-z0-9]+)",device_replacement:"Softbank $1",other:!0},{regex:"(hiptop|avantgo|plucker|xiino|blazer|elaine|up.browser|up.link|mmp|smartphone|midp|wap|vodafone|o2|pocket|mobile|pda)",device_replacement:"Generic Smartphone"},{regex:"^(1207|3gso|4thp|501i|502i|503i|504i|505i|506i|6310|6590|770s|802s|a wa|acer|acs\\-|airn|alav|asus|attw|au\\-m|aur |aus |abac|acoo|aiko|alco|alca|amoi|anex|anny|anyw|aptu|arch|argo|bell|bird|bw\\-n|bw\\-u|beck|benq|bilb|blac|c55/|cdm\\-|chtm|capi|comp|cond|craw|dall|dbte|dc\\-s|dica|ds\\-d|ds12|dait|devi|dmob|doco|dopo|el49|erk0|esl8|ez40|ez60|ez70|ezos|ezze|elai|emul|eric|ezwa|fake|fly\\-|fly\\_|g\\-mo|g1 u|g560|gf\\-5|grun|gene|go.w|good|grad|hcit|hd\\-m|hd\\-p|hd\\-t|hei\\-|hp i|hpip|hs\\-c|htc |htc\\-|htca|htcg)",device_replacement:"Generic Feature Phone"},{regex:"^(htcp|htcs|htct|htc\\_|haie|hita|huaw|hutc|i\\-20|i\\-go|i\\-ma|i230|iac|iac\\-|iac/|ig01|im1k|inno|iris|jata|java|kddi|kgt|kgt/|kpt |kwc\\-|klon|lexi|lg g|lg\\-a|lg\\-b|lg\\-c|lg\\-d|lg\\-f|lg\\-g|lg\\-k|lg\\-l|lg\\-m|lg\\-o|lg\\-p|lg\\-s|lg\\-t|lg\\-u|lg\\-w|lg/k|lg/l|lg/u|lg50|lg54|lge\\-|lge/|lynx|leno|m1\\-w|m3ga|m50/|maui|mc01|mc21|mcca|medi|meri|mio8|mioa|mo01|mo02|mode|modo|mot |mot\\-|mt50|mtp1|mtv |mate|maxo|merc|mits|mobi|motv|mozz|n100|n101|n102|n202|n203|n300|n302|n500|n502|n505|n700|n701|n710|nec\\-|nem\\-|newg|neon)",device_replacement:"Generic Feature Phone"},{regex:"^(netf|noki|nzph|o2 x|o2\\-x|opwv|owg1|opti|oran|ot\\-s|p800|pand|pg\\-1|pg\\-2|pg\\-3|pg\\-6|pg\\-8|pg\\-c|pg13|phil|pn\\-2|pt\\-g|palm|pana|pire|pock|pose|psio|qa\\-a|qc\\-2|qc\\-3|qc\\-5|qc\\-7|qc07|qc12|qc21|qc32|qc60|qci\\-|qwap|qtek|r380|r600|raks|rim9|rove|s55/|sage|sams|sc01|sch\\-|scp\\-|sdk/|se47|sec\\-|sec0|sec1|semc|sgh\\-|shar|sie\\-|sk\\-0|sl45|slid|smb3|smt5|sp01|sph\\-|spv |spv\\-|sy01|samm|sany|sava|scoo|send|siem|smar|smit|soft|sony|t\\-mo|t218|t250|t600|t610|t618|tcl\\-|tdg\\-|telm|tim\\-|ts70|tsm\\-|tsm3|tsm5|tx\\-9|tagt)",device_replacement:"Generic Feature Phone"},{regex:"^(talk|teli|topl|tosh|up.b|upg1|utst|v400|v750|veri|vk\\-v|vk40|vk50|vk52|vk53|vm40|vx98|virg|vite|voda|vulc|w3c |w3c\\-|wapj|wapp|wapu|wapm|wig |wapi|wapr|wapv|wapy|wapa|waps|wapt|winc|winw|wonu|x700|xda2|xdag|yas\\-|your|zte\\-|zeto|aste|audi|avan|blaz|brew|brvw|bumb|ccwa|cell|cldc|cmd\\-|dang|eml2|fetc|hipt|http|ibro|idea|ikom|ipaq|jbro|jemu|jigs|keji|kyoc|kyok|libw|m\\-cr|midp|mmef|moto|mwbp|mywa|newt|nok6|o2im|pant|pdxg|play|pluc|port|prox|rozo|sama|seri|smal|symb|treo|upsi|vx52|vx53|vx60|vx61|vx70|vx80|vx81|vx83|vx85|wap\\-|webc|whit|wmlb|xda\\-|xda\\_)",device_replacement:"Generic Feature Phone"},{regex:"(bot|borg|google(^tv)|yahoo|slurp|msnbot|msrbot|openbot|archiver|netresearch|lycos|scooter|altavista|teoma|gigabot|baiduspider|blitzbot|oegp|charlotte|furlbot|http%20client|polybot|htdig|ichiro|mogimogi|larbin|pompos|scrubby|searchsight|seekbot|semanticdiscovery|silk|snappy|speedy|spider|voila|vortex|voyager|zao|zeal|fast\\-webcrawler|converacrawler|dataparksearch|findlinks)",device_replacement:"Spider"}],mobile_browser_families:["Firefox Mobile","Opera Mobile","Opera Mini","Mobile Safari","webOS","IE Mobile","Playstation Portable","Nokia","Blackberry","Palm","Silk","Android","Maemo","Obigo","Netfront","AvantGo","Teleca","SEMC-Browser","Bolt","Iris","UP.Browser","Symphony","Minimo","Bunjaloo","Jasmine","Dolfin","Polaris","BREW","Chrome Mobile","Chrome Mobile iOS","UC Browser","Tizen Browser"]};e.parsers=["device_parsers","browser_parsers","os_parsers","mobile_os_families","mobile_browser_families"],e.types=["browser","os","device"],e.regexes=r||function(){var r={};return e.parsers.map(function(e){r[e]=[]}),r}(),e.families=function(){var r={};return e.types.map(function(e){r[e]=[]}),r}();var a=Array.prototype,o=(Object.prototype,Function.prototype,a.forEach);a.indexOf;var i=function(e,r){for(var a={},o=0;r.length>o&&!(a=r[o](e));o++);return a},n=function(e,r){t(e,function(e){t(r,function(r){delete e[r]})})},t=forEach=function(e,r,a){if(null!=e)if(o&&e.forEach===o)e.forEach(r,a);else if(e.length===+e.length)for(var i=0,n=e.length;n>i;i++)r.call(a,e[i],i,e);else for(var t in e)_.has(e,t)&&r.call(a,e[t],t,e)},l=function(e){return!(!e||e===undefined||null==e)},c=function(e){var r="";return e=e||{},l(e)&&l(e.major)&&(r+=e.major,l(e.minor)&&(r+="."+e.minor,l(e.patch)&&(r+="."+e.patch))),r},d=function(e){e=e||{};var r=c(e);return r&&(r=" "+r),e&&l(e.family)?e.family+r:""};return e.parse=function(r){var a=function(r){return e.regexes[r+"_parsers"].map(function(e){function a(r){var a=r.match(o);if(!a)return null;var t={};return t.family=(i?i.replace("$1",a[1]):a[1])||"other",t.major=parseInt(n?n:a[2])||null,t.minor=a[3]?parseInt(a[3]):null,t.patch=a[4]?parseInt(a[4]):null,t.tablet=e.tablet,t.man=e.manufacturer||null,t}var o=RegExp(e.regex),i=e[("browser"===r?"family":r)+"_replacement"],n=e.major_version_replacement;return a})},o=function(){},t=a("browser"),m=a("os"),p=a("device"),s=new o;s.source=r,s.browser=i(r,t),l(s.browser)?(s.browser.name=d(s.browser),s.browser.version=c(s.browser)):s.browser={},s.os=i(r,m),l(s.os)?(s.os.name=d(s.os),s.os.version=c(s.os)):s.os={},s.device=i(r,p),l(s.device)?(s.device.name=d(s.device),s.device.version=c(s.device)):s.device={tablet:!1,family:"Other"};var g={};return e.regexes.mobile_browser_families.map(function(e){g[e]=!0}),e.regexes.mobile_os_families.map(function(e){g[e]=!0}),s.device.type="Spider"===s.browser.family?"Spider":s.browser.tablet||s.os.tablet||s.device.tablet?"Tablet":g.hasOwnProperty(s.browser.family)?"Mobile":"Desktop",s.device.manufacturer=s.browser.man||s.os.man||s.device.man||null,n([s.browser,s.os,s.device],["tablet","man"]),s},e}();"undefined"!=typeof exports?("undefined"!=typeof module&&module.exports&&(exports=module.exports=r),exports.detect=r):e.detect=r,"function"==typeof define&&define.amd&&define(function(){return r})})(window);;
@@ -2357,22 +2355,11 @@ zjson - binary json sirelizer with some strange features
       sy = window.innerHeight - yadj;
       nFrames = frames[sec - 30 + x] || 0;
       color = [255, 255, 255, 100];
-
-      /*
-      if nFrames < max*.5
-          color = [255, 0, 0, 100]
-      else if nFrames >= max*.5 and nFrames < max*.75
-          color = [255, 255, 0, 100]
-      else if nFrames >= max*.75 and nFrames < max*.95
-          color = [0, 0, 255, 100]
-      else if nFrames >= max*.90
-          color = [0, 255, 0, 100]
-       */
       results.push((function() {
         var k, ref, results1;
         results1 = [];
         for (y = k = 0, ref = Math.ceil(nFrames / div); 0 <= ref ? k < ref : k > ref; y = 0 <= ref ? ++k : --k) {
-          results1.push(baseAtlas.drawSpirte("parts/sel1x1.png", [sx, sy - y * 16], [.5, .5], 0, color));
+          results1.push(baseAtlas.drawSprite("parts/sel1x1.png", [sx, sy - y * 16], [.5, .5], 0, color));
         }
         return results1;
       })());
@@ -2433,540 +2420,6 @@ zjson - binary json sirelizer with some strange features
       data = JSON.parse(localStorage[key]);
     } catch (undefined) {}
     return data;
-  };
-
-}).call(this);
-;
-
-//from src/engine.js
-// Generated by CoffeeScript 1.10.0
-(function() {
-  var canvas, dpr, gl, resizeViewport;
-
-  gl = void 0;
-
-  canvas = void 0;
-
-  dpr = 1;
-
-  if (window.devicePixelRatio === 2) {
-    dpr = 2;
-  }
-
-  window.Atlas = (function() {
-    function Atlas(params) {
-      this.curSprite = 0;
-      this.maxSpires = 40000;
-      this.spriteMap = {};
-      this.drawMargin = 4;
-      this.atlasMargin = 2;
-      this.vertsBuf = null;
-      this.uvsBuf = null;
-      this.indexsBuf = null;
-      this.uvs = new Float32Array(2 * 4 * this.maxSpires);
-      this.verts = new Float32Array(2 * 4 * this.maxSpires);
-      this.colors = new Uint8Array(4 * 4 * this.maxSpires);
-      this.indexs = new Uint16Array(2 * 3 * this.maxSpires);
-      this.initShader();
-      this.initTexture();
-      this.initBuffers();
-      this.initOffscreenBuffer();
-      this.viewPort = new Float32Array(4);
-      this.frame = 0;
-      this.ready = false;
-    }
-
-    Atlas.prototype.preloadList = function() {
-      var key, results;
-      results = [];
-      for (key in this.spriteMap) {
-        results.push(key);
-      }
-      return results;
-    };
-
-    Atlas.prototype.initShader = function() {
-      var compileShader, linkShader, simpleFragment, simpleVertex;
-      compileShader = function(type, src) {
-        var shader;
-        shader = gl.createShader(type);
-        gl.shaderSource(shader, src);
-        gl.compileShader(shader);
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-          console.log(gl.getShaderInfoLog(shader));
-          return null;
-        }
-        return shader;
-      };
-      linkShader = function(fragmentSrc, vertexSrc) {
-        var shader;
-        shader = gl.createProgram();
-        gl.attachShader(shader, compileShader(gl.FRAGMENT_SHADER, fragmentSrc));
-        gl.attachShader(shader, compileShader(gl.VERTEX_SHADER, vertexSrc));
-        gl.linkProgram(shader);
-        if (!gl.getProgramParameter(shader, gl.LINK_STATUS)) {
-          console.log("could not link shader");
-          return null;
-        }
-        return shader;
-      };
-      simpleFragment = "precision mediump float;\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\nuniform sampler2D uSampler;\n\nvoid main(void) {\n    vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));\n    vec4 finalColor = textureColor * vColor;\n    gl_FragColor = finalColor;\n}";
-      simpleVertex = "attribute vec2 aVertexPosition;\nattribute vec2 aTextureCoord;\nattribute vec4 aColor;\n\nvarying vec2 vTextureCoord;\nvarying vec4 vColor;\n\nvoid main(void) {\n    gl_Position = vec4(aVertexPosition, 0.0, 1.0);\n    vColor = aColor;\n    vTextureCoord = aTextureCoord;\n}";
-      this.shader = linkShader(simpleFragment, simpleVertex);
-      gl.useProgram(this.shader);
-      this.shader.vertAttr = gl.getAttribLocation(this.shader, "aVertexPosition");
-      gl.enableVertexAttribArray(this.shader.vertAttr);
-      this.shader.uvsAttr = gl.getAttribLocation(this.shader, "aTextureCoord");
-      gl.enableVertexAttribArray(this.shader.uvsAttr);
-      this.shader.colorsAttr = gl.getAttribLocation(this.shader, "aColor");
-      gl.enableVertexAttribArray(this.shader.colorsAttr);
-      return this.shader.samplerUniform = gl.getUniformLocation(this.shader, "uSampler");
-    };
-
-    Atlas.prototype.initTexture = function() {
-      var anisotropic, handleLoadedTexture, loadTexture, max_anisotropy;
-      this.canvas = document.createElement('canvas');
-      this.canvas.className = "atlas";
-      this.originalTextureSize = 1024 * 4;
-      this.textureSize = Math.min(this.originalTextureSize, gl.getParameter(gl.MAX_TEXTURE_SIZE));
-      this.canvas.width = this.textureSize;
-      this.canvas.height = this.textureSize;
-      this.heights = new Uint16Array(this.canvas.width);
-      this.texture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, this.texture);
-      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, this.canvas);
-      gl.generateMipmap(gl.TEXTURE_2D);
-      anisotropic = gl.getExtension("EXT_texture_filter_anisotropic");
-      if (anisotropic) {
-        max_anisotropy = gl.getParameter(anisotropic.MAX_TEXTURE_MAX_ANISOTROPY_EXT);
-        gl.texParameterf(gl.TEXTURE_2D, anisotropic.TEXTURE_MAX_ANISOTROPY_EXT, max_anisotropy);
-      }
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_LINEAR);
-      gl.bindTexture(gl.TEXTURE_2D, null);
-      handleLoadedTexture = function(texture) {
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-        gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-        gl.generateMipmap(gl.TEXTURE_2D);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
-        gl.bindTexture(gl.TEXTURE_2D, null);
-        return texture.loaded = true;
-      };
-      return loadTexture = function(src) {
-        var texture;
-        texture = gl.createTexture();
-        texture.image = new Image();
-        texture.image.onload = function() {
-          return handleLoadedTexture(texture);
-        };
-        texture.image.src = src;
-        return texture;
-      };
-    };
-
-    Atlas.prototype.initBuffers = function() {
-      var a, i, j, ref, x, y;
-      for (i = j = 0, ref = this.maxSpires; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
-        a = 0;
-        x = 0;
-        y = 0;
-        this.verts[i * 8 + 0] = x - a;
-        this.verts[i * 8 + 1] = y - a;
-        this.verts[i * 8 + 2] = x + a;
-        this.verts[i * 8 + 3] = y - a;
-        this.verts[i * 8 + 4] = x + a;
-        this.verts[i * 8 + 5] = y + a;
-        this.verts[i * 8 + 6] = x - a;
-        this.verts[i * 8 + 7] = y + a;
-        this.uvs[i * 8 + 0] = 0;
-        this.uvs[i * 8 + 1] = 0;
-        this.uvs[i * 8 + 2] = 1;
-        this.uvs[i * 8 + 3] = 0;
-        this.uvs[i * 8 + 4] = 1;
-        this.uvs[i * 8 + 5] = 1;
-        this.uvs[i * 8 + 6] = 0;
-        this.uvs[i * 8 + 7] = 1;
-        this.colors[i * 16 + 0] = 255;
-        this.colors[i * 16 + 1] = 255;
-        this.colors[i * 16 + 2] = 255;
-        this.colors[i * 16 + 3] = 255;
-        this.colors[i * 16 + 4] = 255;
-        this.colors[i * 16 + 5] = 255;
-        this.colors[i * 16 + 6] = 255;
-        this.colors[i * 16 + 7] = 255;
-        this.colors[i * 16 + 8] = 255;
-        this.colors[i * 16 + 9] = 255;
-        this.colors[i * 16 + 10] = 255;
-        this.colors[i * 16 + 11] = 255;
-        this.colors[i * 16 + 12] = 255;
-        this.colors[i * 16 + 13] = 255;
-        this.colors[i * 16 + 14] = 255;
-        this.colors[i * 16 + 15] = 255;
-        this.indexs[i * 6 + 0] = i * 4 + 0;
-        this.indexs[i * 6 + 1] = i * 4 + 1;
-        this.indexs[i * 6 + 2] = i * 4 + 2;
-        this.indexs[i * 6 + 3] = i * 4 + 0;
-        this.indexs[i * 6 + 4] = i * 4 + 2;
-        this.indexs[i * 6 + 5] = i * 4 + 3;
-      }
-      this.vertsBuf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertsBuf);
-      gl.bufferData(gl.ARRAY_BUFFER, this.verts, gl.DYNAMIC_DRAW);
-      this.uvsBuf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.uvsBuf);
-      gl.bufferData(gl.ARRAY_BUFFER, this.uvs, gl.DYNAMIC_DRAW);
-      this.colorsBuf = gl.createBuffer();
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.colorsBuf);
-      gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.DYNAMIC_DRAW);
-      this.indexsBuf = gl.createBuffer();
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexsBuf);
-      return gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.indexs, gl.STATIC_DRAW);
-    };
-
-    Atlas.prototype.initOffscreenBuffer = function() {
-      this.rtt = gl.createFramebuffer();
-      gl.bindFramebuffer(gl.FRAMEBUFFER, this.rtt);
-      this.rtt.width = 64 * dpr;
-      this.rtt.height = 64 * dpr;
-      this.rttTexture = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, this.rttTexture);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
-      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.rtt.width, this.rtt.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
-      this.renderbuffer = gl.createRenderbuffer();
-      gl.bindRenderbuffer(gl.RENDERBUFFER, this.renderbuffer);
-      gl.renderbufferStorage(gl.RENDERBUFFER, gl.DEPTH_COMPONENT16, this.rtt.width, this.rtt.height);
-      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, this.rttTexture, 0);
-      gl.framebufferRenderbuffer(gl.FRAMEBUFFER, gl.DEPTH_ATTACHMENT, gl.RENDERBUFFER, this.renderbuffer);
-      this.pixels = new Uint8Array(4 * this.rtt.width * this.rtt.height);
-      gl.bindTexture(gl.TEXTURE_2D, null);
-      gl.bindRenderbuffer(gl.RENDERBUFFER, null);
-      return gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-    };
-
-    Atlas.prototype.startFrame = function() {
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      gl.viewport(0, 0, gl.viewportWidth, gl.viewportHeight);
-      return this.frame += 1;
-    };
-
-    Atlas.prototype.startOffscreenFrame = function() {
-      gl.bindFramebuffer(gl.FRAMEBUFFER, this.rtt);
-      gl.viewport(0, 0, this.rtt.width, this.rtt.height);
-      gl.clearColor(0.0, 0.0, 0.0, 0.0);
-      return gl.clear(gl.COLOR_BUFFER_BIT);
-    };
-
-    Atlas.prototype.endOffscreenFrame = function() {
-      var ctx, i, j, pixelsOut, ref, rttcanvas;
-      gl.readPixels(0, 0, this.rtt.width, this.rtt.height, gl.RGBA, gl.UNSIGNED_BYTE, this.pixels);
-      rttcanvas = document.createElement("canvas");
-      rttcanvas.width = this.rtt.width;
-      rttcanvas.height = this.rtt.height;
-      ctx = rttcanvas.getContext('2d');
-      pixelsOut = ctx.getImageData(0, 0, this.rtt.width, this.rtt.height);
-      if (!(pixelsOut != null ? pixelsOut.data : void 0)) {
-        return "";
-      }
-      for (i = j = 0, ref = this.pixels.length; 0 <= ref ? j < ref : j > ref; i = 0 <= ref ? ++j : --j) {
-        pixelsOut.data[i] = this.pixels[i];
-      }
-      ctx.putImageData(pixelsOut, 0, 0, 0, 0, this.rtt.width, this.rtt.height);
-      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
-      return rttcanvas.toDataURL();
-    };
-
-    Atlas.prototype.loadAtlas = function(atlas) {
-      var xhr;
-      xhr = new XMLHttpRequest();
-      xhr.open("GET", atlas.src, true);
-      xhr.responseType = "arraybuffer";
-      xhr.onprogress = (function(_this) {
-        return function(e) {
-          _this.progress = e.loaded / e.total;
-          return onecup.refresh();
-        };
-      })(this);
-      xhr.onload = (function(_this) {
-        return function(e) {
-          var encodedData, j, len, ref, s, stringData;
-          _this.atlasImage = new Image();
-          _this.atlasImage.onload = function(e) {
-            var data;
-            gl.bindTexture(gl.TEXTURE_2D, _this.texture);
-            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-            if (_this.textureSize !== _this.atlasImage.width) {
-              console.log("scaling image down");
-              data = _this.scaleImage(_this.atlasImage, _this.textureSize);
-            } else {
-              data = _this.atlasImage;
-            }
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, data);
-            gl.generateMipmap(gl.TEXTURE_2D);
-            _this.spriteMap = atlas.mappings;
-            _this.ready = true;
-            return onecup.refresh();
-          };
-          _this.atlasImage.onerror = function(e) {
-            console.log("Could not load atlas image", e);
-            return _this.error = true;
-          };
-          stringData = "";
-          ref = new Uint8Array(xhr.response);
-          for (j = 0, len = ref.length; j < len; j++) {
-            s = ref[j];
-            stringData += String.fromCharCode(s);
-          }
-          encodedData = window.btoa(stringData);
-          return _this.atlasImage.src = "data:image/png;base64," + encodedData;
-        };
-      })(this);
-      return xhr.send();
-    };
-
-    Atlas.prototype.scaleImage = function(image, size) {
-      var ctx;
-      canvas = document.createElement("canvas");
-      canvas.width = size;
-      canvas.height = size;
-      ctx = canvas.getContext('2d');
-      ctx.drawImage(image, 0, 0, size, size);
-      return canvas;
-    };
-
-    Atlas.prototype.loadAtalsSimple = function(atlas) {
-      this.atlasImage = new Image();
-      this.ready = false;
-      this.atlasImage.onload = (function(_this) {
-        return function(e) {
-          gl.bindTexture(gl.TEXTURE_2D, _this.texture);
-          gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-          gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, _this.atlasImage);
-          gl.generateMipmap(gl.TEXTURE_2D);
-          _this.spriteMap = atlas.mappings;
-          _this.ready = true;
-          return onecup.refresh();
-        };
-      })(this);
-      this.atlasImage.onerror = (function(_this) {
-        return function() {
-          console.log("Could not load atlas image", src);
-          return _this.error = true;
-        };
-      })(this);
-      return this.atlasImage.src = atlas.src;
-    };
-
-    Atlas.prototype.beginSprites = function(pos, zoom, viewPort) {
-      if (pos == null) {
-        pos = [0, 0];
-      }
-      if (zoom == null) {
-        zoom = 1;
-      }
-      if (!viewPort) {
-        this.viewPort[0] = pos[0];
-        this.viewPort[1] = pos[1];
-        this.viewPort[2] = gl.viewportWidth;
-        this.viewPort[3] = gl.viewportHeight;
-      } else {
-        this.viewPort[0] = viewPort[0];
-        this.viewPort[1] = viewPort[1];
-        this.viewPort[2] = viewPort[2];
-        this.viewPort[3] = viewPort[3];
-      }
-      this.viewPort[2] *= zoom / dpr;
-      return this.viewPort[3] *= zoom / dpr;
-    };
-
-    Atlas.prototype.drawSpirte = function(src, pos, size, rot, color, z) {
-      var cos, h, i, j, m, mapping, n, sin, sx, sy, w, x, y, zf;
-      if (color == null) {
-        color = [255, 255, 255, 255];
-      }
-      if (z == null) {
-        z = 0;
-      }
-      if (!this.ready) {
-        return;
-      }
-      if (this.curSprite >= this.maxSpires) {
-        return;
-      }
-      mapping = this.spriteMap[src];
-      if (!mapping) {
-        console.error("not in mapping", src);
-        return;
-      }
-      i = this.curSprite;
-      m = this.drawMargin / this.originalTextureSize;
-      this.uvs[i * 8 + 0] = mapping.uv[0] - m;
-      this.uvs[i * 8 + 1] = mapping.uv[1] + m;
-      this.uvs[i * 8 + 2] = mapping.uv[2] + m;
-      this.uvs[i * 8 + 3] = mapping.uv[1] + m;
-      this.uvs[i * 8 + 4] = mapping.uv[2] + m;
-      this.uvs[i * 8 + 5] = mapping.uv[3] - m;
-      this.uvs[i * 8 + 6] = mapping.uv[0] - m;
-      this.uvs[i * 8 + 7] = mapping.uv[3] - m;
-      this.colors[i * 16 + 0] = color[0];
-      this.colors[i * 16 + 1] = color[1];
-      this.colors[i * 16 + 2] = color[2];
-      this.colors[i * 16 + 3] = color[3];
-      this.colors[i * 16 + 4] = color[0];
-      this.colors[i * 16 + 5] = color[1];
-      this.colors[i * 16 + 6] = color[2];
-      this.colors[i * 16 + 7] = color[3];
-      this.colors[i * 16 + 8] = color[0];
-      this.colors[i * 16 + 9] = color[1];
-      this.colors[i * 16 + 10] = color[2];
-      this.colors[i * 16 + 11] = color[3];
-      this.colors[i * 16 + 12] = color[0];
-      this.colors[i * 16 + 13] = color[1];
-      this.colors[i * 16 + 14] = color[2];
-      this.colors[i * 16 + 15] = color[3];
-      w = (mapping.uv[2] - mapping.uv[0]) * this.originalTextureSize;
-      h = (mapping.uv[1] - mapping.uv[3]) * this.originalTextureSize;
-      sx = (w + this.drawMargin * 2) * size[0] / 2;
-      sy = (h + this.drawMargin * 2) * size[1] / 2;
-      cos = Math.cos(rot);
-      sin = Math.sin(rot);
-      this.verts[i * 8 + 0] = pos[0] + (-sx * cos + sy * sin);
-      this.verts[i * 8 + 1] = pos[1] + (-sx * sin - sy * cos);
-      this.verts[i * 8 + 2] = pos[0] + (+sx * cos + sy * sin);
-      this.verts[i * 8 + 3] = pos[1] + (+sx * sin - sy * cos);
-      this.verts[i * 8 + 4] = pos[0] + (+sx * cos - sy * sin);
-      this.verts[i * 8 + 5] = pos[1] + (+sx * sin + sy * cos);
-      this.verts[i * 8 + 6] = pos[0] + (-sx * cos - sy * sin);
-      this.verts[i * 8 + 7] = pos[1] + (-sx * sin + sy * cos);
-      for (n = j = 0; j < 4; n = ++j) {
-        zf = Math.pow(1.001, -z);
-        x = this.verts[i * 8 + n * 2 + 0];
-        this.verts[i * 8 + n * 2 + 0] = (x + this.viewPort[0]) / this.viewPort[2] / zf;
-        y = this.verts[i * 8 + n * 2 + 1];
-        this.verts[i * 8 + n * 2 + 1] = (y + this.viewPort[1]) / this.viewPort[3] / zf;
-      }
-      return this.curSprite += 1;
-    };
-
-    Atlas.prototype.finishSprites = function(blend) {
-      if (blend == null) {
-        blend = false;
-      }
-      if (blend) {
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-      } else {
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-      }
-      gl.useProgram(this.shader);
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.vertsBuf);
-      gl.bufferData(gl.ARRAY_BUFFER, this.verts, gl.DYNAMIC_DRAW);
-      gl.vertexAttribPointer(this.shader.vertAttr, 2, gl.FLOAT, false, 0, 0);
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.uvsBuf);
-      gl.bufferData(gl.ARRAY_BUFFER, this.uvs, gl.DYNAMIC_DRAW);
-      gl.vertexAttribPointer(this.shader.uvsAttr, 2, gl.FLOAT, false, 0, 0);
-      gl.bindBuffer(gl.ARRAY_BUFFER, this.colorsBuf);
-      gl.bufferData(gl.ARRAY_BUFFER, this.colors, gl.DYNAMIC_DRAW);
-      gl.vertexAttribPointer(this.shader.colorsAttr, 4, gl.UNSIGNED_BYTE, true, 0, 0);
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, this.texture);
-      gl.uniform1i(this.shader.samplerUniform, 0);
-      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexsBuf);
-      gl.drawElements(gl.TRIANGLES, this.curSprite * 6, gl.UNSIGNED_SHORT, 0);
-      return this.curSprite = 0;
-    };
-
-    return Atlas;
-
-  })();
-
-  window.initGL = function() {
-    var contextError;
-    canvas = document.getElementById("webGL");
-    contextError = function(e) {
-      ui.error = "webGL";
-      track("webgl_context_error", {
-        message: e.statusMessage
-      });
-      return ui.contextErrrorMessage = e.statusMessage;
-    };
-    canvas.addEventListener("webglcontextcreationerror", contextError, false);
-    canvas.addEventListener("webglcontextlost", contextError, false);
-    window.gl = gl = canvas.getContext("webgl", {
-      failIfMajorPerformanceCaveat: true
-    });
-    if (!gl) {
-      console.log("failed to init GL");
-      return false;
-    }
-    resizeViewport();
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
-    gl.enable(gl.BLEND);
-    return true;
-  };
-
-  window.onresize = function() {
-    resizeViewport();
-    return onecup.refresh();
-  };
-
-  resizeViewport = function() {
-    if (!canvas) {
-      return;
-    }
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    canvas.style.width = window.innerWidth + "px";
-    canvas.style.height = window.innerHeight + "px";
-    if (gl != null) {
-      gl.viewportWidth = canvas.width;
-      return gl.viewportHeight = canvas.height;
-    }
-  };
-
-  window.togglePointerLock = function() {
-    canvas = document.getElementById("webGL");
-    canvas.requestPointerLock = canvas.requestPointerLock || canvas.mozRequestPointerLock || canvas.webkitRequestPointerLock;
-    return canvas.requestPointerLock();
-  };
-
-  window.isFullScreen = function() {
-    return document.fullscreenElement || document.mozFullScreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
-  };
-
-  window.toggleFullScreen = function() {
-    console.log("toggle full screen");
-    if (!document.fullscreenElement && !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-      enterFullScreen();
-    } else {
-      exitFullScreen();
-    }
-  };
-
-  window.enterFullScreen = function() {
-    if (document.documentElement.requestFullscreen) {
-      return document.documentElement.requestFullscreen();
-    } else if (document.documentElement.msRequestFullscreen) {
-      return document.documentElement.msRequestFullscreen();
-    } else if (document.documentElement.mozRequestFullScreen) {
-      return document.documentElement.mozRequestFullScreen();
-    } else if (document.documentElement.webkitRequestFullscreen) {
-      return document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-    }
-  };
-
-  window.exitFullScreen = function() {
-    if (document.exitFullscreen) {
-      return document.exitFullscreen();
-    } else if (document.msExitFullscreen) {
-      return document.msExitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      return document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      return document.webkitExitFullscreen();
-    }
   };
 
 }).call(this);
@@ -3720,9 +3173,9 @@ zjson - binary json sirelizer with some strange features
 
   DEBUG = 1;
 
-  window.VERSION = 48;
+  window.VERSION = 49;
 
-  window.MINOR_VERSION = 3;
+  window.MINOR_VERSION = 1;
 
   _pos = v2.create();
 
@@ -3937,14 +3390,6 @@ zjson - binary json sirelizer with some strange features
       if (this.serverType !== config.type) {
         this.serverType = config.type;
         this.say(p.name + " changed server type to " + config.type);
-
-        /*
-        for player in @players
-            continue if player.host
-            player.side = "spectators"
-            if player.ai
-                player.connected = false
-         */
         return typeof serverTick === "function" ? serverTick() : void 0;
       }
     };
@@ -5347,7 +4792,7 @@ General Game Objects live here
         x = Math.sin(-th) * range;
         y = Math.cos(-th) * range;
         pos = [w.worldPos[0] + x, w.worldPos[1] + y];
-        baseAtlas.drawSpirte("img/arrow02.png", pos, [.25, .25], th + Math.PI, [255, 0, 0, 255]);
+        baseAtlas.drawSprite("img/arrow02.png", pos, [.25, .25], th + Math.PI, [255, 0, 0, 255]);
       }
       if (w.minRange > 0) {
         cur = Math.PI * w.minRange * 2;
@@ -5360,7 +4805,7 @@ General Game Objects live here
             x = Math.sin(-th) * w.minRange;
             y = Math.cos(-th) * w.minRange;
             pos = [w.worldPos[0] + x, w.worldPos[1] + y];
-            results1.push(baseAtlas.drawSpirte("img/arrow02.png", pos, [.25, .25], th, [255, 0, 0, 255]));
+            results1.push(baseAtlas.drawSprite("img/arrow02.png", pos, [.25, .25], th, [255, 0, 0, 255]));
           }
           return results1;
         })());
@@ -5495,9 +4940,10 @@ General Game Objects live here
           v2.add(unit.pos, spawn.pos);
           this.unitsBuilt += 1;
           if (this.rallyPoint[0] !== 0 && this.rallyPoint[1] !== 0) {
-            unit.aiOrder({
+            unit.setOrder({
               type: "Move",
-              dest: this.rallyPoint
+              dest: this.rallyPoint,
+              rally: true
             });
           }
           return unit;
@@ -5517,9 +4963,9 @@ General Game Objects live here
         }
       }
       if (battleMode.rallyPlacing) {
-        baseAtlas.drawSpirte("img/unitBar/rallyPoint.png", battleMode.mouse, [1, 1], 0);
+        baseAtlas.drawSprite("img/unitBar/rallyPoint.png", battleMode.mouse, [1, 1], 0);
       } else if (commander.rallyPoint && commander.rallyPoint[0] !== 0 && commander.rallyPoint[1] !== 0) {
-        baseAtlas.drawSpirte("img/unitBar/rallyPoint.png", commander.rallyPoint, [1, 1], 0);
+        baseAtlas.drawSprite("img/unitBar/rallyPoint.png", commander.rallyPoint, [1, 1], 0);
       }
       if (!this.selection) {
         return;
@@ -5575,7 +5021,7 @@ General Game Objects live here
                   }
                 }
                 if (drawIt) {
-                  results1.push(baseAtlas.drawSpirte("img/arrow02.png", _pos, [.5, .5], th + Math.PI, [255, 0, 0, 255]));
+                  results1.push(baseAtlas.drawSprite("img/arrow02.png", _pos, [.5, .5], th + Math.PI, [255, 0, 0, 255]));
                 } else {
                   results1.push(void 0);
                 }
@@ -5628,7 +5074,7 @@ General Game Objects live here
         } else {
           _color[3] = 0;
         }
-        results.push(baseAtlas.drawSpirte("img/fire02.png", p, [s, s], 0, _color));
+        results.push(baseAtlas.drawSprite("img/fire02.png", p, [s, s], 0, _color));
       }
       return results;
     };
@@ -5677,7 +5123,7 @@ General Game Objects live here
       if (this.dead) {
         return;
       }
-      return baseAtlas.drawSpirte(this.image, this.pos, this.size, this.rot, this.color);
+      return baseAtlas.drawSprite(this.image, this.pos, this.size, this.rot, this.color);
     };
 
     return Particle;
@@ -5709,7 +5155,7 @@ General Game Objects live here
       fade = this.life / this.maxLife;
       s = .1 + fade * fade * this.radius;
       this.color[3] = (1 - fade) * 255;
-      return baseAtlas.drawSpirte(this.image, this.pos, [s, s], this.rot, this.color);
+      return baseAtlas.drawSprite(this.image, this.pos, [s, s], this.rot, this.color);
     };
 
     return Explosion;
@@ -5947,7 +5393,7 @@ General Game Objects live here
       if (w) {
         w.rot = rot;
       }
-      return baseAtlas.drawSpirte(this.image, _offset, [this.size[0], d], rot, this.color);
+      return baseAtlas.drawSprite(this.image, _offset, [this.size[0], d], rot, this.color);
     };
 
     return LaserBullet;
@@ -5979,7 +5425,7 @@ General Game Objects live here
       fade = this.life / this.maxLife;
       s = this.radius / 2;
       this.color[3] = (1 - Math.pow(fade, 2)) * 80;
-      return baseAtlas.drawSpirte(this.image, this.pos, [s, s], this.rot, this.color);
+      return baseAtlas.drawSprite(this.image, this.pos, [s, s], this.rot, this.color);
     };
 
     return FlackExplosion;
@@ -6161,7 +5607,7 @@ General Game Objects live here
       }
       fade = this.life / this.maxLife;
       this.color[3] = Math.floor((1 - fade) * 255);
-      return baseAtlas.drawSpirte(this.image, this.pos, this.size, this.rot, this.color);
+      return baseAtlas.drawSprite(this.image, this.pos, this.size, this.rot, this.color);
     };
 
     return Debree;
@@ -6197,11 +5643,11 @@ General Game Objects live here
       fade = this.life / this.maxLife;
       s = .1 + fade * fade * this.radius;
       this.color[3] = (1 - fade) * 255;
-      baseAtlas.drawSpirte(this.image, this.pos, [s, s], this.rot, this.color);
+      baseAtlas.drawSprite(this.image, this.pos, [s, s], this.rot, this.color);
       if (this.frame < 4) {
         s = 1;
         this.color[3] = 255 / (1 + this.frame);
-        baseAtlas.drawSpirte(this.hitImage, this.pos, [s, s], this.rot, this.color);
+        baseAtlas.drawSprite(this.hitImage, this.pos, [s, s], this.rot, this.color);
       }
       return this.frame += 1;
     };
@@ -6231,7 +5677,7 @@ General Game Objects live here
       if (this.frame < 4) {
         s = 1;
         this.color[3] = 255 / (1 + this.frame);
-        baseAtlas.drawSpirte(this.hitImage, this.pos, [s, s], this.rot, this.color);
+        baseAtlas.drawSprite(this.hitImage, this.pos, [s, s], this.rot, this.color);
       }
       return this.frame += 1;
     };
@@ -6309,7 +5755,7 @@ General Game Objects live here
       fade = this.life / this.maxLife;
       s = Math.pow(this.radius, 1.3) / 100;
       this.color[3] = (1 - fade) * 255;
-      return baseAtlas.drawSpirte(this.image, this.pos, [s, s], this.rot, this.color);
+      return baseAtlas.drawSprite(this.image, this.pos, [s, s], this.rot, this.color);
     };
 
     return ShipExplosion;
@@ -6374,7 +5820,7 @@ General Game Objects live here
       fade = Math.min(1, this.life / this.maxLife);
       s = this.aoe / 512 * this.radius;
       this.color[3] = (1 - fade) * 50;
-      return baseAtlas.drawSpirte(this.image, this.pos, [s, s], this.rot, this.color);
+      return baseAtlas.drawSprite(this.image, this.pos, [s, s], this.rot, this.color);
     };
 
     return AoeExplosion;
@@ -6412,14 +5858,14 @@ General Game Objects live here
         frame = this.life % this.nFrames + 1;
         intFrame = Math.floor(frame);
         image = this.image.replace("#", intFrame);
-        return baseAtlas.drawSpirte(image, this.pos, [s, s], this.rot, this.color);
+        return baseAtlas.drawSprite(image, this.pos, [s, s], this.rot, this.color);
       } else {
         frame = (this.life / this.maxLife) * this.nFrames + 1;
         intFrame = Math.floor(frame);
         if (intFrame < this.nFrames) {
           tweenFrame = frame - intFrame;
           image = this.image.replace("#", intFrame);
-          return baseAtlas.drawSpirte(image, this.pos, [s, s], this.rot, this.color);
+          return baseAtlas.drawSprite(image, this.pos, [s, s], this.rot, this.color);
         }
       }
     };
@@ -6458,7 +5904,7 @@ General Game Objects live here
     Rock.prototype.move = function() {};
 
     Rock.prototype.draw = function() {
-      return baseAtlas.drawSpirte(this.image, this.pos, [this.size[0], -this.size[0]], this.rot, this.color, this.z);
+      return baseAtlas.drawSprite(this.image, this.pos, [this.size[0], -this.size[0]], this.rot, this.color, this.z);
     };
 
     return Rock;
@@ -6611,7 +6057,7 @@ General Game Objects live here
       var color, i, j, ref, results, th, x, y;
       if (sim.theme) {
         color = sideColor(this.side);
-        baseAtlas.drawSpirte(this.image, this.pos, this.size, this.rot, color);
+        baseAtlas.drawSprite(this.image, this.pos, this.size, this.rot, color);
         if (this.capping > 0) {
           color = anitSideColor(this.side);
           results = [];
@@ -6622,7 +6068,7 @@ General Game Objects live here
             th = (i / this.maxCapp) * 2 * Math.PI;
             x = this.pos[0] + Math.sin(th) * (this.radius + 50);
             y = this.pos[1] + Math.cos(th) * (this.radius + 50);
-            results.push(baseAtlas.drawSpirte(this.sliceImage, [x, y], [1, 1], Math.PI - th, color));
+            results.push(baseAtlas.drawSprite(this.sliceImage, [x, y], [1, 1], Math.PI - th, color));
           }
           return results;
         }
@@ -6680,7 +6126,7 @@ General Game Objects live here
         th = (i / max) * 2 * Math.PI;
         x = this.pos[0] + Math.sin(th) * (this.radius + 50);
         y = this.pos[1] + Math.cos(th) * (this.radius + 50);
-        results.push(baseAtlas.drawSpirte(this.sliceImage, [x, y], [1, 1], Math.PI / 2 - th, color));
+        results.push(baseAtlas.drawSprite(this.sliceImage, [x, y], [1, 1], Math.PI / 2 - th, color));
       }
       return results;
     };
@@ -7002,6 +6448,9 @@ General Game Objects live here
       ref = this.parts;
       for (j = 0, len = ref.length; j < len; j++) {
         part = ref[j];
+        if (!(!part.decal)) {
+          continue;
+        }
         v2.set(part.pos, v);
         v2.sub(v, this.center);
         radius = v2.mag(v);
@@ -7365,7 +6814,7 @@ General Game Objects live here
         if (s > 0) {
           color = [this.color[0], this.color[1], this.color[2], 255 * this.shield / this.maxShield * s];
           r = (this.radius + 40) / 255;
-          baseAtlas.drawSpirte("img/point02.png", this.pos, [r, r], 0, color);
+          baseAtlas.drawSprite("img/point02.png", this.pos, [r, r], 0, color);
         }
       }
       if (this.warpIn < 1) {
@@ -7379,21 +6828,21 @@ General Game Objects live here
           part.draw();
         } else if (value > -0.2) {
           a = -Math.sin(value / Math.PI * 50);
-          baseAtlas.drawSpirte("img/unitBar/fire02.png", part.worldPos, [1, 1], 0, [255, 255, 255, 255 * a]);
+          baseAtlas.drawSprite("img/unitBar/fire02.png", part.worldPos, [1, 1], 0, [255, 255, 255, 255 * a]);
           continue;
         }
       }
       if (this.energy / this.storeEnergy < .05) {
         t = Math.abs(Math.sin(Date.now() / 300));
-        baseAtlas.drawSpirte("img/unitBar/energy1.png", [this.pos[0], this.pos[1] + 100 + this.radius], [1, 1], 0, [255, 100, 100, t * 200]);
+        baseAtlas.drawSprite("img/unitBar/energy1.png", [this.pos[0], this.pos[1] + 100 + this.radius], [1, 1], 0, [255, 100, 100, t * 200]);
       }
       if (control.debug && (this._pos2 != null) && this._pos) {
         a = 16;
         _offset[0] = this._pos2[0] + (this._pos[0] - this._pos2[0]) * a;
         _offset[1] = this._pos2[1] + (this._pos[1] - this._pos2[1]) * a;
-        baseAtlas.drawSpirte("img/pip1.png", this._pos, [1, 1], 0, [0, 255, 0, 255]);
-        baseAtlas.drawSpirte("img/pip1.png", this.pos, [1, 1], 0);
-        return baseAtlas.drawSpirte("img/pip1.png", this._pos2, [1, 1], 0, [255, 0, 0, 255]);
+        baseAtlas.drawSprite("img/pip1.png", this._pos, [1, 1], 0, [0, 255, 0, 255]);
+        baseAtlas.drawSprite("img/pip1.png", this.pos, [1, 1], 0);
+        return baseAtlas.drawSprite("img/pip1.png", this._pos2, [1, 1], 0, [255, 0, 0, 255]);
       }
     };
 
@@ -7467,7 +6916,7 @@ General Game Objects live here
         }
         this.draw();
         if (((ref1 = this.aiRules) != null ? ref1.length : void 0) > 0) {
-          baseAtlas.drawSpirte("img/pip1.png", [-scale * 64, -scale * 64], [scale, scale], 0, [0, 0, 0, 255]);
+          baseAtlas.drawSprite("img/pip1.png", [-scale * 64, -scale * 64], [scale, scale], 0, [0, 0, 0, 255]);
         }
         baseAtlas.finishSprites(false);
         image_data_url = baseAtlas.endOffscreenFrame();
@@ -7482,7 +6931,7 @@ General Game Objects live here
       this.drawHPBar();
       this.drawEnergyBar();
       if (this.holdPosition) {
-        baseAtlas.drawSpirte("img/unitBar/circle.png", this.pos, [1, 1], 0, [255, 255, 255, 100]);
+        baseAtlas.drawSprite("img/unitBar/circle.png", this.pos, [1, 1], 0, [255, 255, 255, 100]);
       }
       while (this.preOrders.length > 0 && this.preOrders[0].id < this.onOrderId) {
         this.preOrders.shift();
@@ -7508,15 +6957,15 @@ General Game Objects live here
             }
             angle = v2.angle(v2.sub(order.dest, prev, v2.create()));
             if (orders.length - 1 === i) {
-              baseAtlas.drawSpirte("img/arrow01.png", order.dest, [.9, .9], angle, [255, 255, 255, alpha]);
+              baseAtlas.drawSprite("img/arrow01.png", order.dest, [.9, .9], angle, [255, 255, 255, alpha]);
             } else {
-              baseAtlas.drawSpirte("img/arrow01.png", order.dest, [.8, .8], angle, [255, 255, 255, alpha]);
+              baseAtlas.drawSprite("img/arrow01.png", order.dest, [.8, .8], angle, [255, 255, 255, alpha]);
             }
             results.push(prev = order.dest);
           } else if (order.type === "Follow") {
             target = intp.things[order.targetId];
             if (target != null) {
-              results.push(baseAtlas.drawSpirte("img/unitBar/target.png", target.pos, [1, 1], 0, [255, 0, 0, 100]));
+              results.push(baseAtlas.drawSprite("img/unitBar/target.png", target.pos, [1, 1], 0, [255, 0, 0, 100]));
             } else {
               results.push(void 0);
             }
@@ -7550,7 +6999,7 @@ General Game Objects live here
           color = [20, 20, 20, 50];
         }
         v2.add(this.pos, _pipPos, _pipPos);
-        results.push(baseAtlas.drawSpirte("img/unitBar/energyPip.png", _pipPos, [pipScale, pipScale], 0, color));
+        results.push(baseAtlas.drawSprite("img/unitBar/energyPip.png", _pipPos, [pipScale, pipScale], 0, color));
       }
       return results;
     };
@@ -7591,9 +7040,9 @@ General Game Objects live here
           }
         }
         v2.add(this.pos, _pipPos, _pipPos);
-        baseAtlas.drawSpirte("img/pip1.png", _pipPos, [pipScale, pipScale], 0, color);
+        baseAtlas.drawSprite("img/pip1.png", _pipPos, [pipScale, pipScale], 0, color);
         if (this.burn * 1 / healthScale > i) {
-          results.push(baseAtlas.drawSpirte("img/unitBar/flame.png", _pipPos, [pipScale * .25, pipScale * .25], Math.PI, burnColor));
+          results.push(baseAtlas.drawSprite("img/unitBar/flame.png", _pipPos, [pipScale * .25, pipScale * .25], Math.PI, burnColor));
         } else {
           results.push(void 0);
         }
@@ -7614,7 +7063,7 @@ General Game Objects live here
 
     Unit.prototype.aiOrder = function(order) {
       order.ai = true;
-      if (this.orders.length > 0 && this.orders[0].ai) {
+      if (this.orders.length > 0 && (this.orders[0].ai || this.orders[0].rally)) {
         return this.orders[0] = order;
       } else {
         return this.orders.unshift(order);
@@ -7894,14 +7343,14 @@ General Game Objects live here
         alpha = 170;
       }
       if (this.stripe) {
-        baseAtlas.drawSpirte("parts/gray-" + this.image, this.worldPos, [flip, -1], rot, [255, 255, 255, alpha]);
+        baseAtlas.drawSprite("parts/gray-" + this.image, this.worldPos, [flip, -1], rot, [255, 255, 255, alpha]);
         c = this.unit.color;
-        return baseAtlas.drawSpirte("parts/red-" + this.image, this.worldPos, [flip, -1], rot, [c[0], c[1], c[2], alpha]);
+        return baseAtlas.drawSprite("parts/red-" + this.image, this.worldPos, [flip, -1], rot, [c[0], c[1], c[2], alpha]);
       } else if (this.decal) {
         c = this.unit.color;
-        return baseAtlas.drawSpirte("parts/" + this.image, this.worldPos, [flip / this.scale, -1 / this.scale], rot, [c[0], c[1], c[2], alpha * this.opacity]);
+        return baseAtlas.drawSprite("parts/" + this.image, this.worldPos, [flip / this.scale, -1 / this.scale], rot, [c[0], c[1], c[2], alpha * this.opacity]);
       } else {
-        return baseAtlas.drawSpirte("parts/" + this.image, this.worldPos, [flip, -1], rot, [255, 255, 255, alpha]);
+        return baseAtlas.drawSprite("parts/" + this.image, this.worldPos, [flip, -1], rot, [255, 255, 255, alpha]);
       }
     };
 
@@ -8304,18 +7753,6 @@ General Game Objects live here
       return null;
     }
     return JSON.stringify(spec);
-
-    /*
-    try
-        bin = new Uint8Array(3*spec.length)
-        for p, i in spec
-            bin[i*3+0] = p.pos[0]/10 + 20
-            bin[i*3+1] = p.pos[1]/10 + 20
-            bin[i*3+2] = parts[p.type]::id
-        return encodeURIComponent(btoa(String.fromCharCode.apply(null, bin)))
-    catch
-        return ""
-     */
   };
 
   legacyParts = [null, "Mount360", "Mount180", "Mount270", "Mount90", "Mount30", "HArmor2x2", "HArmor1x2", "HArmor1x1", "HArmor2x1", "HArmor1x1Angle", "UArmor1x1", "UArmor1x2", "UArmor2x1", "UArmor1x1Angle", "Reactor2x2", "Reactor1x2", "Reactor1x1", "Reactor2x1", "EnergyTransfer", "ShieldGen2x2", "ShieldGen2x1", "Battery1x2", "Battery1x1", "Battery2x1", "Battery2x2", "Engine01", "Engine02", "Engine03", "Engine04", "Engine05", "Engine06", "Engine07", "HArmor2x2Front1", "HArmor2x2Front2", "HArmor1x2Font1", "HArmor1x2Front2", "HArmor2x2Back1", "HArmor2x2Back2", "HArmor1x2Back1", "HArmor1x2Back2", "Wing1x2", "Wing2x2", "Wing2x1", "Wing1x1Notch", "Wing1x1Angle", "Wing1x1Round", "PDTurret", "HeavyPDTurret", "RingTurret", "TorpTurret", "MissileTurret", "ArtilleryTurret", "PlasmaTurret", "LightBeamTurret", "HeavyBeamTurret", "FlackTurret", "SniperGun", "EMPGun", "AOEWarhead", "TargetingMod", "DamageMod", "ReloaderMod", "BulletSpeedMod", "Ai1", "OverKillAi", "Ai3", "Ai4", "ShapedWarhead", "BombGun", "HArmor1x1AngleBack", "UArmor1x1AngleBack", "HArmor2x2Angle", "HArmor2x2AngleBack", "VArmor1x2SideBar", "VArmor1x2SideBarFilled", "VArmor1x2IBeam", "VArmor1x2Corner4", "VArmor1x2End", "VArmor1x1Corner1", "VArmor1x1Corner2", "VArmor1x1Corner3", "VArmor1x1Hook", "VArmor1x1CornerBack", "Mount360Micro", "AutoTurret", "TeslaTurret", "WavePullTurret", "ShieldGen1x1", "WavePushTurret", "CloakGenerator", "SymbolDecal1", "SymbolDecal2", "SymbolDecal3", "SymbolDecal4", "SymbolDecal5", "SymbolDecal6", "SymbolDecal7", "SymbolDecal8", "SymbolDecal9", "SymbolDecal10", "SymbolDecal11", "SymbolDecal12", "SymbolDecal13", "SymbolDecal14", "SymbolDecal15", "SymbolDecal16", "SymbolDecal17", "SymbolDecal18", "SymbolDecal19", "SymbolDecal20", "SymbolDecal21", "SymbolDecal22", "SymbolDecal23", "SymbolDecal24", null, null, null, null, null, "UArmor2x2", "UArmor1x2Notch1", "UArmor1x2Notch2", "UArmor1x1Notch1", "UArmor1x1Notch2", "UArmor1x1Spike", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "VArmor2x2", "VArmor1x2", "VArmor1x1", "VArmor1x1Angle", "VArmor2x2Angle", "VArmor2x2Curve", "VArmor1x1Curve", null, null, null, "HAarmor1x2Curved", "HArmor2x2Curved", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, "Stripe1x1", "Stripe1x1Corner", "Stripe1x2", "Stripe2x1", "Stripe2x2", "Stripe2x2Corner", "Stripe2x2Round", "StripeDouble2x1", "StripeDouble2x2", null, null, null, null, null, null, null, null, null, null, null, "LetterA", "LetterB", "LetterC", "LetterD", "LetterE", "LetterF", "LetterG", "LetterH", "LetterI", "LetterJ", "LetterK", "LetterL", "LetterM", "LetterN", "LetterO", "LetterP", "LetterQ", "LetterR", "LetterS", "LetterT", "LetterU", "LetterV", "LetterW", "LetterX", "LetterY", "LetterZ", "LetterPound", "LetterDot", null, null, "Letter0", "Letter1", "Letter2", "Letter3", "Letter4", "Letter5", "Letter6", "Letter7", "Letter8", "Letter9", "DroneBody", "Mount10Range", "FlameTurret", "StasisField", "Faction2", "Faction3", "Faction4", "Faction5", "Faction6", "Faction7", "Faction1", null, null, null, null];
@@ -8557,9 +7994,9 @@ General Game Objects live here
 
     Mount360Micro.prototype.desc = "A cheaper lighter 360 mount that has only 66% of the range of mounted weapons.";
 
-    Mount360Micro.prototype.hp = 5;
+    Mount360Micro.prototype.hp = 20;
 
-    Mount360Micro.prototype.cost = 10;
+    Mount360Micro.prototype.cost = 15;
 
     Mount360Micro.prototype.image = "mount360short.png";
 
@@ -8633,7 +8070,7 @@ General Game Objects live here
 
     Mount10Demi.prototype.hp = 5;
 
-    Mount10Demi.prototype.cost = 8;
+    Mount10Demi.prototype.cost = 7;
 
     Mount10Demi.prototype.image = "mount10wide.png";
 
@@ -10633,7 +10070,7 @@ General Game Objects live here
       EnergyTransfer.__super__.draw.call(this);
       if (this.working) {
         r = (this.range + 40) / 255;
-        return baseAtlas.drawSpirte("img/point02.png", this.unit.pos, [r, r], 0, [255, 255, 255, 10]);
+        return baseAtlas.drawSprite("img/point02.png", this.unit.pos, [r, r], 0, [255, 255, 255, 10]);
       }
     };
 
@@ -10652,11 +10089,11 @@ General Game Objects live here
 
     StasisField.prototype.desc = "Slows and decloaks enemy ships.";
 
-    StasisField.prototype.hp = 1;
+    StasisField.prototype.hp = 10;
 
     StasisField.prototype.cost = 10;
 
-    StasisField.prototype.mass = 5;
+    StasisField.prototype.mass = 6;
 
     StasisField.prototype.image = "StasisField.png";
 
@@ -10709,7 +10146,7 @@ General Game Objects live here
         a = 25;
       }
       r = (this.range + 40) / 255;
-      return baseAtlas.drawSpirte("img/point02.png", [this.worldPos[0] + (Math.sin(this.unit.rot) * 100), this.worldPos[1] - (Math.cos(this.unit.rot) * 100)], [r, r], 0, [0, 0, 0, a]);
+      return baseAtlas.drawSprite("img/point02.png", [this.worldPos[0] + (Math.sin(this.unit.rot) * 100), this.worldPos[1] - (Math.cos(this.unit.rot) * 100)], [r, r], 0, [0, 0, 0, a]);
     };
 
     return StasisField;
@@ -10768,7 +10205,7 @@ General Game Objects live here
 
     ShieldGen2x2.prototype.mass = 25;
 
-    ShieldGen2x2.prototype.genShield = .75;
+    ShieldGen2x2.prototype.genShield = 1;
 
     ShieldGen2x2.prototype.useEnergy = 135;
 
@@ -10812,7 +10249,7 @@ General Game Objects live here
 
     ShieldGen2x1.prototype.mass = 2;
 
-    ShieldGen2x1.prototype.genShield = .15;
+    ShieldGen2x1.prototype.genShield = .2;
 
     ShieldGen2x1.prototype.useEnergy = 18;
 
@@ -10843,7 +10280,7 @@ General Game Objects live here
 
     ShieldGen1x1.prototype.cost = 15;
 
-    ShieldGen1x1.prototype.mass = 8;
+    ShieldGen1x1.prototype.mass = 10;
 
     ShieldGen1x1.prototype.genShield = 0.0625 * 1.5;
 
@@ -10872,7 +10309,7 @@ General Game Objects live here
 
     CloakGenerator.prototype.desc = "Cloaks 66T/second while stationary. Keeps 165T cloaked while moving.";
 
-    CloakGenerator.prototype.cost = 20;
+    CloakGenerator.prototype.cost = 25;
 
     CloakGenerator.prototype.mass = 10;
 
@@ -10888,7 +10325,7 @@ General Game Objects live here
 
     CloakGenerator.prototype.genCloak = 33 / 16;
 
-    CloakGenerator.prototype.useEnergy = 440 / 16;
+    CloakGenerator.prototype.useEnergy = 400 / 16;
 
     CloakGenerator.prototype.tick = function() {
       if (this.unit.energy > this.useEnergy && this.unit.cloak < this.unit.mass) {
@@ -11360,7 +10797,7 @@ General Game Objects live here
 
     Engine03.prototype.mass = 15;
 
-    Engine03.prototype.thrust = 130;
+    Engine03.prototype.thrust = 135;
 
     Engine03.prototype.turnSpeed = 1;
 
@@ -11453,9 +10890,9 @@ General Game Objects live here
 
     JumpEngine.prototype.trailTime = 0;
 
-    JumpEngine.prototype.hp = 10;
+    JumpEngine.prototype.hp = 25;
 
-    JumpEngine.prototype.cost = 15;
+    JumpEngine.prototype.cost = 20;
 
     JumpEngine.prototype.mass = 6;
 
@@ -11466,8 +10903,6 @@ General Game Objects live here
     JumpEngine.prototype.turnSpeed = 0;
 
     JumpEngine.prototype.useEnergy = 1;
-
-    JumpEngine.prototype.rechargeRate = 160;
 
     JumpEngine.prototype.exhaust = false;
 
@@ -11484,14 +10919,14 @@ General Game Objects live here
     JumpEngine.prototype.tab = "engines";
 
     JumpEngine.prototype.tick = function() {
-      this.unit.jump += this.rechargeRate / this.unit.mass;
+      this.unit.jump += 160 / this.unit.mass;
       return this.working = this.unit.jump > this.unit.jumpDistance && this.unit.energy > this.unit.jumpCount * 250;
     };
 
     JumpEngine.prototype.draw = function() {
       JumpEngine.__super__.draw.call(this);
       if (this.working) {
-        return baseAtlas.drawSpirte("parts/engineJumpPip.png", this.worldPos, [1, 1], this.unit.rot);
+        return baseAtlas.drawSprite("parts/engineJumpPip.png", this.worldPos, [1, 1], this.unit.rot);
       }
     };
 
@@ -11700,13 +11135,13 @@ General Game Objects live here
 
     PDTurret.prototype.range = 400;
 
-    PDTurret.prototype.reloadTime = 32;
+    PDTurret.prototype.reloadTime = 40;
 
     PDTurret.prototype.trackSpeed = 25;
 
     PDTurret.prototype.bulletCls = types.PDLaserBullet;
 
-    PDTurret.prototype.shotEnergy = 200 * 5;
+    PDTurret.prototype.shotEnergy = 1100;
 
     PDTurret.prototype.instant = true;
 
@@ -11714,7 +11149,7 @@ General Game Objects live here
 
     PDTurret.prototype.bulletSpeed = 2000;
 
-    PDTurret.prototype.damage = 16;
+    PDTurret.prototype.damage = 20;
 
     PDTurret.prototype.maxLife = .5;
 
@@ -11739,7 +11174,7 @@ General Game Objects live here
 
     HeavyPDBullet.prototype.color = [179, 207, 255, 255];
 
-    HeavyPDBullet.prototype.radius = 5;
+    HeavyPDBullet.prototype.radius = 12;
 
     HeavyPDBullet.prototype.hitsMultiple = true;
 
@@ -11854,7 +11289,7 @@ General Game Objects live here
         this.spin += .0001 * this.damage;
         this.image = "turRingReload.png";
       }
-      return baseAtlas.drawSpirte("parts/" + this.image, this.worldPos, [1, 1], this.spin);
+      return baseAtlas.drawSprite("parts/" + this.image, this.worldPos, [1, 1], this.spin);
     };
 
     return RingTurret;
@@ -11989,7 +11424,7 @@ General Game Objects live here
 
     TorpTurret.prototype.size = [2, 2];
 
-    TorpTurret.prototype.reloadTime = 16 * 3;
+    TorpTurret.prototype.reloadTime = 52;
 
     TorpTurret.prototype.trackSpeed = 45;
 
@@ -11997,13 +11432,13 @@ General Game Objects live here
 
     TorpTurret.prototype.range = 1100;
 
-    TorpTurret.prototype.shotEnergy = 1200;
+    TorpTurret.prototype.shotEnergy = 1300;
 
     TorpTurret.prototype.mass = 10;
 
     TorpTurret.prototype.bulletSpeed = 16;
 
-    TorpTurret.prototype.damage = 22;
+    TorpTurret.prototype.damage = 24;
 
     return TorpTurret;
 
@@ -12053,7 +11488,7 @@ General Game Objects live here
 
     MissileTurret.prototype.size = [2, 2];
 
-    MissileTurret.prototype.reloadTime = 30;
+    MissileTurret.prototype.reloadTime = 33;
 
     MissileTurret.prototype.trackSpeed = 45;
 
@@ -12067,7 +11502,7 @@ General Game Objects live here
 
     MissileTurret.prototype.bulletSpeed = 22;
 
-    MissileTurret.prototype.damage = 25;
+    MissileTurret.prototype.damage = 27;
 
     MissileTurret.prototype.radius = 40;
 
@@ -12099,7 +11534,7 @@ General Game Objects live here
       fade = this.life / this.maxLife;
       s = this.radius / 2;
       color = [255, 255, 255, (1 - Math.pow(fade, 2)) * 180];
-      return baseAtlas.drawSpirte("img/fire02.png", this.pos, [s, s], this.rot, color);
+      return baseAtlas.drawSprite("img/fire02.png", this.pos, [s, s], this.rot, color);
     };
 
     return ArtilleryExplosion;
@@ -12132,8 +11567,8 @@ General Game Objects live here
         dist = Math.min(v2.distance(this.pos, this.hitPos), 1000);
         size = Math.pow(1000 - dist, 2) / (1000 * 1000) * (this.aoe / 120);
         color = [255, 0, 0, 100];
-        baseAtlas.drawSpirte("img/point02.png", this.hitPos, [this.aoe / 240, this.aoe / 240], 0, color);
-        baseAtlas.drawSpirte("img/fire02.png", this.hitPos, [size * 2, size * 2], 0, color);
+        baseAtlas.drawSprite("img/point02.png", this.hitPos, [this.aoe / 240, this.aoe / 240], 0, color);
+        baseAtlas.drawSprite("img/fire02.png", this.hitPos, [size * 2, size * 2], 0, color);
       }
     };
 
@@ -12152,7 +11587,7 @@ General Game Objects live here
 
     ArtilleryTurret.prototype.desc = "Launches a slow moving shell that explodes at the targeted area.";
 
-    ArtilleryTurret.prototype.onlyInRange = true;
+    ArtilleryTurret.prototype.onlyInRange = false;
 
     ArtilleryTurret.prototype.hp = 10;
 
@@ -12162,7 +11597,7 @@ General Game Objects live here
 
     ArtilleryTurret.prototype.size = [2, 2];
 
-    ArtilleryTurret.prototype.reloadTime = 48;
+    ArtilleryTurret.prototype.reloadTime = 96;
 
     ArtilleryTurret.prototype.trackSpeed = 25;
 
@@ -12174,15 +11609,15 @@ General Game Objects live here
 
     ArtilleryTurret.prototype.minRange = 500;
 
-    ArtilleryTurret.prototype.shotEnergy = 2000;
+    ArtilleryTurret.prototype.shotEnergy = 5000;
 
-    ArtilleryTurret.prototype.mass = 100;
+    ArtilleryTurret.prototype.mass = 70;
 
-    ArtilleryTurret.prototype.bulletSpeed = 12;
+    ArtilleryTurret.prototype.bulletSpeed = 6.5;
 
-    ArtilleryTurret.prototype.damage = 60;
+    ArtilleryTurret.prototype.damage = 120;
 
-    ArtilleryTurret.prototype.aoe = 75;
+    ArtilleryTurret.prototype.aoe = 220;
 
     return ArtilleryTurret;
 
@@ -12300,15 +11735,15 @@ General Game Objects live here
 
     SidewinderTurret.prototype.bulletCls = types.SidewinderBullet;
 
-    SidewinderTurret.prototype.range = 700;
+    SidewinderTurret.prototype.range = 740;
 
-    SidewinderTurret.prototype.shotEnergy = 1500;
+    SidewinderTurret.prototype.shotEnergy = 2000;
 
     SidewinderTurret.prototype.mass = 10;
 
     SidewinderTurret.prototype.bulletSpeed = 16;
 
-    SidewinderTurret.prototype.damage = 34;
+    SidewinderTurret.prototype.damage = 35;
 
     SidewinderTurret.prototype.radius = 40;
 
@@ -12405,7 +11840,7 @@ General Game Objects live here
 
     PlasmaTurret.prototype.size = [2, 2];
 
-    PlasmaTurret.prototype.reloadTime = 48;
+    PlasmaTurret.prototype.reloadTime = 52;
 
     PlasmaTurret.prototype.trackSpeed = 25;
 
@@ -12603,7 +12038,7 @@ General Game Objects live here
 
     HeavyBeamTurret.prototype.bulletSpeed = 2000;
 
-    HeavyBeamTurret.prototype.damage = 35;
+    HeavyBeamTurret.prototype.damage = 37;
 
     HeavyBeamTurret.prototype.maxLife = .5;
 
@@ -12632,7 +12067,7 @@ General Game Objects live here
       fade = this.life / this.maxLife;
       s = this.aoe / 80;
       color = [255, 255, 255, (1 - Math.pow(fade, 2)) * 180];
-      return baseAtlas.drawSpirte("parts/fireFlackExp1.png", this.pos, [s, s], this.rot, color);
+      return baseAtlas.drawSprite("parts/fireFlackExp1.png", this.pos, [s, s], this.rot, color);
     };
 
     return FlackExplosion;
@@ -12723,7 +12158,7 @@ General Game Objects live here
       if (this.dead) {
         return;
       }
-      return baseAtlas.drawSpirte(this.image, this.pos, this.size, this.rot + intp.t, this.color);
+      return baseAtlas.drawSprite(this.image, this.pos, this.size, this.rot + intp.t, this.color);
     };
 
     SniperLaser.prototype.hitUnit = function(unit) {
@@ -12813,7 +12248,7 @@ General Game Objects live here
       if (this.dead) {
         return;
       }
-      return baseAtlas.drawSpirte(this.image, this.pos, this.size, this.rot + intp.t, this.color);
+      return baseAtlas.drawSprite(this.image, this.pos, this.size, this.rot + intp.t, this.color);
     };
 
     return EMPOrb;
@@ -12847,7 +12282,7 @@ General Game Objects live here
 
     EMPGun.prototype.shotEnergy = 3600;
 
-    EMPGun.prototype.range = 610;
+    EMPGun.prototype.range = 620;
 
     EMPGun.prototype.mass = 2;
 
@@ -12917,7 +12352,7 @@ General Game Objects live here
       } else {
         image = this.image;
       }
-      return baseAtlas.drawSpirte(image, this.pos, this.size, this.rot + intp.t, this.color);
+      return baseAtlas.drawSprite(image, this.pos, this.size, this.rot + intp.t, this.color);
     };
 
     EMPOrb2.prototype.postFire = function() {
@@ -12985,7 +12420,7 @@ General Game Objects live here
 
     EMPGun2.prototype.size = [2, 2];
 
-    EMPGun2.prototype.reloadTime = 61;
+    EMPGun2.prototype.reloadTime = 64;
 
     EMPGun2.prototype.trackSpeed = 25;
 
@@ -12993,11 +12428,11 @@ General Game Objects live here
 
     EMPGun2.prototype.shotEnergy = 2000;
 
-    EMPGun2.prototype.range = 1300;
+    EMPGun2.prototype.range = 1400;
 
-    EMPGun2.prototype.minRange = 400;
+    EMPGun2.prototype.minRange = 450;
 
-    EMPGun2.prototype.mass = 15;
+    EMPGun2.prototype.mass = 20;
 
     EMPGun2.prototype.bulletSpeed = 39;
 
@@ -13102,21 +12537,6 @@ General Game Objects live here
       if (this.life > this.maxLife) {
         this.dead = true;
         if (this.explode) {
-
-          /*
-          for id, thing of sim.things
-              if thing.unit and thing.radius and thing.side != @side
-                  distance = v2.distance(@pos, thing.pos)
-                  if distance < thing.radius + @aoe
-                      if distance <= thing.radius
-                           * direct hit apply full damage
-                          #sim.say("PhaseBomb #{(1).toFixed(3)}")
-                          thing.applyDamage(@damage)
-                      else
-                          fallOff = 1 - (distance - thing.radius) / @aoe
-                          #sim.say("PhaseBomb #{fallOff.toFixed(3)}")
-                          thing.applyDamage(@damage*fallOff)
-           */
           exp = new types.BombExplosion();
           exp.z = 1000;
           exp.pos = [this.pos[0], this.pos[1]];
@@ -13144,8 +12564,8 @@ General Game Objects live here
         dist = Math.min(v2.distance(this.pos, this.hitPos), maxDist);
         size = Math.pow(maxDist - dist, 2) / (maxDist * maxDist) * (this.aoe / 120);
         color = [255, 0, 0, 100];
-        baseAtlas.drawSpirte("img/point02.png", this.hitPos, [this.aoe / 240, this.aoe / 240], 0, color);
-        baseAtlas.drawSpirte("img/fire02.png", this.hitPos, [size * 2, size * 2], 0, color);
+        baseAtlas.drawSprite("img/point02.png", this.hitPos, [this.aoe / 240, this.aoe / 240], 0, color);
+        baseAtlas.drawSprite("img/fire02.png", this.hitPos, [size * 2, size * 2], 0, color);
       }
     };
 
@@ -13186,7 +12606,7 @@ General Game Objects live here
 
     BombGun.prototype.bulletSpeed = 16;
 
-    BombGun.prototype.damage = 150;
+    BombGun.prototype.damage = 160;
 
     BombGun.prototype.onlyInRange = true;
 
@@ -13531,7 +12951,7 @@ General Game Objects live here
 
     TeslaTurret.prototype.mass = 40;
 
-    TeslaTurret.prototype.damage = 12;
+    TeslaTurret.prototype.damage = 13;
 
     TeslaTurret.prototype.instant = true;
 
@@ -13926,7 +13346,7 @@ General Game Objects live here
 
     FlameTurret.prototype.range = 350;
 
-    FlameTurret.prototype.shotEnergy = 200;
+    FlameTurret.prototype.shotEnergy = 400;
 
     FlameTurret.prototype.mass = 15;
 
@@ -13936,7 +13356,7 @@ General Game Objects live here
 
     FlameTurret.prototype.dealsBurnDamage = true;
 
-    FlameTurret.prototype.burnAmount = 10;
+    FlameTurret.prototype.burnAmount = 12;
 
     FlameTurret.prototype.disable = false;
 
@@ -14026,7 +13446,7 @@ General Game Objects live here
 
     EMPWarhead.prototype.hp = 0;
 
-    EMPWarhead.prototype.cost = 5;
+    EMPWarhead.prototype.cost = 10;
 
     EMPWarhead.prototype.mass = 5;
 
@@ -14036,11 +13456,11 @@ General Game Objects live here
 
     EMPWarhead.prototype.size = [2, 2];
 
-    EMPWarhead.prototype.aoe = 325;
+    EMPWarhead.prototype.aoe = 360;
 
     EMPWarhead.prototype.life = 16;
 
-    EMPWarhead.prototype.energyDamage = 5000;
+    EMPWarhead.prototype.energyDamage = 4000;
 
     EMPWarhead.prototype.tab = "defence";
 
@@ -14334,9 +13754,9 @@ General Game Objects live here
 
     TargetingMod.prototype.image = "TargetingMod.png";
 
-    TargetingMod.prototype.weaponRange = 20;
+    TargetingMod.prototype.weaponRange = 25;
 
-    TargetingMod.prototype.weaponReload = 25;
+    TargetingMod.prototype.weaponReload = 30;
 
     return TargetingMod;
 
@@ -14430,7 +13850,7 @@ General Game Objects live here
 
     DampenerMod.prototype.desc = "Decreases energy usage of adjacent weapons at the cost of bullet speed. -15% effect for each supported weapon.";
 
-    DampenerMod.prototype.cost = 10;
+    DampenerMod.prototype.cost = 5;
 
     DampenerMod.prototype.mass = 5;
 
@@ -14440,7 +13860,7 @@ General Game Objects live here
 
     DampenerMod.prototype.weaponSpeed = -8;
 
-    DampenerMod.prototype.weaponEnergy = -30;
+    DampenerMod.prototype.weaponEnergy = -25;
 
     return DampenerMod;
 
@@ -16450,44 +15870,6 @@ General Game Objects live here
     return false;
   };
 
-
-  /*
-  spreadCapList = []
-  spreadCapCP = (unit, rule) ->
-      spreadCapList.push(unit)
-      return true
-  
-  spreadCapPost = ->
-      if spreadCapList.length == 0
-          return
-      unit = spreadCapList[0]
-  
-      unitGoing = {}
-      tallyCps = []
-      for _, cp of sim.things
-          if cp.commandPoint and (cp.side != unit.side or cp.capping > 0)
-              guarded = 0
-              for u in spreadCapList
-                  if willBeAt(u, cp)
-                      unitGoing[u.id] = true
-                      guarded += 1
-              tallyCps.push
-                  cp: cp
-                  dist: v2.distance(cp.pos, unit.pos)
-                  guarded: guarded
-  
-      for u in spreadCapList
-          continue if unitGoing[u.id]
-          tallyCps.sort (a, b) ->
-              if a.guarded != b.guarded
-                  return a.guarded - b.guarded
-              else
-                  return v2.distance(a.cp.pos, u.pos) - v2.distance(b.cp.pos, u.pos)
-          closestUnguarded = tallyCps[0]
-          closestUnguarded.guarded += 1
-          goThere(unit, closestUnguarded.cp)
-   */
-
   spreadCapCP = function(unit, rule) {
     var closestUnguarded, cp, guarded, ref, ref1, tallyCps, u;
     if (unit.gardingCP && (unit.gardingCP.side !== unit.side || unit.gardingCP.capping > 0)) {
@@ -17849,7 +17231,7 @@ ais.all.Ficon = [{"parts":[{"pos":[-40,-30],"type":"Battery2x1","dir":0},{"pos":
 ais.all.Fighter = [{"parts":[],"name":"","aiRules":[]},"","","","","","",{"parts":[{"pos":[0,0],"type":"Mount90","dir":0},{"pos":[-10,-30],"type":"Battery1x1","dir":0},{"pos":[-30,-40],"type":"Engine04","dir":0},{"pos":[-30,-10],"type":"Wing1x1Round","dir":0},{"pos":[0,0],"type":"LightBeamTurret","dir":0}],"name":"","aiRules":[["Field # at start",4],["Try to field # every # seconds",3,30],["When #% of energy, @chargeTypes",10,"Rest"],["@attackTypes enemy within #m","Run-by",275],["Avoid everything"],["@capTypes Command Points within #m","Guard",10000]]},{"parts":[{"pos":[-10,30],"type":"Battery1x1","dir":0},{"pos":[-20,0],"type":"Mount90","dir":0},{"pos":[30,-30],"type":"Battery1x1","dir":0},{"pos":[-30,30],"type":"Wing1x1Round","dir":0},{"pos":[30,30],"type":"Wing1x1Round","dir":0},{"pos":[-30,-30],"type":"Battery1x1","dir":0},{"pos":[20,0],"type":"Mount90","dir":0},{"pos":[10,30],"type":"Battery1x1","dir":0},{"pos":[-50,-20],"type":"Engine04","dir":0},{"pos":[50,-20],"type":"Engine04","dir":0},{"pos":[0,-40],"type":"Mount90","dir":0},{"pos":[-20,0],"type":"LightBeamTurret","dir":0},{"pos":[20,0],"type":"LightBeamTurret","dir":0},{"pos":[0,-40],"type":"LightBeamTurret","dir":0}],"name":"","aiRules":[["Field # at start",3],["Try to field # every # seconds",3,30],["When #% of energy, @chargeTypes",10,"Rest"],["@attackTypes enemy within #m","Ram",1200],["@capTypes Command Points within #m","Spread to",10000]]},{"parts":[{"pos":[-50,-10],"type":"Wing1x1Round","dir":0},{"pos":[50,-10],"type":"Wing1x1Round","dir":0},{"pos":[-30,-20],"type":"Engine04","dir":0},{"pos":[30,-20],"type":"Engine04","dir":0},{"pos":[30,10],"type":"Battery1x1","dir":0},{"pos":[-30,10],"type":"Battery1x1","dir":0},{"pos":[0,0],"type":"Mount90","dir":0},{"pos":[0,0],"type":"LightBeamTurret","dir":0}],"name":"","aiRules":[["Field # at start",4],["Try to field # every # seconds",3,30],["When #% of energy, @chargeTypes",10,"Rest"],["@attackTypes enemy within #m","Attack",300],["@attackTypes enemy within #m","Circle",500],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","Stronger","More Brawling Value",1000],["Stay in #m range of slot # units",500,10],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Less HP",40,1000],["@capTypes Command Points within #m","Capture",10000]]}];
 ais.all.FighterBomber = [{"parts":[{"pos":[0,20],"type":"Mount180","dir":0},{"pos":[-30,30],"type":"Wing1x1Round","dir":0},{"pos":[-30,-20],"type":"Engine04","dir":0},{"pos":[-30,10],"type":"Battery1x1","dir":0},{"pos":[10,-10],"type":"Battery1x1","dir":0},{"pos":[-10,-20],"type":"Engine03","dir":0},{"pos":[0,20],"type":"AutoTurret","dir":0}],"name":"","aiRules":[["Avoid over #damage shots",10],["When #% of energy, @chargeTypes",30,"Find recharger"],["@attackTypes enemy within #m","Stay at range",400],["@attackTypes enemy within #m","Circle",700],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","Slower","Less Range",2000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","Slower","Weaker",2000],["@capTypes Command Points within #m","Spread to",10000],["Field # at priority #",2,1],["Field # at priority #",100,4],["Field # at start",7]]},{"parts":[{"pos":[0,20],"type":"Mount180","dir":0},{"pos":[10,-10],"type":"Battery1x1","dir":0},{"pos":[-10,-10],"type":"OverKillAi","dir":0},{"pos":[30,10],"type":"Battery1x1","dir":0},{"pos":[30,-20],"type":"Engine03","dir":0},{"pos":[-30,-20],"type":"Engine04","dir":0},{"pos":[-30,10],"type":"Wing1x1Round","dir":0},{"pos":[0,20],"type":"BombGun","dir":0}],"name":"","aiRules":[["When #% of energy, @chargeTypes",30,"Find recharger"],["Avoid over #damage shots",20],["@attackTypes enemy within #m","Bomb",500],["@attackTypes enemy within #m","Attack",1000],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Slower",100,3000],["@capTypes Command Points within #m","Capture",10000],["Field # at priority #",1,1],["Field # at priority #",2,3],["Field # at start",1]]},"","","","","","","",{"parts":[{"pos":[0,80],"type":"Mount90","dir":0},{"pos":[60,100],"type":"HArmor2x2Angle","dir":0},{"pos":[0,0],"type":"ReloaderMod","dir":0},{"pos":[0,40],"type":"Mount360","dir":0},{"pos":[-40,60],"type":"Reactor2x2","dir":0},{"pos":[-40,20],"type":"EnergyTransfer","dir":0},{"pos":[40,20],"type":"EnergyTransfer","dir":0},{"pos":[40,60],"type":"Reactor2x2","dir":0},{"pos":[0,110],"type":"ShieldGen2x1","dir":0},{"pos":[-40,-20],"type":"HArmor2x2AngleBack","dir":0},{"pos":[-60,100],"type":"HArmor2x2Angle","dir":0},{"pos":[40,-20],"type":"HArmor2x2AngleBack","dir":0},{"pos":[70,60],"type":"HArmor1x2","dir":0},{"pos":[70,10],"type":"Engine01","dir":0},{"pos":[-70,60],"type":"HArmor1x2","dir":0},{"pos":[-70,10],"type":"Engine01","dir":0},{"pos":[0,-30],"type":"Reactor2x1","dir":0},{"pos":[-30,110],"type":"Wing1x1Round","dir":0},{"pos":[30,110],"type":"Wing1x1Round","dir":0},{"pos":[-30,90],"type":"Battery1x1","dir":0},{"pos":[30,90],"type":"Battery1x1","dir":0},{"pos":[0,40],"type":"PDTurret","dir":0},{"pos":[0,80],"type":"AutoTurret","dir":0}],"name":"","aiRules":[["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","Less HP","Weaker",500],["Avoid everything"],["Avoid over #damage shots",20],["Find units that are out of energy"],["@capTypes Command Points within #m","Capture",10000],["Field # at priority #",1,2]]}];
 ais.all.FireFly = [{"parts":[{"pos":[0,-20],"type":"Engine07","dir":0},{"pos":[0,20],"type":"Mount90","dir":0},{"pos":[-30,-20],"type":"Battery1x2","dir":0},{"pos":[30,-20],"type":"Battery1x2","dir":0},{"pos":[-30,10],"type":"Wing1x1Round","dir":0},{"pos":[30,10],"type":"Wing1x1Round","dir":0},{"pos":[0,20],"type":"RingTurret","dir":0}],"name":"","aiRules":[["@capTypes Command Points within #m","Capture",200],["When #% of energy, @chargeTypes",25,"Find recharger"],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Bomb","Slower","Less Brawling Value",500],["@attackTypes enemy that is @absoluteTypes then # within #m","Bomb","Less HP",100,500],["@capTypes Command Points within #m","Spread to",10000],["Field # at start",2],["Try to field # every # seconds",2,35]]},{"parts":[{"pos":[0,0],"type":"EnergyTransfer","dir":0},{"pos":[-30,-10],"type":"Engine02","dir":0},{"pos":[-50,0],"type":"Reactor1x2","dir":0},{"pos":[-40,30],"type":"Reactor2x1","dir":0},{"pos":[0,30],"type":"Reactor2x1","dir":0},{"pos":[-70,10],"type":"Wing1x1Round","dir":0}],"name":"","aiRules":[["Stay in #m range of slot # units",1400,2],["Stayaway in #m range from slot # units",550,2],["Stay in #m range of slot # units",1400,1],["Stay in #m range of slot # units",750,5],["Find units that are out of energy"],["Field # for # of ship in slot # at priority #",1,1,3,2],["Field # for # of ship in slot # at priority #",1,1,4,1],["Field # for # of ship in slot # at priority #",1,2,1,1]]},{"parts":[{"pos":[-20,20],"type":"Mount360Micro","dir":0},{"pos":[20,20],"type":"Mount360Micro","dir":0},{"pos":[0,60],"type":"Mount360Micro","dir":0},{"pos":[0,-20],"type":"Engine07","dir":0},{"pos":[-40,-10],"type":"Battery2x1","dir":0},{"pos":[40,-10],"type":"Battery2x1","dir":0},{"pos":[-50,10],"type":"Wing1x1Round","dir":0},{"pos":[50,10],"type":"Wing1x1Round","dir":0},{"pos":[-20,20],"type":"LightBeamTurret","dir":0},{"pos":[20,20],"type":"LightBeamTurret","dir":0},{"pos":[0,60],"type":"AutoTurret","dir":0}],"name":"","aiRules":[["Avoid over #damage shots",20],["When #% of energy, @chargeTypes",20,"Find recharger"],["@attackTypes enemy within #m","Ram",300],["When #% of energy, @chargeTypes",50,"Find recharger"],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","Slower","Less Brawling Value",1000],["Stay in #m range of slot # units",400,5],["Field # at start",1],["Try to field # every # seconds",1,45],["Field # when money over # at priority #",1,500,1]]},{"parts":[{"pos":[0,-40],"type":"Engine07","dir":0},{"pos":[-50,0],"type":"Battery1x2","dir":0},{"pos":[40,40],"type":"DamageMod","dir":0},{"pos":[-40,40],"type":"DamageMod","dir":0},{"pos":[0,40],"type":"Mount270","dir":0},{"pos":[20,0],"type":"DamageMod","dir":0},{"pos":[-20,0],"type":"DamageMod","dir":0},{"pos":[50,0],"type":"Battery1x2","dir":0},{"pos":[-40,-30],"type":"Battery2x1","dir":0},{"pos":[40,-30],"type":"Battery2x1","dir":0},{"pos":[-30,-60],"type":"Wing1x2","dir":0},{"pos":[30,-60],"type":"Wing1x2","dir":0},{"pos":[0,40],"type":"PlasmaTurret","dir":0}],"name":"","aiRules":[["Avoid over #damage shots",20],["When #% of energy, @chargeTypes",25,"Find recharger"],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Kite","Slower","More HP",2000],["Stay in #m range of slot # units",300,5],["Field # at start",1],["Try to field # every # seconds",1,34],["Stay in #m range of slot # units",800,2],["@attackTypes enemy within #m","Flee",1000]]},{"parts":[{"pos":[-60,0],"type":"HArmor2x2","dir":0},{"pos":[-20,0],"type":"HArmor2x2","dir":0},{"pos":[-20,40],"type":"HArmor2x2","dir":0},{"pos":[-60,40],"type":"HArmor2x2","dir":0},{"pos":[-90,30],"type":"Battery1x1","dir":0},{"pos":[-90,-10],"type":"Engine02","dir":0},{"pos":[-90,50],"type":"Wing1x1Round","dir":0},{"pos":[20,40],"type":"HArmor2x2","dir":0},{"pos":[20,0],"type":"HArmor2x2","dir":0}],"name":"","aiRules":[["Stay in #m range of slot # units",800,2],["@capTypes Command Points within #m","Capture",10000],["Field # at priority #",1,1]]},"","","","",""];
-ais.all.FireShower = [{"parts":[{"pos":[20,20],"type":"Mount90","dir":0},{"pos":[10,50],"type":"Wing1x1Angle","dir":0},{"pos":[-20,30],"type":"HArmor1x2Font1","dir":0},{"pos":[50,0],"type":"HArmor1x2","dir":0},{"pos":[-10,10],"type":"Reactor1x1","dir":0},{"pos":[-30,10],"type":"Battery1x1","dir":0},{"pos":[-10,-20],"type":"Engine04","dir":0},{"pos":[20,-20],"type":"CloakGenerator","dir":0},{"pos":[20,20],"type":"RingTurret","dir":0}],"name":"","aiRules":[["Avoid over #damage shots",40],["@attackTypes enemy within #m","Ram",450],["@capTypes Command Points within #m","Guard",10000],["Try to field # every # seconds",1,81],["Field # at priority #",1,0],["Field # at priority #",2,7],["Field # at priority #",3,9]]},{"parts":[{"pos":[10,-40],"type":"Engine04","dir":0},{"pos":[0,0],"type":"Mount30","dir":0},{"pos":[-10,-30],"type":"Battery1x1","dir":0},{"pos":[-10,-50],"type":"Wing1x1Notch","dir":0},{"pos":[-30,-20],"type":"VArmor1x2SideBar","dir":0},{"pos":[-10,-30],"type":"Stripe1x1Corner","dir":1},{"pos":[-30,-20],"type":"Stripe1x2","dir":2},{"pos":[0,0],"type":"AutoTurret","dir":0}],"name":"","aiRules":[["Try to field # every # seconds",3,99],["When #% of energy, @chargeTypes",30,"Find recharger"],["Avoid over #damage shots",29],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Stay at range","Slower","Less Range",1000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","Cloaked","Slower",2000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","Slower","Less DPS",1000],["@attackTypes enemy within #m","Attack",500],["@capTypes Command Points within #m","Spread to",10000],["Field # at priority #",1,7],["Field # at start",2]]},{"parts":[{"pos":[20,20],"type":"Mount30","dir":0},{"pos":[-30,-20],"type":"Engine03","dir":0},{"pos":[30,-20],"type":"Battery1x2","dir":0},{"pos":[-20,20],"type":"Mount30","dir":0},{"pos":[0,-20],"type":"CloakGenerator","dir":0},{"pos":[-50,-10],"type":"UArmor1x1Angle","dir":0},{"pos":[-50,10],"type":"Wing1x1Angle","dir":0},{"pos":[50,-10],"type":"Wing1x1Notch","dir":0},{"pos":[20,20],"type":"EMPGun","dir":0},{"pos":[-20,20],"type":"EMPGun","dir":0}],"name":"","aiRules":[["Try to field # every # seconds",1,80],["When #% of energy, @chargeTypes",63,"Find recharger"],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","More expensive","Cloaked",700],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","Stronger","---",500],["Avoid over #damage shots",20],["@attackTypes enemy that is @absoluteTypes then # within #m","Kite","Slower",100,1500],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","Cloaked","More expensive",2000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","Slower","Less DPS",2000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Kite","Slower","More expensive",3000],["@capTypes Command Points within #m","Protect",2000],["When #% of energy, @chargeTypes",85,"Find recharger"],["@capTypes Command Points within #m","Spread to",10000],["Field # for # of @needTypes at priority #",1,4,"Cloak Counter Need",5],["Field # at priority #",1,4],["Field # when money over # at priority #",1,1000,1],["Field # at priority #",2,6]]},{"parts":[{"pos":[-30,60],"type":"Wing1x2","dir":0},{"pos":[0,60],"type":"CloakGenerator","dir":0},{"pos":[40,-20],"type":"DamageMod","dir":0},{"pos":[-40,20],"type":"DamageMod","dir":0},{"pos":[0,0],"type":"Mount10Range","dir":0},{"pos":[40,20],"type":"DamageMod","dir":0},{"pos":[-40,-20],"type":"DamageMod","dir":0},{"pos":[30,60],"type":"Wing1x2","dir":0},{"pos":[-20,-60],"type":"CloakGenerator","dir":0},{"pos":[20,-60],"type":"CloakGenerator","dir":0},{"pos":[-70,-10],"type":"Engine01","dir":0},{"pos":[70,0],"type":"Reactor1x2","dir":2},{"pos":[-50,50],"type":"VArmor1x1","dir":0},{"pos":[-70,30],"type":"VArmor1x1","dir":0},{"pos":[50,-50],"type":"VArmor1x1","dir":0},{"pos":[-50,-50],"type":"Battery1x1","dir":0},{"pos":[0,0],"type":"TeslaTurret","dir":0}],"name":"","aiRules":[["When #% of energy, @chargeTypes",40,"Find recharger"],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","Slower","More DPS",500],["Avoid over #damage shots",50],["Stay in #m range of slot # units",1900,10],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","Faster","More expensive",1000],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Slower",230,1500],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Faster",150,1000],["@capTypes Command Points within #m","Protect",800],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More expensive",800,2500],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Faster",230,2500],["Stay in #m range of slot # units",-100,10],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","Slower","Weaker",4000],["Field # at priority #",1,3],["Field # at priority #",3,7],["Field # for # of @needTypes at priority #",2,3,"Fighter Counter Need",2]]},{"parts":[{"pos":[-40,-60],"type":"Mount30","dir":0},{"pos":[30,80],"type":"Battery2x1","dir":3},{"pos":[40,-20],"type":"DamageMod","dir":0},{"pos":[0,40],"type":"DamageMod","dir":0},{"pos":[30,-70],"type":"Engine01","dir":0},{"pos":[30,50],"type":"OverKillAi","dir":0},{"pos":[0,-40],"type":"Mount30","dir":0},{"pos":[-40,20],"type":"Mount30","dir":0},{"pos":[40,20],"type":"Mount30","dir":0},{"pos":[0,0],"type":"DamageMod","dir":0},{"pos":[-40,-20],"type":"DamageMod","dir":0},{"pos":[-30,50],"type":"OverKillAi","dir":0},{"pos":[70,-30],"type":"Engine01","dir":0},{"pos":[-30,80],"type":"Battery2x1","dir":3},{"pos":[0,80],"type":"StasisField","dir":0},{"pos":[50,-50],"type":"Wing1x1Angle","dir":3},{"pos":[-90,-20],"type":"Wing1x2","dir":0},{"pos":[-60,60],"type":"VArmor2x2Angle","dir":0},{"pos":[-80,20],"type":"VArmor2x2Angle","dir":0},{"pos":[60,60],"type":"VArmor2x2Angle","dir":0},{"pos":[80,20],"type":"VArmor2x2Angle","dir":0},{"pos":[90,-20],"type":"VArmor1x2Corner4","dir":0},{"pos":[-70,-30],"type":"Engine01","dir":0},{"pos":[0,-80],"type":"Mount360Micro","dir":0},{"pos":[-40,-60],"type":"WavePullTurret","dir":0},{"pos":[0,-80],"type":"PDTurret","dir":0},{"pos":[-40,20],"type":"BombGun","dir":0},{"pos":[0,-40],"type":"BombGun","dir":0},{"pos":[40,20],"type":"BombGun","dir":0}],"name":"","aiRules":[["When #% of energy, @chargeTypes",32,"Find recharger"],["@attackTypes enemy that is @absoluteTypes then # within #m","Backstab","Less Arc",50,500],["Avoid over #damage shots",140],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More HP",1100,1200],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More HP",600,1200],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More HP",400,1200],["When #% of energy, @chargeTypes",30,"Find recharger"],["Avoid over #damage shots",40],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More HP",1100,3000],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","Slower",110,2300],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More HP",600,3200],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Run-by","Cloaked","Slower",3000],["Stay in #m range of slot # units",0,10],["When #% of energy, @chargeTypes",90,"Find recharger"],["Field # at priority #",1,5]]},{"parts":[{"pos":[-20,-40],"type":"CloakGenerator","dir":0},{"pos":[-40,40],"type":"CloakGenerator","dir":0},{"pos":[0,40],"type":"CloakGenerator","dir":0},{"pos":[-20,0],"type":"Reactor2x2","dir":3},{"pos":[20,0],"type":"EnergyTransfer","dir":0},{"pos":[40,40],"type":"Reactor2x2","dir":3},{"pos":[-50,-10],"type":"Engine02","dir":0},{"pos":[-70,-10],"type":"Engine02","dir":0},{"pos":[50,10],"type":"Wing1x1Angle","dir":3},{"pos":[50,-20],"type":"Wing1x2","dir":0},{"pos":[20,-40],"type":"EnergyTransfer","dir":0}],"name":"support1","aiRules":[["Stay in #m range of slot # units",700,10],["Avoid over #damage shots",30],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","More DPS","More expensive",1500],["@attackTypes enemy that is @absoluteTypes then # within #m","Flee","More expensive",700,2000],["Stay in #m range of slot # units",0,10],["Find units that are out of energy"],["Goto @locationTypes","Friendly Home Point"],["Field # at priority #",1,9]]},{"parts":[{"pos":[-50,-10],"type":"ShieldGen1x1","dir":0},{"pos":[50,-10],"type":"ShieldGen1x1","dir":0},{"pos":[0,20],"type":"StasisField","dir":0},{"pos":[-120,-10],"type":"Wing1x2","dir":1},{"pos":[-90,-10],"type":"Reactor1x1","dir":0},{"pos":[-70,-10],"type":"Engine02","dir":0},{"pos":[90,-10],"type":"ShieldGen1x1","dir":0},{"pos":[120,-10],"type":"Wing1x2","dir":3},{"pos":[30,-10],"type":"ShieldGen1x1","dir":0},{"pos":[30,10],"type":"ShieldGen1x1","dir":0},{"pos":[50,10],"type":"ShieldGen1x1","dir":0},{"pos":[-30,10],"type":"ShieldGen1x1","dir":0},{"pos":[-50,10],"type":"ShieldGen1x1","dir":0},{"pos":[-30,-10],"type":"ShieldGen1x1","dir":0},{"pos":[-10,-10],"type":"ShieldGen1x1","dir":0},{"pos":[10,-10],"type":"ShieldGen1x1","dir":0},{"pos":[10,-30],"type":"ShieldGen1x1","dir":0},{"pos":[-10,-30],"type":"ShieldGen1x1","dir":0},{"pos":[70,-10],"type":"Engine02","dir":0},{"pos":[-40,30],"type":"HArmor2x1","dir":0},{"pos":[40,30],"type":"HArmor2x1","dir":0},{"pos":[-70,30],"type":"HArmor1x1Angle","dir":0},{"pos":[70,30],"type":"HArmor1x1Angle","dir":0}],"name":"","aiRules":[["@attackTypes enemy that is @absoluteTypes then # within #m","Stay at range","More DPS",30,1500],["Avoid over #damage shots",100],["When Shields down to #%, flee",35],["When #% of energy, @chargeTypes",90,"Find recharger"],["Stay in #m range of slot # units",800,9],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Wiggle","More expensive","---",2200],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","More expensive","---",10000],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More expensive",300,10000],["Field # at priority #",1,6]]},{"parts":[{"pos":[50,-70],"type":"Engine02","dir":0},{"pos":[-30,-70],"type":"Engine02","dir":0},{"pos":[0,20],"type":"TargetingMod","dir":0},{"pos":[50,50],"type":"Wing1x1Angle","dir":0},{"pos":[0,60],"type":"Reactor2x2","dir":0},{"pos":[-30,60],"type":"Wing1x2","dir":0},{"pos":[-50,50],"type":"Wing1x1Angle","dir":0},{"pos":[30,60],"type":"Wing1x2","dir":0},{"pos":[-40,0],"type":"Mount10Range","dir":0},{"pos":[-50,-70],"type":"Engine02","dir":0},{"pos":[30,-70],"type":"Engine02","dir":0},{"pos":[40,0],"type":"Mount10Range","dir":0},{"pos":[80,20],"type":"DamageMod","dir":0},{"pos":[70,-60],"type":"VArmor1x2","dir":0},{"pos":[-70,-60],"type":"VArmor1x2","dir":0},{"pos":[0,-20],"type":"TargetingMod","dir":0},{"pos":[10,-50],"type":"Battery1x1","dir":0},{"pos":[-10,-50],"type":"VArmor1x1","dir":0},{"pos":[-80,20],"type":"DamageMod","dir":0},{"pos":[80,-20],"type":"DamageMod","dir":0},{"pos":[0,-80],"type":"Mount360Micro","dir":0},{"pos":[-80,-20],"type":"DamageMod","dir":0},{"pos":[0,-80],"type":"PDTurret","dir":0},{"pos":[-40,0],"type":"MissileTurret","dir":0},{"pos":[40,0],"type":"MissileTurret","dir":0}],"name":"","aiRules":[["Avoid over #damage shots",40],["@attackTypes enemy that is @absoluteTypes then # within #m","Flee","More DPS",40,1500],["When #% of energy, @chargeTypes",20,"Find recharger"],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Kite","No PD","Slower",1800],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Kite","No PD","---",1000],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Slower",140,1500],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Slower",200,2400],["Stay in #m range of slot # units",0,10],["Avoid over #damage shots",20],["@capTypes Command Points within #m","Capture",10000],["Field # at priority #",1,6],["Field # at priority #",2,8]]},{"parts":[{"pos":[0,30],"type":"Reactor2x1","dir":2},{"pos":[80,-20],"type":"EnergyTransfer","dir":0},{"pos":[40,-20],"type":"Mount360Micro","dir":0},{"pos":[30,-70],"type":"Engine02","dir":0},{"pos":[50,-70],"type":"Engine02","dir":0},{"pos":[0,-80],"type":"Reactor2x2","dir":0},{"pos":[-40,-20],"type":"Mount360Micro","dir":0},{"pos":[-50,-70],"type":"Engine02","dir":0},{"pos":[40,20],"type":"Reactor2x2","dir":0},{"pos":[-80,-20],"type":"EnergyTransfer","dir":0},{"pos":[-80,-60],"type":"Wing2x2","dir":1},{"pos":[-30,-70],"type":"Engine02","dir":0},{"pos":[-40,20],"type":"Reactor2x2","dir":0},{"pos":[-80,20],"type":"HArmor2x2","dir":0},{"pos":[80,20],"type":"HArmor2x2","dir":0},{"pos":[0,0],"type":"Mount360Micro","dir":0},{"pos":[80,-60],"type":"Wing2x2","dir":3},{"pos":[-40,50],"type":"HArmor2x1","dir":0},{"pos":[0,50],"type":"HArmor2x1","dir":0},{"pos":[40,50],"type":"HArmor2x1","dir":0},{"pos":[0,-40],"type":"ReloaderMod","dir":0},{"pos":[40,-20],"type":"PDTurret","dir":0},{"pos":[-40,-20],"type":"PDTurret","dir":0},{"pos":[0,0],"type":"PDTurret","dir":0}],"name":"","aiRules":[["Stay in #m range of slot # units",350,10],["Avoid over #damage shots",45],["@attackTypes enemy that is @absoluteTypes then # within #m","Flee","More expensive",800,1850],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","Stronger","More expensive",1850],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","More DPS","---",1850],["Stay in #m range of slot # units",-500,10],["Field # at priority #",1,2],["Goto @locationTypes","Friendly Spawn"]]},{"parts":[{"pos":[-80,20],"type":"TargetingMod","dir":0},{"pos":[150,90],"type":"HArmor1x1Angle","dir":0},{"pos":[80,20],"type":"TargetingMod","dir":0},{"pos":[-120,40],"type":"Mount10Range","dir":0},{"pos":[-160,20],"type":"TargetingMod","dir":0},{"pos":[120,40],"type":"Mount10Range","dir":0},{"pos":[160,60],"type":"TargetingMod","dir":0},{"pos":[160,20],"type":"TargetingMod","dir":0},{"pos":[40,40],"type":"Mount10Range","dir":0},{"pos":[0,20],"type":"TargetingMod","dir":0},{"pos":[0,90],"type":"Reactor2x1","dir":0},{"pos":[-80,100],"type":"HArmor2x2","dir":0},{"pos":[80,100],"type":"HArmor2x2","dir":0},{"pos":[80,-20],"type":"Reactor2x2","dir":0},{"pos":[-80,-20],"type":"Reactor2x2","dir":0},{"pos":[40,-100],"type":"HArmor2x2","dir":0},{"pos":[-40,-100],"type":"HArmor2x2","dir":0},{"pos":[40,130],"type":"HArmor2x1","dir":0},{"pos":[-40,130],"type":"HArmor2x1","dir":0},{"pos":[80,130],"type":"HArmor2x1","dir":0},{"pos":[-120,-60],"type":"HArmor2x2AngleBack","dir":0},{"pos":[-120,-20],"type":"HArmor2x2","dir":0},{"pos":[-80,130],"type":"HArmor2x1","dir":0},{"pos":[-80,-60],"type":"HArmor2x2","dir":0},{"pos":[120,-20],"type":"HArmor2x2","dir":0},{"pos":[80,-60],"type":"HArmor2x2","dir":0},{"pos":[-110,130],"type":"HArmor1x1Angle","dir":0},{"pos":[110,130],"type":"HArmor1x1Angle","dir":0},{"pos":[-170,-20],"type":"Wing2x1","dir":1},{"pos":[120,-60],"type":"HArmor2x2AngleBack","dir":0},{"pos":[150,-30],"type":"Engine02","dir":0},{"pos":[-150,-30],"type":"Engine02","dir":0},{"pos":[170,-20],"type":"Wing2x1","dir":3},{"pos":[-100,-100],"type":"HArmor2x2AngleBack","dir":0},{"pos":[80,-140],"type":"HArmor2x2AngleBack","dir":0},{"pos":[100,-100],"type":"HArmor2x2AngleBack","dir":0},{"pos":[40,-140],"type":"HArmor2x2","dir":0},{"pos":[-40,-140],"type":"HArmor2x2","dir":0},{"pos":[-80,-140],"type":"HArmor2x2AngleBack","dir":0},{"pos":[120,100],"type":"HArmor2x2Angle","dir":0},{"pos":[-120,100],"type":"HArmor2x2Angle","dir":0},{"pos":[-40,100],"type":"HArmor2x2","dir":0},{"pos":[-70,-100],"type":"HArmor1x2","dir":0},{"pos":[40,100],"type":"HArmor2x2","dir":0},{"pos":[70,-100],"type":"HArmor1x2","dir":0},{"pos":[40,-40],"type":"Mount10Range","dir":0},{"pos":[-40,40],"type":"Mount10Range","dir":0},{"pos":[-150,90],"type":"HArmor1x1Angle","dir":0},{"pos":[-160,60],"type":"TargetingMod","dir":0},{"pos":[0,-140],"type":"HArmor2x2","dir":0},{"pos":[0,120],"type":"Mount360Micro","dir":0},{"pos":[0,-60],"type":"ReloaderMod","dir":0},{"pos":[0,-20],"type":"Mount90","dir":0},{"pos":[-40,-40],"type":"Mount10Range","dir":0},{"pos":[0,-100],"type":"Mount30","dir":0},{"pos":[-70,150],"type":"HArmor1x1Angle","dir":0},{"pos":[-40,160],"type":"Wing2x2","dir":0},{"pos":[70,150],"type":"HArmor1x1Angle","dir":0},{"pos":[40,160],"type":"Wing2x2","dir":0},{"pos":[-80,60],"type":"DamageMod","dir":0},{"pos":[80,60],"type":"DamageMod","dir":0},{"pos":[0,60],"type":"TargetingMod","dir":0},{"pos":[0,-170],"type":"HArmor2x1","dir":0},{"pos":[-30,-170],"type":"HArmor1x1AngleBack","dir":0},{"pos":[30,-170],"type":"HArmor1x1AngleBack","dir":0},{"pos":[-120,-60],"type":"SymbolDecal3","dir":3},{"pos":[40,-140],"type":"SymbolDecal3","dir":0},{"pos":[-120,100],"type":"SymbolDecal2","dir":1},{"pos":[-80,-60],"type":"SymbolDecal3","dir":3},{"pos":[80,-140],"type":"SymbolDecal3","dir":1},{"pos":[-120,-20],"type":"SymbolDecal3","dir":3},{"pos":[80,-60],"type":"SymbolDecal3","dir":1},{"pos":[120,100],"type":"SymbolDecal2","dir":3},{"pos":[-80,100],"type":"SymbolDecal2","dir":1},{"pos":[-40,-140],"type":"SymbolDecal3","dir":0},{"pos":[-80,-100],"type":"SymbolDecal3","dir":3},{"pos":[40,100],"type":"SymbolDecal3","dir":1},{"pos":[80,100],"type":"SymbolDecal2","dir":3},{"pos":[-80,-140],"type":"SymbolDecal3","dir":3},{"pos":[80,-100],"type":"SymbolDecal3","dir":1},{"pos":[120,-60],"type":"SymbolDecal3","dir":1},{"pos":[120,-20],"type":"SymbolDecal3","dir":1},{"pos":[-40,100],"type":"SymbolDecal3","dir":3},{"pos":[-40,-100],"type":"SymbolDecal3","dir":0},{"pos":[40,-100],"type":"SymbolDecal3","dir":0},{"pos":[0,-140],"type":"SymbolDecal3","dir":0},{"pos":[40,-40],"type":"WavePushTurret","dir":0},{"pos":[-40,-40],"type":"WavePushTurret","dir":0},{"pos":[0,-100],"type":"WavePushTurret","dir":0},{"pos":[120,40],"type":"TeslaTurret","dir":0},{"pos":[-120,40],"type":"TeslaTurret","dir":0},{"pos":[0,120],"type":"PDTurret","dir":0},{"pos":[0,-20],"type":"HeavyPDTurret","dir":0},{"pos":[40,40],"type":"PlasmaTurret","dir":0},{"pos":[-40,40],"type":"PlasmaTurret","dir":0}],"name":"","aiRules":[["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More DPS",60,1300],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More expensive",400,1900],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More DPS",35,1800],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More expensive",800,4000],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More DPS",10,1260],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More expensive",650,5000],["@capTypes Command Points within #m","Protect",1800],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","Not Cloaked","---",1650],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More expensive",800,10000],["@capTypes Command Points within #m","Capture",10000],["Field # at priority #",1,1]]}];
+ais.all.FireShower = [{"parts":[{"pos":[20,20],"type":"Mount90","dir":0},{"pos":[10,50],"type":"Wing1x1Angle","dir":0},{"pos":[-20,30],"type":"HArmor1x2Font1","dir":0},{"pos":[50,0],"type":"HArmor1x2","dir":0},{"pos":[-10,10],"type":"Reactor1x1","dir":0},{"pos":[-30,10],"type":"Battery1x1","dir":0},{"pos":[-10,-20],"type":"Engine04","dir":0},{"pos":[20,-20],"type":"CloakGenerator","dir":0},{"pos":[20,20],"type":"RingTurret","dir":0}],"name":"","aiRules":[["Avoid over #damage shots",40],["@attackTypes enemy within #m","Ram",450],["@capTypes Command Points within #m","Guard",10000],["Try to field # every # seconds",1,81],["Field # at priority #",1,0],["Field # at priority #",2,7],["Field # at priority #",3,9]]},{"parts":[{"pos":[10,-40],"type":"Engine04","dir":0},{"pos":[0,0],"type":"Mount30","dir":0},{"pos":[-10,-30],"type":"Battery1x1","dir":0},{"pos":[-10,-50],"type":"Wing1x1Notch","dir":0},{"pos":[-30,-20],"type":"VArmor1x2SideBar","dir":0},{"pos":[-10,-30],"type":"Stripe1x1Corner","dir":1},{"pos":[-30,-20],"type":"Stripe1x2","dir":2},{"pos":[0,0],"type":"AutoTurret","dir":0}],"name":"","aiRules":[["Try to field # every # seconds",3,99],["When #% of energy, @chargeTypes",30,"Find recharger"],["Avoid over #damage shots",29],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Stay at range","Slower","Less Range",1000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","Cloaked","Slower",2000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","Slower","Less DPS",1000],["@attackTypes enemy within #m","Attack",500],["@capTypes Command Points within #m","Spread to",10000],["Field # at priority #",1,7],["Field # at start",2]]},{"parts":[{"pos":[20,20],"type":"Mount30","dir":0},{"pos":[-30,-20],"type":"Engine03","dir":0},{"pos":[30,-20],"type":"Battery1x2","dir":0},{"pos":[-20,20],"type":"Mount30","dir":0},{"pos":[0,-20],"type":"CloakGenerator","dir":0},{"pos":[-50,-10],"type":"UArmor1x1Angle","dir":0},{"pos":[-50,10],"type":"Wing1x1Angle","dir":0},{"pos":[50,-10],"type":"Wing1x1Notch","dir":0},{"pos":[20,20],"type":"EMPGun","dir":0},{"pos":[-20,20],"type":"EMPGun","dir":0}],"name":"","aiRules":[["Try to field # every # seconds",1,80],["When #% of energy, @chargeTypes",63,"Find recharger"],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","More expensive","Cloaked",700],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","Stronger","---",500],["Avoid over #damage shots",20],["@attackTypes enemy that is @absoluteTypes then # within #m","Kite","Slower",100,1500],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","Cloaked","More expensive",2000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","Slower","Less DPS",2000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Kite","Slower","More expensive",3000],["@capTypes Command Points within #m","Protect",2000],["When #% of energy, @chargeTypes",85,"Find recharger"],["@capTypes Command Points within #m","Spread to",10000],["Field # for # of @needTypes at priority #",1,4,"Cloak Counter Need",5],["Field # at priority #",1,4],["Field # when money over # at priority #",1,1000,1],["Field # at priority #",2,6]]},{"parts":[{"pos":[-30,60],"type":"Wing1x2","dir":0},{"pos":[0,60],"type":"CloakGenerator","dir":0},{"pos":[40,-20],"type":"DamageMod","dir":0},{"pos":[-40,20],"type":"DamageMod","dir":0},{"pos":[0,0],"type":"Mount10Range","dir":0},{"pos":[40,20],"type":"DamageMod","dir":0},{"pos":[-40,-20],"type":"DamageMod","dir":0},{"pos":[30,60],"type":"Wing1x2","dir":0},{"pos":[-20,-60],"type":"CloakGenerator","dir":0},{"pos":[20,-60],"type":"CloakGenerator","dir":0},{"pos":[-70,-10],"type":"Engine01","dir":0},{"pos":[70,0],"type":"Reactor1x2","dir":2},{"pos":[-50,50],"type":"VArmor1x1","dir":0},{"pos":[-70,30],"type":"VArmor1x1","dir":0},{"pos":[50,-50],"type":"VArmor1x1","dir":0},{"pos":[-50,-50],"type":"Battery1x1","dir":0},{"pos":[0,0],"type":"TeslaTurret","dir":0}],"name":"","aiRules":[["When #% of energy, @chargeTypes",40,"Find recharger"],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","Slower","More DPS",500],["Avoid over #damage shots",50],["Stay in #m range of slot # units",1900,10],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","Faster","More expensive",1000],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Slower",230,1500],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Faster",150,1000],["@capTypes Command Points within #m","Protect",800],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More expensive",800,2500],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Faster",230,2500],["Stay in #m range of slot # units",-100,10],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","Slower","Weaker",4000],["Field # at priority #",1,3],["Field # at priority #",3,7],["Field # for # of @needTypes at priority #",2,3,"Fighter Counter Need",2]]},{"parts":[{"pos":[-40,-60],"type":"Mount30","dir":0},{"pos":[30,80],"type":"Battery2x1","dir":3},{"pos":[40,-20],"type":"DamageMod","dir":0},{"pos":[0,40],"type":"DamageMod","dir":0},{"pos":[30,-70],"type":"Engine01","dir":0},{"pos":[30,50],"type":"OverKillAi","dir":0},{"pos":[0,-40],"type":"Mount30","dir":0},{"pos":[-40,20],"type":"Mount30","dir":0},{"pos":[40,20],"type":"Mount30","dir":0},{"pos":[0,0],"type":"DamageMod","dir":0},{"pos":[-40,-20],"type":"DamageMod","dir":0},{"pos":[-30,50],"type":"OverKillAi","dir":0},{"pos":[70,-30],"type":"Engine01","dir":0},{"pos":[-30,80],"type":"Battery2x1","dir":3},{"pos":[0,80],"type":"StasisField","dir":0},{"pos":[50,-50],"type":"Wing1x1Angle","dir":3},{"pos":[-90,-20],"type":"Wing1x2","dir":0},{"pos":[-60,60],"type":"VArmor2x2Angle","dir":0},{"pos":[-80,20],"type":"VArmor2x2Angle","dir":0},{"pos":[60,60],"type":"VArmor2x2Angle","dir":0},{"pos":[80,20],"type":"VArmor2x2Angle","dir":0},{"pos":[90,-20],"type":"VArmor1x2Corner4","dir":0},{"pos":[-70,-30],"type":"Engine01","dir":0},{"pos":[0,-80],"type":"Mount360Micro","dir":0},{"pos":[-40,-60],"type":"WavePullTurret","dir":0},{"pos":[0,-80],"type":"PDTurret","dir":0},{"pos":[-40,20],"type":"BombGun","dir":0},{"pos":[0,-40],"type":"BombGun","dir":0},{"pos":[40,20],"type":"BombGun","dir":0}],"name":"","aiRules":[["When #% of energy, @chargeTypes",32,"Find recharger"],["@attackTypes enemy that is @absoluteTypes then # within #m","Backstab","Less Arc",50,500],["Avoid over #damage shots",140],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More HP",1100,1200],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More HP",600,1200],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More HP",400,1200],["When #% of energy, @chargeTypes",30,"Find recharger"],["Avoid over #damage shots",40],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More HP",1100,3000],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","Slower",110,2300],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More HP",600,3200],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Run-by","Cloaked","Slower",3000],["Stay in #m range of slot # units",0,10],["When #% of energy, @chargeTypes",90,"Find recharger"],["Field # at priority #",1,5]]},{"parts":[{"pos":[-20,-40],"type":"CloakGenerator","dir":0},{"pos":[-40,40],"type":"CloakGenerator","dir":0},{"pos":[0,40],"type":"CloakGenerator","dir":0},{"pos":[-20,0],"type":"Reactor2x2","dir":3},{"pos":[20,0],"type":"EnergyTransfer","dir":0},{"pos":[40,40],"type":"Reactor2x2","dir":3},{"pos":[-50,-10],"type":"Engine02","dir":0},{"pos":[-70,-10],"type":"Engine02","dir":0},{"pos":[50,10],"type":"Wing1x1Angle","dir":3},{"pos":[50,-20],"type":"Wing1x2","dir":0},{"pos":[20,-40],"type":"EnergyTransfer","dir":0}],"name":"support1","aiRules":[["Stay in #m range of slot # units",700,10],["Avoid over #damage shots",30],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","More DPS","More expensive",1500],["@attackTypes enemy that is @absoluteTypes then # within #m","Flee","More expensive",700,2000],["Stay in #m range of slot # units",0,10],["Find units that are out of energy"],["Goto @locationTypes","Friendly Home Point"],["Field # at priority #",1,9]]},{"parts":[{"pos":[-50,-10],"type":"ShieldGen1x1","dir":0},{"pos":[50,-10],"type":"ShieldGen1x1","dir":0},{"pos":[0,20],"type":"StasisField","dir":0},{"pos":[-120,-10],"type":"Wing1x2","dir":1},{"pos":[-90,-10],"type":"Reactor1x1","dir":0},{"pos":[-70,-10],"type":"Engine02","dir":0},{"pos":[90,-10],"type":"ShieldGen1x1","dir":0},{"pos":[120,-10],"type":"Wing1x2","dir":3},{"pos":[30,-10],"type":"ShieldGen1x1","dir":0},{"pos":[30,10],"type":"ShieldGen1x1","dir":0},{"pos":[50,10],"type":"ShieldGen1x1","dir":0},{"pos":[-30,10],"type":"ShieldGen1x1","dir":0},{"pos":[-50,10],"type":"ShieldGen1x1","dir":0},{"pos":[-30,-10],"type":"ShieldGen1x1","dir":0},{"pos":[-10,-10],"type":"ShieldGen1x1","dir":0},{"pos":[10,-10],"type":"ShieldGen1x1","dir":0},{"pos":[10,-30],"type":"ShieldGen1x1","dir":0},{"pos":[-10,-30],"type":"ShieldGen1x1","dir":0},{"pos":[70,-10],"type":"Engine02","dir":0},{"pos":[-40,30],"type":"HArmor2x1","dir":0},{"pos":[40,30],"type":"HArmor2x1","dir":0},{"pos":[-70,30],"type":"HArmor1x1Angle","dir":0},{"pos":[70,30],"type":"HArmor1x1Angle","dir":0}],"name":"","aiRules":[["@attackTypes enemy that is @absoluteTypes then # within #m","Stay at range","More DPS",30,1500],["Avoid over #damage shots",100],["When Shields down to #%, flee",35],["When #% of energy, @chargeTypes",90,"Find recharger"],["Stay in #m range of slot # units",800,9],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Wiggle","More expensive","---",2200],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","More expensive","---",10000],["@attackTypes enemy that is @absoluteTypes then # within #m","Ram","More expensive",300,10000],["Field # at priority #",1,6]]},{"parts":[{"pos":[50,-70],"type":"Engine02","dir":0},{"pos":[-30,-70],"type":"Engine02","dir":0},{"pos":[0,20],"type":"TargetingMod","dir":0},{"pos":[50,50],"type":"Wing1x1Angle","dir":0},{"pos":[0,60],"type":"Reactor2x2","dir":0},{"pos":[-30,60],"type":"Wing1x2","dir":0},{"pos":[-50,50],"type":"Wing1x1Angle","dir":0},{"pos":[30,60],"type":"Wing1x2","dir":0},{"pos":[-40,0],"type":"Mount10Range","dir":0},{"pos":[-50,-70],"type":"Engine02","dir":0},{"pos":[30,-70],"type":"Engine02","dir":0},{"pos":[40,0],"type":"Mount10Range","dir":0},{"pos":[80,20],"type":"DamageMod","dir":0},{"pos":[70,-60],"type":"VArmor1x2","dir":0},{"pos":[-70,-60],"type":"VArmor1x2","dir":0},{"pos":[0,-20],"type":"TargetingMod","dir":0},{"pos":[10,-50],"type":"Battery1x1","dir":0},{"pos":[-10,-50],"type":"VArmor1x1","dir":0},{"pos":[-80,20],"type":"DamageMod","dir":0},{"pos":[80,-20],"type":"DamageMod","dir":0},{"pos":[0,-80],"type":"Mount360Micro","dir":0},{"pos":[-80,-20],"type":"DamageMod","dir":0},{"pos":[0,-80],"type":"PDTurret","dir":0},{"pos":[-40,0],"type":"MissileTurret","dir":0},{"pos":[40,0],"type":"MissileTurret","dir":0}],"name":"","aiRules":[["Avoid over #damage shots",40],["@attackTypes enemy that is @absoluteTypes then # within #m","Flee","More DPS",40,1500],["When #% of energy, @chargeTypes",20,"Find recharger"],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Kite","No PD","Slower",1800],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Kite","No PD","---",1000],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Slower",140,1500],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","Slower",200,2400],["Stay in #m range of slot # units",0,10],["Avoid over #damage shots",20],["@capTypes Command Points within #m","Capture",10000],["Field # at priority #",1,6],["Field # at priority #",2,8]]},{"parts":[{"pos":[0,30],"type":"Reactor2x1","dir":2},{"pos":[80,-20],"type":"EnergyTransfer","dir":0},{"pos":[40,-20],"type":"Mount360Micro","dir":0},{"pos":[30,-70],"type":"Engine02","dir":0},{"pos":[50,-70],"type":"Engine02","dir":0},{"pos":[0,-80],"type":"Reactor2x2","dir":0},{"pos":[-40,-20],"type":"Mount360Micro","dir":0},{"pos":[-50,-70],"type":"Engine02","dir":0},{"pos":[40,20],"type":"Reactor2x2","dir":0},{"pos":[-80,-20],"type":"EnergyTransfer","dir":0},{"pos":[-80,-60],"type":"Wing2x2","dir":1},{"pos":[-30,-70],"type":"Engine02","dir":0},{"pos":[-40,20],"type":"Reactor2x2","dir":0},{"pos":[-80,20],"type":"HArmor2x2","dir":0},{"pos":[80,20],"type":"HArmor2x2","dir":0},{"pos":[0,0],"type":"Mount360Micro","dir":0},{"pos":[80,-60],"type":"Wing2x2","dir":3},{"pos":[-40,50],"type":"HArmor2x1","dir":0},{"pos":[0,50],"type":"HArmor2x1","dir":0},{"pos":[40,50],"type":"HArmor2x1","dir":0},{"pos":[0,-40],"type":"ReloaderMod","dir":0},{"pos":[40,-20],"type":"PDTurret","dir":0},{"pos":[-40,-20],"type":"PDTurret","dir":0},{"pos":[0,0],"type":"PDTurret","dir":0}],"name":"","aiRules":[["Stay in #m range of slot # units",350,10],["Avoid over #damage shots",45],["@attackTypes enemy that is @absoluteTypes then # within #m","Flee","More expensive",800,1850],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","Stronger","More expensive",1850],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","More DPS","---",1850],["Stay in #m range of slot # units",-500,10],["Field # at priority #",1,2],["Goto @locationTypes","Friendly Spawn"]]},{"parts":[{"pos":[-80,20],"type":"TargetingMod","dir":0},{"pos":[80,20],"type":"TargetingMod","dir":0},{"pos":[-120,40],"type":"Mount10Range","dir":0},{"pos":[-160,20],"type":"TargetingMod","dir":0},{"pos":[120,40],"type":"Mount10Range","dir":0},{"pos":[160,60],"type":"TargetingMod","dir":0},{"pos":[160,20],"type":"TargetingMod","dir":0},{"pos":[40,40],"type":"Mount10Range","dir":0},{"pos":[0,20],"type":"TargetingMod","dir":0},{"pos":[0,90],"type":"Reactor2x1","dir":0},{"pos":[-80,100],"type":"HArmor2x2","dir":0},{"pos":[80,100],"type":"HArmor2x2","dir":0},{"pos":[80,-20],"type":"Reactor2x2","dir":0},{"pos":[-80,-20],"type":"Reactor2x2","dir":0},{"pos":[40,-100],"type":"HArmor2x2","dir":0},{"pos":[-40,-100],"type":"HArmor2x2","dir":0},{"pos":[40,130],"type":"HArmor2x1","dir":0},{"pos":[-40,130],"type":"HArmor2x1","dir":0},{"pos":[80,130],"type":"HArmor2x1","dir":0},{"pos":[-120,-60],"type":"HArmor2x2AngleBack","dir":0},{"pos":[-120,-20],"type":"HArmor2x2","dir":0},{"pos":[-80,130],"type":"HArmor2x1","dir":0},{"pos":[-80,-60],"type":"HArmor2x2","dir":0},{"pos":[120,-20],"type":"HArmor2x2","dir":0},{"pos":[80,-60],"type":"HArmor2x2","dir":0},{"pos":[-170,-20],"type":"Wing2x1","dir":1},{"pos":[120,-60],"type":"HArmor2x2AngleBack","dir":0},{"pos":[150,-30],"type":"Engine02","dir":0},{"pos":[-150,-30],"type":"Engine02","dir":0},{"pos":[170,-20],"type":"Wing2x1","dir":3},{"pos":[-100,-100],"type":"HArmor2x2AngleBack","dir":0},{"pos":[80,-140],"type":"HArmor2x2AngleBack","dir":0},{"pos":[100,-100],"type":"HArmor2x2AngleBack","dir":0},{"pos":[40,-140],"type":"HArmor2x2","dir":0},{"pos":[-40,-140],"type":"HArmor2x2","dir":0},{"pos":[-80,-140],"type":"HArmor2x2AngleBack","dir":0},{"pos":[120,100],"type":"HArmor2x2Angle","dir":0},{"pos":[-120,100],"type":"HArmor2x2Angle","dir":0},{"pos":[-40,100],"type":"HArmor2x2","dir":0},{"pos":[-70,-100],"type":"HArmor1x2","dir":0},{"pos":[40,100],"type":"HArmor2x2","dir":0},{"pos":[70,-100],"type":"HArmor1x2","dir":0},{"pos":[40,-40],"type":"Mount10Range","dir":0},{"pos":[-40,40],"type":"Mount10Range","dir":0},{"pos":[-160,60],"type":"TargetingMod","dir":0},{"pos":[0,-140],"type":"HArmor2x2","dir":0},{"pos":[0,120],"type":"Mount360Micro","dir":0},{"pos":[0,-60],"type":"ReloaderMod","dir":0},{"pos":[0,-20],"type":"Mount90","dir":0},{"pos":[-40,-40],"type":"Mount10Range","dir":0},{"pos":[0,-100],"type":"Mount30","dir":0},{"pos":[-70,150],"type":"HArmor1x1Angle","dir":0},{"pos":[-40,160],"type":"Wing2x2","dir":0},{"pos":[70,150],"type":"HArmor1x1Angle","dir":0},{"pos":[40,160],"type":"Wing2x2","dir":0},{"pos":[-80,60],"type":"DamageMod","dir":0},{"pos":[80,60],"type":"DamageMod","dir":0},{"pos":[0,60],"type":"TargetingMod","dir":0},{"pos":[0,-170],"type":"HArmor2x1","dir":0},{"pos":[-30,-170],"type":"HArmor1x1Angle","dir":1},{"pos":[30,-170],"type":"HArmor1x1Angle","dir":3},{"pos":[-120,-60],"type":"SymbolDecal3","dir":3},{"pos":[40,-140],"type":"SymbolDecal3","dir":0},{"pos":[-120,100],"type":"SymbolDecal2","dir":1},{"pos":[-80,-60],"type":"SymbolDecal3","dir":3},{"pos":[80,-140],"type":"SymbolDecal3","dir":1},{"pos":[-120,-20],"type":"SymbolDecal3","dir":3},{"pos":[80,-60],"type":"SymbolDecal3","dir":1},{"pos":[120,100],"type":"SymbolDecal2","dir":3},{"pos":[-80,100],"type":"SymbolDecal2","dir":1},{"pos":[-40,-140],"type":"SymbolDecal3","dir":0},{"pos":[-80,-100],"type":"SymbolDecal3","dir":3},{"pos":[40,100],"type":"SymbolDecal3","dir":1},{"pos":[80,100],"type":"SymbolDecal2","dir":3},{"pos":[-80,-140],"type":"SymbolDecal3","dir":3},{"pos":[80,-100],"type":"SymbolDecal3","dir":1},{"pos":[120,-60],"type":"SymbolDecal3","dir":1},{"pos":[120,-20],"type":"SymbolDecal3","dir":1},{"pos":[-40,100],"type":"SymbolDecal3","dir":3},{"pos":[-40,-100],"type":"SymbolDecal3","dir":0},{"pos":[40,-100],"type":"SymbolDecal3","dir":0},{"pos":[0,-140],"type":"SymbolDecal3","dir":0},{"pos":[-40,-40],"type":"WavePushTurret","dir":0},{"pos":[40,-40],"type":"WavePushTurret","dir":0},{"pos":[0,-100],"type":"WavePushTurret","dir":0},{"pos":[-120,40],"type":"TeslaTurret","dir":0},{"pos":[120,40],"type":"TeslaTurret","dir":0},{"pos":[0,120],"type":"PDTurret","dir":0},{"pos":[0,-20],"type":"HeavyPDTurret","dir":0},{"pos":[-40,40],"type":"PlasmaTurret","dir":0},{"pos":[40,40],"type":"PlasmaTurret","dir":0}],"name":"","aiRules":[["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More DPS",60,1300],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More expensive",400,1900],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More DPS",35,1800],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More expensive",800,4000],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More DPS",10,1260],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More expensive",650,5000],["@capTypes Command Points within #m","Protect",1800],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","Not Cloaked","---",1650],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More expensive",800,10000],["@capTypes Command Points within #m","Capture",10000],["Field # at priority #",1,1]]}];
 ais.all.FlamethrowerArmadillo = [{"parts":[{"pos":[-30,10],"type":"Battery1x1","dir":0},{"pos":[-50,0],"type":"HArmor1x2","dir":0},{"pos":[-40,-40],"type":"HArmor2x2AngleBack","dir":0},{"pos":[40,-40],"type":"HArmor2x2AngleBack","dir":0},{"pos":[-10,-50],"type":"Engine02","dir":0},{"pos":[40,40],"type":"HArmor2x2Angle","dir":0},{"pos":[10,-50],"type":"Engine02","dir":0},{"pos":[-40,40],"type":"HArmor2x2Angle","dir":0},{"pos":[0,40],"type":"Mount90","dir":0},{"pos":[0,0],"type":"Mount360Micro","dir":0},{"pos":[50,0],"type":"HArmor1x2","dir":0},{"pos":[-30,-10],"type":"HArmor1x1","dir":0},{"pos":[30,-10],"type":"HArmor1x1","dir":0},{"pos":[30,10],"type":"HArmor1x1","dir":0},{"pos":[-70,-10],"type":"Wing1x1Round","dir":0},{"pos":[70,-10],"type":"Wing1x1Round","dir":0},{"pos":[0,40],"type":"FlameTurret","dir":0},{"pos":[0,0],"type":"PDTurret","dir":0}],"name":"","aiRules":[["Field # at start",3],["@attackTypes enemy within #m","Ram",340],["@capTypes Command Points within #m","Spread to",10000],["Try to field # every # seconds",3,30]]},{"parts":[{"pos":[40,40],"type":"TargetingMod","dir":0},{"pos":[40,80],"type":"HArmor2x2Angle","dir":0},{"pos":[-40,-40],"type":"HArmor2x2AngleBack","dir":0},{"pos":[40,-40],"type":"HArmor2x2AngleBack","dir":0},{"pos":[-40,0],"type":"TargetingMod","dir":0},{"pos":[40,0],"type":"TargetingMod","dir":0},{"pos":[10,-70],"type":"Engine02","dir":0},{"pos":[0,20],"type":"Mount10Range","dir":0},{"pos":[0,-30],"type":"Reactor2x1","dir":0},{"pos":[-10,-70],"type":"Engine02","dir":0},{"pos":[0,80],"type":"EnergyTransfer","dir":0},{"pos":[-40,80],"type":"HArmor2x2Angle","dir":0},{"pos":[-40,40],"type":"ReloaderMod","dir":0},{"pos":[70,50],"type":"Wing1x1Round","dir":0},{"pos":[-70,50],"type":"Wing1x1Round","dir":0},{"pos":[-70,20],"type":"Reactor1x2","dir":0},{"pos":[70,20],"type":"Reactor1x2","dir":0},{"pos":[-90,20],"type":"HArmor1x2","dir":0},{"pos":[90,20],"type":"HArmor1x2","dir":0},{"pos":[-80,-20],"type":"HArmor2x2AngleBack","dir":0},{"pos":[80,-20],"type":"HArmor2x2AngleBack","dir":0},{"pos":[0,20],"type":"FlameTurret","dir":0}],"name":"","aiRules":[["Field # at start",1],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More HP",1000,3000],["@attackTypes enemy that is @absoluteTypes then # within #m","Attack","More HP",100,1300],["@capTypes Command Points within #m","Spread to",10000],["Try to field # every # seconds",1,30]]},{"parts":[{"pos":[-70,-50],"type":"Wing1x1Round","dir":0},{"pos":[70,-50],"type":"Wing1x1Round","dir":0},{"pos":[40,0],"type":"VArmor2x2Angle","dir":0},{"pos":[-10,-70],"type":"Engine01","dir":0},{"pos":[-40,-40],"type":"VArmor2x2","dir":0},{"pos":[-40,0],"type":"VArmor2x2Angle","dir":0},{"pos":[40,-40],"type":"VArmor2x2","dir":0},{"pos":[0,0],"type":"Mount90","dir":0},{"pos":[0,-30],"type":"Battery2x1","dir":0},{"pos":[-50,-80],"type":"VArmor1x1CornerBack","dir":0},{"pos":[-30,-80],"type":"VArmor1x1CornerBack","dir":0},{"pos":[30,-80],"type":"VArmor1x1CornerBack","dir":0},{"pos":[50,-80],"type":"VArmor1x1CornerBack","dir":0},{"pos":[10,-60],"type":"VArmor1x2","dir":0},{"pos":[0,0],"type":"LightBeamTurret","dir":0}],"name":"","aiRules":[["Avoid over #damage shots",10],["Field # at start",4],["Try to field # every # seconds",2,30],["@capTypes Command Points within #m","Protect",10000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","Slower","Less Brawling Value",1500],["Goto @locationTypes","Friendly Army Middle"]]},{"parts":[{"pos":[40,0],"type":"TargetingMod","dir":0},{"pos":[0,0],"type":"Mount180","dir":0},{"pos":[-40,-40],"type":"HArmor2x2AngleBack","dir":0},{"pos":[40,-40],"type":"HArmor2x2AngleBack","dir":0},{"pos":[-40,40],"type":"HArmor2x2Angle","dir":0},{"pos":[40,40],"type":"HArmor2x2Angle","dir":0},{"pos":[-10,-50],"type":"Engine02","dir":0},{"pos":[10,-50],"type":"Engine02","dir":0},{"pos":[-40,0],"type":"TargetingMod","dir":0},{"pos":[0,30],"type":"Battery2x1","dir":0},{"pos":[0,50],"type":"HArmor2x1","dir":0},{"pos":[-70,-10],"type":"Wing1x1Round","dir":0},{"pos":[70,-10],"type":"Wing1x1Round","dir":0},{"pos":[0,0],"type":"FlackTurret","dir":0}],"name":"","aiRules":[["Try to field # every # seconds",1,30],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","More HP","More expensive",10000],["Goto @locationTypes","Enemy Spawn"],["Field # for # of @needTypes at priority #",1,2,"Fighter Counter Need",3]]},{"parts":[],"name":"","aiRules":[]},"",{"parts":[{"pos":[-30,30],"type":"Wing1x1Round","dir":0},{"pos":[-30,-30],"type":"Engine01","dir":0},{"pos":[30,-30],"type":"Engine01","dir":0},{"pos":[0,-30],"type":"Battery2x1","dir":0},{"pos":[0,0],"type":"Mount30","dir":0},{"pos":[30,30],"type":"Wing1x1Round","dir":0},{"pos":[0,30],"type":"HArmor2x1","dir":0},{"pos":[-30,10],"type":"HArmor1x1","dir":0},{"pos":[30,10],"type":"HArmor1x1","dir":0},{"pos":[0,0],"type":"LightBeamTurret","dir":0}],"name":"","aiRules":[]},"","",""];
 ais.all.Flydo = [{"parts":[{"pos":[0,0],"type":"Reactor2x2","dir":0},{"pos":[30,-10],"type":"Engine02","dir":0},{"pos":[0,40],"type":"EnergyTransfer","dir":0},{"pos":[30,40],"type":"HArmor1x2","dir":0},{"pos":[-30,0],"type":"Battery1x2","dir":0},{"pos":[-30,40],"type":"HArmor1x2","dir":0}],"name":"","aiRules":[["Field # for # of ship in slot # at priority #",1,2,2,1],["Find units that are out of energy"],["Stay in #m range of slot # units",500,2]]},{"parts":[{"pos":[0,0],"type":"Mount360","dir":0},{"pos":[50,-30],"type":"Battery1x1","dir":0},{"pos":[20,-40],"type":"TargetingMod","dir":0},{"pos":[40,0],"type":"TargetingMod","dir":0},{"pos":[20,40],"type":"BulletSpeedMod","dir":0},{"pos":[-40,0],"type":"TargetingMod","dir":0},{"pos":[-50,-50],"type":"Engine02","dir":0},{"pos":[-20,40],"type":"DamageMod","dir":0},{"pos":[-20,-40],"type":"ReloaderMod","dir":0},{"pos":[-50,40],"type":"HArmor1x2","dir":0},{"pos":[50,40],"type":"HArmor1x2","dir":0},{"pos":[50,-50],"type":"HArmor1x1","dir":0},{"pos":[0,0],"type":"MissileTurret","dir":0}],"name":"","aiRules":[["Field # at start",2],["Try to field # every # seconds",1,30],["@attackTypes enemy within #m","Attack",2700],["@capTypes Command Points within #m","Spread to",10000]]},{"parts":[{"pos":[10,-50],"type":"Engine02","dir":0},{"pos":[-40,30],"type":"Wing2x1","dir":0},{"pos":[40,0],"type":"Mount30","dir":0},{"pos":[-40,-30],"type":"Battery2x1","dir":0},{"pos":[0,0],"type":"ReloaderMod","dir":0},{"pos":[40,-30],"type":"Battery2x1","dir":0},{"pos":[40,30],"type":"Wing2x1","dir":0},{"pos":[-40,0],"type":"Mount30","dir":0},{"pos":[-10,-50],"type":"Engine02","dir":0},{"pos":[-40,-50],"type":"HArmor2x1","dir":0},{"pos":[40,-50],"type":"HArmor2x1","dir":0},{"pos":[0,30],"type":"HArmor2x1","dir":0},{"pos":[-40,0],"type":"LightBeamTurret","dir":0},{"pos":[40,0],"type":"LightBeamTurret","dir":0}],"name":"","aiRules":[["Field # for # of ship in slot # at priority #",1,1,2,1],["When #% of energy, @chargeTypes",50,"Find recharger"],["@capTypes Command Points within #m","Protect",1000],["@capTypes Command Points within #m","Capture",10000],["Goto @locationTypes","Friendly Army Middle"]]},"","","","","","",""];
 ais.all.Furia = [{"parts":[{"pos":[-70,-20],"type":"Battery1x2","dir":0},{"pos":[-100,20],"type":"VArmor2x2Angle","dir":0},{"pos":[70,60],"type":"Wing1x2","dir":0},{"pos":[-70,20],"type":"Battery1x2","dir":0},{"pos":[70,20],"type":"Battery1x2","dir":0},{"pos":[-40,0],"type":"ReloaderMod","dir":0},{"pos":[0,-20],"type":"ReloaderMod","dir":0},{"pos":[-70,60],"type":"Wing1x2","dir":0},{"pos":[40,0],"type":"ReloaderMod","dir":0},{"pos":[70,-20],"type":"Battery1x2","dir":0},{"pos":[0,20],"type":"Mount360","dir":0},{"pos":[40,40],"type":"ReloaderMod","dir":0},{"pos":[-40,40],"type":"ReloaderMod","dir":0},{"pos":[-40,-80],"type":"Engine07","dir":0},{"pos":[40,-80],"type":"Engine07","dir":0},{"pos":[0,-60],"type":"Battery2x2","dir":0},{"pos":[40,90],"type":"Wing2x1","dir":0},{"pos":[-40,90],"type":"Wing2x1","dir":0},{"pos":[-100,-20],"type":"VArmor2x2Angle","dir":0},{"pos":[-80,-60],"type":"VArmor2x2Angle","dir":0},{"pos":[80,-60],"type":"VArmor2x2Angle","dir":0},{"pos":[100,-20],"type":"VArmor2x2Angle","dir":0},{"pos":[100,20],"type":"VArmor2x2Angle","dir":0},{"pos":[-90,-100],"type":"VArmor1x1CornerBack","dir":0},{"pos":[-70,-100],"type":"VArmor1x1CornerBack","dir":0},{"pos":[70,-100],"type":"VArmor1x1CornerBack","dir":0},{"pos":[90,-100],"type":"VArmor1x1CornerBack","dir":0},{"pos":[0,60],"type":"ReloaderMod","dir":0},{"pos":[40,-40],"type":"Battery2x2","dir":0},{"pos":[-40,-40],"type":"Battery2x2","dir":0},{"pos":[-40,70],"type":"Battery2x1","dir":0},{"pos":[40,70],"type":"Battery2x1","dir":0},{"pos":[10,-140],"type":"VArmor1x1CornerBack","dir":0},{"pos":[-10,-140],"type":"VArmor1x1CornerBack","dir":0},{"pos":[0,-100],"type":"VArmor2x2","dir":0},{"pos":[-10,100],"type":"VArmor1x2Corner4","dir":0},{"pos":[10,100],"type":"VArmor1x2Corner4","dir":0},{"pos":[0,20],"type":"HeavyBeamTurret","dir":0}],"name":"","aiRules":[["Avoid over #damage shots",10],["@attackTypes enemy within #m","Kite",1000],["Stay in #m range of slot # units",150,5],["When #% of energy, @chargeTypes",80,"Find recharger"],["Field # at start",1],["Try to field # every # seconds",2,20],["@capTypes command points within #m","Guard",10000]]},{"parts":[{"pos":[100,80],"type":"HArmor2x2","dir":0},{"pos":[20,80],"type":"HArmor2x2","dir":0},{"pos":[100,-40],"type":"BulletSpeedMod","dir":0},{"pos":[40,0],"type":"Mount30","dir":0},{"pos":[-80,0],"type":"Mount30","dir":0},{"pos":[-40,0],"type":"Mount30","dir":0},{"pos":[-100,-40],"type":"BulletSpeedMod","dir":0},{"pos":[-20,40],"type":"BulletSpeedMod","dir":0},{"pos":[20,40],"type":"BulletSpeedMod","dir":0},{"pos":[-30,-50],"type":"Engine02","dir":0},{"pos":[30,-50],"type":"Engine02","dir":0},{"pos":[-140,40],"type":"BulletSpeedMod","dir":0},{"pos":[80,0],"type":"Mount30","dir":0},{"pos":[170,40],"type":"HArmor1x2","dir":0},{"pos":[140,40],"type":"BulletSpeedMod","dir":0},{"pos":[-170,80],"type":"Wing1x2","dir":0},{"pos":[170,80],"type":"Wing1x2","dir":0},{"pos":[-140,80],"type":"HArmor2x2","dir":0},{"pos":[-170,40],"type":"HArmor1x2","dir":0},{"pos":[-100,80],"type":"HArmor2x2","dir":0},{"pos":[-60,80],"type":"HArmor2x2","dir":0},{"pos":[60,80],"type":"HArmor2x2","dir":0},{"pos":[-20,80],"type":"HArmor2x2","dir":0},{"pos":[140,80],"type":"HArmor2x2","dir":0},{"pos":[0,-40],"type":"HArmor2x2","dir":0},{"pos":[-120,0],"type":"Mount30","dir":0},{"pos":[120,0],"type":"Mount30","dir":0},{"pos":[0,0],"type":"Mount30","dir":0},{"pos":[-100,40],"type":"BulletSpeedMod","dir":0},{"pos":[-60,40],"type":"BulletSpeedMod","dir":0},{"pos":[60,40],"type":"BulletSpeedMod","dir":0},{"pos":[100,40],"type":"BulletSpeedMod","dir":0},{"pos":[140,-40],"type":"BulletSpeedMod","dir":0},{"pos":[60,-40],"type":"BulletSpeedMod","dir":0},{"pos":[-60,-40],"type":"BulletSpeedMod","dir":0},{"pos":[-140,-40],"type":"BulletSpeedMod","dir":0},{"pos":[-170,-10],"type":"Engine02","dir":0},{"pos":[170,-10],"type":"Engine02","dir":0},{"pos":[-150,0],"type":"Battery1x2","dir":0},{"pos":[150,0],"type":"Battery1x2","dir":0},{"pos":[-120,0],"type":"ArtilleryTurret","dir":0},{"pos":[-80,0],"type":"ArtilleryTurret","dir":0},{"pos":[-40,0],"type":"ArtilleryTurret","dir":0},{"pos":[0,0],"type":"ArtilleryTurret","dir":0},{"pos":[40,0],"type":"ArtilleryTurret","dir":0},{"pos":[80,0],"type":"ArtilleryTurret","dir":0},{"pos":[120,0],"type":"ArtilleryTurret","dir":0}],"name":"","aiRules":[["Field # at start",1],["Try to field # every # seconds",1,60],["When #% of energy, @chargeTypes",20,"find recharger"],["Stay in #m range of friendly units",1000],["@attackTypes enemy within #m","Attack",3000],["Goto @locationTypes","Enemy Home Point"],["Field # for # of ship in slot # at priority #",1,1,1,3]]},{"parts":[{"pos":[-30,-40],"type":"Engine04","dir":0},{"pos":[50,-10],"type":"Wing1x1Round","dir":0},{"pos":[0,40],"type":"Mount90","dir":0},{"pos":[0,-40],"type":"EnergyTransfer","dir":0},{"pos":[0,0],"type":"Reactor2x2","dir":0},{"pos":[-50,-10],"type":"Wing1x1Round","dir":0},{"pos":[-40,20],"type":"Mount30","dir":0},{"pos":[40,20],"type":"Mount30","dir":0},{"pos":[30,-40],"type":"Engine04","dir":0},{"pos":[-30,-10],"type":"Solar1x1","dir":0},{"pos":[30,-10],"type":"Solar1x1","dir":0},{"pos":[0,40],"type":"PDTurret","dir":0},{"pos":[-40,20],"type":"TorpTurret","dir":0},{"pos":[40,20],"type":"TorpTurret","dir":0}],"name":"","aiRules":[["Avoid over #damage @bulletTypes shots",20,"PD immune"],["Find units that are out of energy"],["Stay in #m range of slot # units",600,1],["Stayaway in #m range from slot # units",400,3],["Field # for # of ship in slot # at priority #",1,2,1,2],["Field # at start",2],["Field # for # of ship in slot # at priority #",1,1,2,2],["Try to field # every # seconds",1,50]]},{"parts":[{"pos":[0,0],"type":"Mount90","dir":0},{"pos":[0,-30],"type":"UArmor2x1","dir":0},{"pos":[30,-40],"type":"Engine03","dir":0},{"pos":[30,0],"type":"Wing1x2","dir":0},{"pos":[-30,-20],"type":"Battery1x2","dir":0},{"pos":[0,0],"type":"LightBeamTurret","dir":0}],"name":"","aiRules":[["Try to field # every # seconds",3,90],["Avoid over #damage shots",30],["@capTypes command points within #m","Capture",1000],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Attack","---","less brawling value",400],["When #% of energy, @chargeTypes",10,"find recharger"],["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Flee","stronger","more brawling value",3000],["@capTypes command points within #m","Spread to",10000],["Field # at start",1]]},{"parts":[{"pos":[-50,0],"type":"Battery1x2","dir":0},{"pos":[50,0],"type":"Battery1x2","dir":0},{"pos":[40,40],"type":"Mount30","dir":0},{"pos":[-40,80],"type":"Mount30","dir":0},{"pos":[40,80],"type":"Mount30","dir":0},{"pos":[-40,40],"type":"Mount30","dir":0},{"pos":[0,60],"type":"Mount30","dir":0},{"pos":[0,20],"type":"Mount30","dir":0},{"pos":[30,0],"type":"Battery1x2","dir":0},{"pos":[-30,0],"type":"Battery1x2","dir":0},{"pos":[0,-20],"type":"Engine07","dir":0},{"pos":[80,0],"type":"HArmor2x2","dir":0},{"pos":[80,40],"type":"HArmor2x2Angle","dir":0},{"pos":[-80,0],"type":"HArmor2x2","dir":0},{"pos":[-80,40],"type":"HArmor2x2Angle","dir":0},{"pos":[-10,90],"type":"Wing1x1Round","dir":0},{"pos":[10,90],"type":"Wing1x1Round","dir":0},{"pos":[-40,80],"type":"LightBeamTurret","dir":0},{"pos":[0,60],"type":"LightBeamTurret","dir":0},{"pos":[40,80],"type":"LightBeamTurret","dir":0},{"pos":[0,20],"type":"LightBeamTurret","dir":0},{"pos":[40,40],"type":"LightBeamTurret","dir":0},{"pos":[-40,40],"type":"LightBeamTurret","dir":0}],"name":"","aiRules":[["@attackTypes enemy that is @relativeTypes and @relativeTypes within #m","Ram","slower","more HP",5000],["Field # for # of ship in slot # at priority #",1,3,1,1],["Field # for # of ship in slot # at priority #",1,3,1,1],["Field # for # of ship in slot # at priority #",1,3,1,1],["Goto @locationTypes","friendly army middle"]]},"","","","",""];
@@ -18288,1042 +17670,3 @@ ais.all.nulitor = [{"parts":[{"pos":[0,0],"type":"Mount30","dir":0},{"pos":[-10,
 }).call(this);
 ;
 
-//from src/battle.js
-// Generated by CoffeeScript 1.10.0
-(function() {
-  var MAX_ZOOM_IN,
-    bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    hasProp = {}.hasOwnProperty;
-
-  MAX_ZOOM_IN = .5;
-
-  window.GameMode = (function() {
-    function GameMode() {}
-
-    GameMode.prototype.toGameSpace = function(point) {
-      point[0] = point[0] - window.innerWidth / 2;
-      point[1] = window.innerHeight / 2 - point[1];
-      v2.scale(point, this.zoom * 2);
-      v2.sub(point, this.focus);
-      return point;
-    };
-
-    GameMode.prototype.fromGameSpace = function(point) {
-      point = v2.create(point);
-      v2.add(point, this.focus);
-      v2.scale(point, 1 / (this.zoom * 2));
-      point[0] = point[0] + window.innerWidth / 2;
-      point[1] = -point[1] + window.innerHeight / 2;
-      return point;
-    };
-
-    return GameMode;
-
-  })();
-
-  window.ControlsMode = (function(superClass) {
-    extend(ControlsMode, superClass);
-
-    function ControlsMode() {
-      this.onzoom = bind(this.onzoom, this);
-      this.onkeyup = bind(this.onkeyup, this);
-      this.onkeydown = bind(this.onkeydown, this);
-      return ControlsMode.__super__.constructor.apply(this, arguments);
-    }
-
-    ControlsMode.prototype.keyScroll = [0, 0];
-
-    ControlsMode.prototype.keyZoom = 0;
-
-    ControlsMode.prototype.panLeft = 0;
-
-    ControlsMode.prototype.panRight = 0;
-
-    ControlsMode.prototype.panUp = 0;
-
-    ControlsMode.prototype.panDown = 0;
-
-    ControlsMode.prototype.zoomIn = 0;
-
-    ControlsMode.prototype.zoomOut = 0;
-
-    ControlsMode.prototype.mapBounds = 10000;
-
-    ControlsMode.prototype.onkeydown = function(e) {
-      if (settings.key(e, "Pan Map")) {
-        this.moving = true;
-      } else if (settings.key(e, "Up")) {
-        this.panUp = -1;
-      } else if (settings.key(e, "Down")) {
-        this.panDown = 1;
-      } else if (settings.key(e, "Left")) {
-        this.panLeft = 1;
-      } else if (settings.key(e, "Right")) {
-        this.panRight = -1;
-      } else if (settings.key(e, "Zoom In")) {
-        this.zoomIn = -1;
-      } else if (settings.key(e, "Zoom Out")) {
-        this.zoomOut = 1;
-      } else {
-        return;
-      }
-      return e.preventDefault();
-    };
-
-    ControlsMode.prototype.onkeyup = function(e) {
-      if (settings.key(e, "Pan Map")) {
-        this.moving = false;
-      }
-      if (settings.key(e, "Up")) {
-        this.panUp = 0;
-      }
-      if (settings.key(e, "Down")) {
-        this.panDown = 0;
-      }
-      if (settings.key(e, "Left")) {
-        this.panLeft = 0;
-      }
-      if (settings.key(e, "Right")) {
-        this.panRight = 0;
-      }
-      if (settings.key(e, "Zoom In")) {
-        this.zoomIn = 0;
-      }
-      if (settings.key(e, "Zoom Out")) {
-        this.zoomOut = 0;
-      }
-      if (settings.key(e, "Focus on Units")) {
-        return this.centerOnUnit = false;
-      }
-    };
-
-    ControlsMode.prototype.onzoom = function(delta, e) {
-      var afterPos, beforePos, z;
-      beforePos = this.toGameSpace([e.clientX, e.clientY]);
-      z = .10;
-      this.zoom += delta * settings.speedValue("Zoom Speed") * z;
-      if (this.zoom < MAX_ZOOM_IN) {
-        this.zoom = MAX_ZOOM_IN;
-      }
-      if (this.zoom > 10) {
-        this.zoom = 10;
-      }
-      afterPos = this.toGameSpace([e.clientX, e.clientY]);
-      this.focus[0] -= beforePos[0] - afterPos[0];
-      return this.focus[1] -= beforePos[1] - afterPos[1];
-    };
-
-    ControlsMode.prototype.controls = function() {
-      var a, edge, j, len, numSel, ref, ref1, speed, thing, z;
-      if (!commander) {
-        return;
-      }
-      this.keyScroll[0] *= .8;
-      this.keyScroll[1] *= .8;
-      a = 10 * this.zoom * settings.speedValue("Scroll Speed");
-      this.keyScroll[1] += (this.panUp + this.panDown) * a;
-      this.keyScroll[0] += (this.panLeft + this.panRight) * a;
-      v2.add(this.focus, this.keyScroll);
-      if (v2.mag(this.focus) > this.mapBounds) {
-        this.focus[0] -= this.focus[0] * .003;
-        this.focus[1] -= this.focus[1] * .003;
-      }
-      this.keyZoom *= .9;
-      z = .02;
-      this.keyZoom += (this.zoomIn + this.zoomOut) * z * settings.speedValue("Scroll Speed");
-      this.zoom += this.keyZoom;
-      if (this.zoom < MAX_ZOOM_IN) {
-        this.zoom = MAX_ZOOM_IN;
-      }
-      if (this.zoom > 10) {
-        this.zoom = 10;
-      }
-      numSel = (ref = commander.selection) != null ? ref.length : void 0;
-      if (this.centerOnUnit && numSel > 0) {
-        this.focus[0] = 0;
-        this.focus[1] = 0;
-        ref1 = commander.selection;
-        for (j = 0, len = ref1.length; j < len; j++) {
-          thing = ref1[j];
-          this.focus[0] -= thing.pos[0] / numSel;
-          this.focus[1] -= thing.pos[1] / numSel;
-        }
-      }
-      if (isFullScreen() && (ui.mode === "battle" || ui.mode === "galaxy")) {
-        speed = 20 * this.zoom * settings.speedValue("Scroll Speed");
-        edge = 2;
-        if (this.screenMouse[0] < edge) {
-          this.keyScroll[0] += speed;
-        }
-        if (this.screenMouse[0] > window.innerWidth - edge) {
-          this.keyScroll[0] -= speed;
-        }
-        if (this.screenMouse[1] < edge) {
-          this.keyScroll[1] -= speed;
-        }
-        if (this.screenMouse[1] > window.innerHeight - edge) {
-          return this.keyScroll[1] += speed;
-        }
-      }
-    };
-
-    return ControlsMode;
-
-  })(GameMode);
-
-  window.BattleMode = (function(superClass) {
-    extend(BattleMode, superClass);
-
-    function BattleMode(player1) {
-      this.player = player1;
-      this.onkeyup = bind(this.onkeyup, this);
-      this.onkeydown = bind(this.onkeydown, this);
-      this.onmouseup = bind(this.onmouseup, this);
-      this.onmousedown = bind(this.onmousedown, this);
-      this.ondblclick = bind(this.ondblclick, this);
-      this.canvas = document.getElementById("webGL");
-      this.selection = document.getElementById("selection");
-      this.reset();
-    }
-
-    BattleMode.prototype.reset = function() {
-      this.selectAt = v2.create();
-      this.savedSelections = {};
-      this.selecting = false;
-      this.moving = false;
-      this.drawing = false;
-      this.ordering = false;
-      this.shiftOrder = false;
-      this.panLeft = 0;
-      this.panRight = 0;
-      this.panUp = 0;
-      this.panDown = 0;
-      this.zoomIn = 0;
-      this.zoomOut = 0;
-      this.zoom = 5;
-      this.focus = v2.create();
-      this.lastMouseMove = 0;
-      this.mouse = v2.create();
-      this.screenMouse = v2.create();
-      this.placeingCls = null;
-      this.drawPoints = [];
-      this.movePoints = [];
-      return this.orderId = 0;
-    };
-
-    BattleMode.prototype.genOrderId = function() {
-      var o;
-      o = this.orderId;
-      this.orderId += 2;
-      return o;
-    };
-
-    BattleMode.prototype.startNewLocal = function() {
-      var base;
-      this.reset();
-      bubbles.clear();
-      ui.go("battle");
-      if (window.network != null) {
-        if (typeof (base = window.network).close === "function") {
-          base.close();
-        }
-      }
-      window.intp = new Interpolator();
-      window.sim = new Sim();
-      sim.sound = true;
-      sim.local = true;
-      intp.local = true;
-      window.network = new Local();
-      if (typeof network !== "undefined" && network !== null) {
-        network.sendPlayer();
-      }
-      sim.generateMap(.5, 1, 0);
-      sim.extra = function() {
-        if (sim.winningSide) {
-          return bubbles.clear();
-        }
-      };
-      return sim.start();
-    };
-
-    BattleMode.prototype.startAIChallange = function(challangeName) {
-      var base, player;
-      this.reset();
-      if (window.network != null) {
-        if (typeof (base = window.network).close === "function") {
-          base.close();
-        }
-      }
-      window.network = new Local();
-      ui.go("battle");
-      window.intp = new Interpolator();
-      window.sim = new Sim("challenge");
-      sim.sound = true;
-      sim.local = true;
-      sim.challenge = challangeName;
-      intp.local = true;
-      intp.theme = sim.theme;
-      player = ais.useAi(challangeName, "beta");
-      if (typeof network !== "undefined" && network !== null) {
-        network.sendPlayer();
-      }
-      sim.start();
-      return intp.gameEnded = function() {
-        if (intp.winningSide === "alpha") {
-          if ((commander.challenges[challangeName] == null) || commander.challenges[challangeName] > sim.step) {
-            commander.challenges[challangeName] = sim.step;
-          }
-          control.savePlayer();
-        }
-        return ui.go("challenges");
-      };
-    };
-
-    BattleMode.prototype.joinServer = function(serverName) {
-      var base, ref;
-      this.serverName = serverName;
-      this.reset();
-      this.server = (ref = rootNet.servers) != null ? ref[this.serverName] : void 0;
-      if (!this.server) {
-        console.log("server not found");
-        return;
-      }
-      ui.go("battleroom");
-      ui.pickingLobbyAiSide = false;
-      track("join_server", {
-        server: this.server.name
-      });
-      bubbles.clear();
-      window.intp = new Interpolator();
-      intp.local = false;
-      window.sim = intp;
-      window.sim.battleType = "multiplayer";
-      if (window.network != null) {
-        if (typeof (base = window.network).close === "function") {
-          base.close();
-        }
-      }
-      window.network = new Connection(this.server.address);
-      return actionMixer.reset();
-    };
-
-    BattleMode.prototype.joinLocal = function() {
-      var base;
-      if (!sim.local || sim.galaxyStar || sim.challenge) {
-        this.reset();
-        bubbles.clear();
-        if (window.network != null) {
-          if (typeof (base = window.network).close === "function") {
-            base.close();
-          }
-        }
-        window.network = new Local();
-        window.intp = new Interpolator();
-        window.sim = new Sim();
-        sim.sound = true;
-        sim.local = true;
-        intp.local = true;
-        sim.generateMap();
-      } else {
-        sim.winningSide = false;
-        sim.endOfGame();
-      }
-      ui.go("battleroom");
-      return after(0, function() {
-        print("here?");
-        network.sendPlayer();
-        return network.send("switchSide", "alpha");
-      });
-    };
-
-    BattleMode.prototype.onmousemove = function(e) {
-      var b, dx, dy, end, endx, endy, id, ifHasFilter, index, j, len, need_tip, now, ref, ref1, ref2, ref3, ref4, selected, start, startx, starty, t, thing, unit, x, y;
-      if (!this.player) {
-        return;
-      }
-      this.screenMouse = [e.clientX, e.clientY];
-      this.mouse = this.toGameSpace([this.screenMouse[0], this.screenMouse[1]]);
-      now = Date.now();
-      if (this.lastMouseMove < now - 1000 / 16) {
-        this.lastMouseMove = now;
-        if (typeof network !== "undefined" && network !== null) {
-          network.send("mouseMove", this.mouse, this.selecting || this.ordering);
-        }
-      }
-      if (this.selecting) {
-        this.selection.style.display = "block";
-        startx = Math.min(this.selectAt[0], e.clientX);
-        starty = Math.min(this.selectAt[1], e.clientY);
-        endx = Math.max(this.selectAt[0], e.clientX);
-        endy = Math.max(this.selectAt[1], e.clientY);
-        this.selection.style.left = startx + "px";
-        this.selection.style.top = starty + "px";
-        this.selection.style.width = -startx + endx + "px";
-        this.selection.style.height = -starty + endy + "px";
-        start = this.toGameSpace([startx, starty]);
-        end = this.toGameSpace([endx, endy]);
-        selected = [];
-        if (v2.distance([startx, starty], [endx, endy]) < 10) {
-          unit = this.closestUnit(start);
-          if (unit) {
-            selected.push(unit);
-          }
-        } else {
-          ref = intp.things;
-          for (id in ref) {
-            thing = ref[id];
-            if ((start[0] < (ref1 = thing.pos[0]) && ref1 < end[0]) && (start[1] > (ref2 = thing.pos[1]) && ref2 > end[1])) {
-              selected.push(thing);
-            }
-          }
-        }
-        if (this.selectAdd) {
-          ref3 = commander.selection;
-          for (j = 0, len = ref3.length; j < len; j++) {
-            thing = ref3[j];
-            selected.push(thing);
-          }
-        }
-        ifHasFilter = function(selected, fn) {
-          var has, k, l, len1, len2, newSelected, t;
-          has = false;
-          for (k = 0, len1 = selected.length; k < len1; k++) {
-            t = selected[k];
-            if (fn(t)) {
-              has = true;
-            }
-          }
-          if (!has) {
-            return selected;
-          }
-          newSelected = [];
-          for (l = 0, len2 = selected.length; l < len2; l++) {
-            t = selected[l];
-            if (fn(t)) {
-              newSelected.push(t);
-            }
-          }
-          return newSelected;
-        };
-        selected = (function() {
-          var k, len1, results;
-          results = [];
-          for (k = 0, len1 = selected.length; k < len1; k++) {
-            t = selected[k];
-            if (t.unit) {
-              results.push(t);
-            }
-          }
-          return results;
-        })();
-        selected = ifHasFilter(selected, function(u) {
-          return u.owner === commander.id;
-        });
-        selected.sort(function(a, b) {
-          return a.id - b.id;
-        });
-        this.selectUnitsFake(selected);
-      }
-      if (this.moving) {
-        dx = e.movementX;
-        dy = e.movementY;
-        if (dx === void 0) {
-          dx = e.mozMovementX;
-        }
-        if (dy === void 0) {
-          dy = e.mozMovementY;
-        }
-        this.focus[0] += dx * this.zoom * 2;
-        this.focus[1] -= dy * this.zoom * 2;
-      }
-      if (this.ordering) {
-        this.drawPoints.push(this.toGameSpace([e.clientX, e.clientY]));
-      }
-      need_tip = null;
-      if (e.clientY > window.innerHeight - 84 && !tutor.buildBarHide()) {
-        index = Math.floor((e.clientX - window.innerWidth / 2) / 84 + 5);
-        if (index >= 0 && index < 10) {
-          need_tip = {
-            bottom: 84 + 28,
-            x: window.innerWidth / 2 + (index - 5) * 84 - 43,
-            width: 240,
-            stem: "center",
-            modeOnly: "battle",
-            html: function() {
-              var spec, valid;
-              spec = commander.buildBar[index];
-              valid = commander.validBar[index];
-              return unitInfoSmall(spec, valid);
-            }
-          };
-        }
-      }
-      if (this.tip) {
-        b = this.tipBounds;
-        x = this.screenMouse[0];
-        y = this.screenMouse[1];
-        if (x < b.left || x > b.right || y < b.top || y > b.bottom) {
-          this.tipBounds = null;
-          this.tip = null;
-        }
-        need_tip = {
-          bottom: window.innerHeight - b.top,
-          x: (b.left + b.right) / 2 - 140 / 2 + 20,
-          width: 160,
-          stem: "center",
-          modeOnly: "battle",
-          html: this.tip
-        };
-      }
-      if (((ref4 = bubbles.tip) != null ? ref4.x : void 0) !== (need_tip != null ? need_tip.x : void 0)) {
-        bubbles.tip = need_tip;
-        return onecup.refresh();
-      }
-    };
-
-    BattleMode.prototype.selectUnitsFake = function(things) {
-      var j, len, ref, selected, selectedIds, t;
-      selectedIds = [];
-      selected = [];
-      for (j = 0, len = things.length; j < len; j++) {
-        t = things[j];
-        if (selectedIds.indexOf(t.id) === -1) {
-          selectedIds.push(t.id);
-          selected.push(t);
-        }
-      }
-      commander.selection = selected;
-      return (ref = intp.players[commander.id]) != null ? ref.selection = selected : void 0;
-    };
-
-    BattleMode.prototype.selectUnits = function(things) {
-      var ids, t;
-      ids = (function() {
-        var j, len, results;
-        results = [];
-        for (j = 0, len = things.length; j < len; j++) {
-          t = things[j];
-          if (intp.things[t.id]) {
-            results.push(t.id);
-          }
-        }
-        return results;
-      })();
-      return this.selectThings(things, ids);
-    };
-
-    BattleMode.prototype.selectUnitsIds = function(ids) {
-      var id, j, len, t, things;
-      things = [];
-      for (j = 0, len = ids.length; j < len; j++) {
-        id = ids[j];
-        t = intp.things[id];
-        if (t) {
-          things.push(t);
-        }
-      }
-      return this.selectThings(things, ids);
-    };
-
-    BattleMode.prototype.selectThings = function(things, ids) {
-      var ref;
-      commander.selection = things;
-      if ((ref = intp.players[commander.number]) != null) {
-        ref.selection = things;
-      }
-      return network.send("playerSelected", ids);
-    };
-
-    BattleMode.prototype.ondblclick = function(e) {
-      var at, id, j, len, ref, ref1, selected, thing, unit;
-      if (e.which !== 1) {
-        return;
-      }
-      at = this.toGameSpace([e.clientX, e.clientY]);
-      unit = this.closestUnit(at);
-      if (!unit) {
-        return;
-      }
-      selected = [];
-      ref = intp.things;
-      for (id in ref) {
-        thing = ref[id];
-        if (JSON.stringify(thing.spec) === JSON.stringify(unit.spec) && thing.owner === unit.owner) {
-          selected.push(thing);
-        }
-      }
-      if (e.shiftKey) {
-        ref1 = commander.selection;
-        for (j = 0, len = ref1.length; j < len; j++) {
-          thing = ref1[j];
-          selected.push(thing);
-        }
-      }
-      this.selectUnits(selected);
-      return this.selecting = false;
-    };
-
-    BattleMode.prototype.onmousedown = function(e) {
-      var ref;
-      if (e.which === 1) {
-        if (e.clientY > window.innerHeight - 84 - 42) {
-          return;
-        }
-      }
-      if (!this.player) {
-        return;
-      }
-      if (this.rallyPlacing && (e.which === 1 || e.which === 3)) {
-        network.send("setRallyPoint", this.mouse);
-        commander.rallyPoint = v2.create(this.mouse);
-        if ((ref = intp.players[commander.number]) != null) {
-          ref.rallyPoint = v2.create(this.mouse);
-        }
-        this.rallyPlacing = false;
-        onecup.refresh();
-        return;
-      }
-      if (e.which === 1) {
-        this.selectAt[0] = e.clientX;
-        this.selectAt[1] = e.clientY;
-        this.selecting = true;
-        this.selectAdd = e.shiftKey;
-      }
-      if (e.which === 2) {
-        this.moving = true;
-      }
-      if (e.which === 3) {
-        this.ordering = true;
-        this.shiftOrder = e.shiftKey;
-        this.drawPoints = [this.toGameSpace([e.clientX, e.clientY])];
-      }
-      e.preventDefault();
-      return false;
-    };
-
-    BattleMode.prototype.onmouseup = function(e) {
-      if (!this.player) {
-        return;
-      }
-      this.moving = false;
-      this.drawing = false;
-      if (this.ordering) {
-        this.sendMoveOrder(e.shiftKey);
-        this.ordering = false;
-      }
-      this.drawPoints = [];
-      if (this.selecting) {
-        window.onmousemove(e);
-        this.selecting = false;
-        this.selectUnits(commander.selection);
-      }
-      this.selection.style.display = "none";
-      e.preventDefault();
-      return false;
-    };
-
-    BattleMode.prototype.onkeydown = function(e) {
-      var id, j, len, number, ref, ref1, selectedIds, t, thing;
-      BattleMode.__super__.onkeydown.call(this, e);
-      this.shiftOrder = e.shiftKey;
-      if (settings.key(e, "Line Move")) {
-        this.drawPoints.push(this.mouse);
-        this.ordering = true;
-      } else if (settings.key(e, "Select") && !this.selecting) {
-        this.selectAt[0] = this.screenMouse[0];
-        this.selectAt[1] = this.screenMouse[1];
-        this.selecting = true;
-        this.selectAdd = e.shiftKey;
-      } else if (e.which === 9) {
-        this.showOverlay();
-      } else if (settings.key(e, "Stop Units")) {
-        this.stopOrder();
-      } else if (settings.key(e, "Hold Position")) {
-        this.holdPositionOrder();
-      } else if (settings.key(e, "Self Destruct")) {
-        this.selfDestructOrder();
-      } else if (settings.key(e, "Focus Fire/Follow")) {
-        this.follow = !this.follow;
-      } else if (settings.key(e, "Place Rally Point")) {
-        this.rallyPlacing = !this.rallyPlacing;
-      } else if (e.which >= 48 && e.which <= 57) {
-        number = e.which - 49;
-        if (number === -1) {
-          number = 9;
-        }
-        if (e.ctrlKey && e.altKey) {
-          this.copySelected(number);
-        } else if (e.altKey) {
-          if (commander.validBar[number]) {
-            network.send("buildRq", number, 1);
-          }
-        } else if (e.ctrlKey) {
-          this.savedSelections[number] = (function() {
-            var j, len, ref, results;
-            ref = this.player.selection;
-            results = [];
-            for (j = 0, len = ref.length; j < len; j++) {
-              t = ref[j];
-              results.push(t.id);
-            }
-            return results;
-          }).call(this);
-        } else {
-          selectedIds = this.savedSelections[number] || [];
-          if (selectedIds.length === 0) {
-            ref = intp.things;
-            for (id in ref) {
-              thing = ref[id];
-              if (thing.owner === commander.number && thing.spec === commander.buildBar[number]) {
-                selectedIds.push(id);
-              }
-            }
-          }
-          if (e.shiftKey) {
-            ref1 = commander.selection;
-            for (j = 0, len = ref1.length; j < len; j++) {
-              thing = ref1[j];
-              selectedIds.push(thing.id);
-            }
-          }
-          this.selectUnitsIds(selectedIds);
-        }
-      } else if (settings.key(e, "Focus on Units")) {
-        this.centerOnUnit = true;
-      } else if (settings.key(e, "Pause") || e.which === 19) {
-        sim.paused = !(sim.paused === true);
-      } else {
-        return;
-      }
-      return e.preventDefault();
-    };
-
-    BattleMode.prototype.onkeyup = function(e) {
-      BattleMode.__super__.onkeyup.call(this, e);
-      if (this.selecting) {
-        this.selection.style.display = "none";
-        this.selecting = false;
-      }
-      if (settings.key(e, "Line Move")) {
-        this.sendMoveOrder(e.shiftKey);
-        this.ordering = false;
-        this.drawing = false;
-        this.drawPoints = [];
-      }
-      if (settings.key(e, "Toggle Roster")) {
-        this.hideOverlay();
-      }
-      if (settings.key(e, "Focus on Units")) {
-        this.centerOnUnit = false;
-      }
-      return this.shiftOrder = false;
-    };
-
-    BattleMode.prototype.stopOrder = function() {
-      return network.send("stopOrder");
-    };
-
-    BattleMode.prototype.holdPositionOrder = function() {
-      return network.send("holdPositionOrder");
-    };
-
-    BattleMode.prototype.followOrder = function(unit, shiftKey) {
-      var i, id, j, len, ref, results, t;
-      id = this.genOrderId();
-      network.send("followOrder", unit.id, shiftKey, id);
-      ref = commander.selection;
-      results = [];
-      for (i = j = 0, len = ref.length; j < len; i = ++j) {
-        t = ref[i];
-        if (t.owner === commander.number) {
-          if (!shiftKey) {
-            t.preOrders = [];
-          }
-          results.push(t.preOrders.push({
-            type: "Follow",
-            targetId: unit.id,
-            id: id
-          }));
-        } else {
-          results.push(void 0);
-        }
-      }
-      return results;
-    };
-
-    BattleMode.prototype.selfDestructOrder = function() {
-      return network.send("selfDestructOrder");
-    };
-
-    BattleMode.prototype.moveOrder = function(formation, shiftKey) {
-      var i, id, j, len, ref, results, t;
-      id = this.genOrderId();
-      network.send("moveOrder", formation, shiftKey, id);
-      ref = commander.selection;
-      results = [];
-      for (i = j = 0, len = ref.length; j < len; i = ++j) {
-        t = ref[i];
-        if (t.owner === commander.number) {
-          if (!shiftKey) {
-            t.preOrders = [];
-          }
-          results.push(t.preOrders.push({
-            type: "Move",
-            dest: formation[i],
-            id: id
-          }));
-        } else {
-          results.push(void 0);
-        }
-      }
-      return results;
-    };
-
-    BattleMode.prototype.sendMoveOrder = function(shiftKey) {
-      var unit;
-      if (this.drawPoints.length === 0) {
-        return;
-      }
-      if (this.follow) {
-        this.follow = false;
-        unit = this.closestUnit(this.drawPoints[0]);
-        if (unit) {
-          this.followOrder(unit, shiftKey);
-        }
-        return;
-      }
-      return this.moveOrder(this.movePoints, shiftKey);
-    };
-
-    BattleMode.prototype.onbuildclick = function(e, index) {
-      var number, ref, ref1;
-      e.stopPropagation();
-      this.buildClicked = true;
-      if (buildBar.emptySpec(commander.buildBar[index]) && commander.selection.length === 1) {
-        if ((ref = sim.galaxyStar) != null ? ref.noDesignTools : void 0) {
-          return;
-        }
-        this.copySelected(index);
-        return;
-      }
-      if (commander.buildBar[index].length === 0 || !commander.validBar[index]) {
-        if ((ref1 = sim.galaxyStar) != null ? ref1.noDesignTools : void 0) {
-          return;
-        }
-        buildBar.selected = index;
-        ui.mode = "design";
-        return;
-      }
-      number = 1;
-      if (e.shiftKey) {
-        number = 5;
-      }
-      if (e.which === 3 || e.altKey || e.metaKey || e.ctrlkey) {
-        number = -number;
-      }
-      return network.send("buildRq", index, number);
-    };
-
-    BattleMode.prototype.computeLineMove = function() {
-      var points, selected, totalDistance, u, walkRope;
-      selected = commander.selection;
-      if (!selected) {
-        return;
-      }
-      selected = (function() {
-        var j, len, results;
-        results = [];
-        for (j = 0, len = selected.length; j < len; j++) {
-          u = selected[j];
-          if (u.owner === commander.number) {
-            results.push(u);
-          }
-        }
-        return results;
-      })();
-      if (selected.length === 0) {
-        return;
-      }
-      totalDistance = function(points) {
-        var distance, j, last, len, point, ref;
-        distance = 0;
-        last = points[0];
-        ref = points.slice(1);
-        for (j = 0, len = ref.length; j < len; j++) {
-          point = ref[j];
-          distance += v2.distance(last, point);
-          last = point;
-        }
-        return distance;
-      };
-      walkRope = function(points, units, cb) {
-        var dir, dist, i, j, last, len, n, point, pos, prev, results, step, stepLeft, total, use;
-        total = totalDistance(points);
-        if (total === 0 || points.length === 1 || units.length === 1) {
-          for (j = 0, len = units.length; j < len; j++) {
-            u = units[j];
-            cb(points[0], u);
-          }
-          return;
-        }
-        step = total / (units.length - 1);
-        dir = v2.create();
-        pos = v2.create();
-        n = 0;
-        i = 0;
-        stepLeft = 0;
-        last = null;
-        results = [];
-        while (i < units.length) {
-          use = function(p) {
-            cb(v2.create(p), units[i]);
-            stepLeft = step;
-            return i += 1;
-          };
-          point = points[n];
-          if (i === 0) {
-            use(point);
-            n += 1;
-            continue;
-          }
-          if (i === units.length - 1) {
-            use(points[points.length - 1]);
-            continue;
-          }
-          if (n > points.length - 1) {
-            use(points[points.length - 1]);
-            continue;
-          }
-          prev = points[n - 1];
-          dist = v2.distance(prev, point);
-          if (dist === stepLeft) {
-            use(point);
-            n += 1;
-            continue;
-          } else if (dist < stepLeft) {
-            stepLeft -= dist;
-            n += 1;
-            continue;
-          } else if (dist > stepLeft) {
-            v2.set(prev, pos);
-            dist = v2.distance(prev, point);
-            while (dist > stepLeft) {
-              v2.direction(point, prev, dir);
-              v2.scale(dir, stepLeft);
-              v2.add(pos, dir);
-              dist -= stepLeft;
-              use(pos);
-            }
-            n += 1;
-            results.push(stepLeft -= dist);
-          } else {
-            results.push(void 0);
-          }
-        }
-        return results;
-      };
-      this.movePoints = [];
-      points = this.drawPoints;
-      return walkRope(points, selected, (function(_this) {
-        return function(point, unit) {
-          var angle, pos;
-          _this.movePoints.push(point);
-          if (_this.shiftOrder && unit.preOrders.length > 0) {
-            pos = unit.preOrders.last().dest;
-          }
-          if (!pos) {
-            pos = unit.pos;
-          }
-          angle = v2.angle(v2.sub(point, pos, v2.create()));
-          return baseAtlas.drawSpirte("img/arrow01.png", point, [1, 1], angle, [255, 255, 255, 255]);
-        };
-      })(this));
-    };
-
-    BattleMode.prototype.draw = function() {
-      var bg_zoom, theme, z;
-      baseAtlas.beginSprites(this.focus, this.zoom);
-      if (this.follow) {
-        control.setCursor("mouseAttack");
-      } else {
-        control.setCursor("mouse");
-      }
-      if (intp.theme != null) {
-        theme = intp.theme;
-      } else {
-        theme = mapping.themes[0];
-      }
-      bg_zoom = Math.max(window.innerWidth, window.innerHeight) / 120;
-      z = bg_zoom * this.zoom;
-      baseAtlas.drawSpirte("img/newbg/fill.png", [-this.focus[0], -this.focus[1]], [z, z], 0, theme.fillColor);
-      baseAtlas.drawSpirte("img/newbg/gradient.png", [-this.focus[0], -this.focus[1]], [z, z], 0, theme.spotColor);
-      intp.draw();
-      if (this.drawPoints.length > 0) {
-        this.computeLineMove();
-      }
-      return baseAtlas.finishSprites();
-    };
-
-    BattleMode.prototype.tick = function() {
-      this.player = commander;
-      return this.controls();
-    };
-
-    BattleMode.prototype.showOverlay = function() {
-      var overlay;
-      overlay = onecup.lookup("#overlay");
-      return overlay != null ? overlay.style.display = "block" : void 0;
-    };
-
-    BattleMode.prototype.hideOverlay = function() {
-      var overlay;
-      overlay = onecup.lookup("#overlay");
-      return overlay != null ? overlay.style.display = "none" : void 0;
-    };
-
-    BattleMode.prototype.closestUnit = function(pos, exact) {
-      var dist, id, minDist, minUnit, ref, thing;
-      if (exact == null) {
-        exact = false;
-      }
-      minDist = 0;
-      minUnit = null;
-      ref = intp.things;
-      for (id in ref) {
-        thing = ref[id];
-        if (!thing.unit) {
-          continue;
-        }
-        dist = v2.distance(thing.pos, pos);
-        if (dist < 1000) {
-          if (!minUnit || minDist > dist) {
-            minUnit = thing;
-            minDist = dist;
-          }
-        }
-      }
-      return minUnit;
-    };
-
-    BattleMode.prototype.copySelected = function(index) {
-      var copy, spec, unit;
-      if (commander.selection.length === 1) {
-        unit = commander.selection[0];
-        spec = unit.spec;
-        copy = new types.Unit(spec);
-        copy.aiRules = [];
-        if (!sim.local && window.location.href.indexOf("gamedev.html") === -1 && unit.owner !== commander.number) {
-          copy.ghostCopy = true;
-        }
-        buildBar.setSpec(index, copy.toSpec());
-        return control.savePlayer();
-      }
-    };
-
-    return BattleMode;
-
-  })(window.ControlsMode);
-
-}).call(this);
-;
