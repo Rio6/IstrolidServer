@@ -15,7 +15,8 @@ global.Server = function() {
     var root = null;
 
     var players = {};
-    var info = null;
+
+    var lastInfoTime = 0;
 
     this.send = (player, data) => {
         let packet = sim.zJson.dumpDv(data);
@@ -50,7 +51,8 @@ global.Server = function() {
 
         root.on('open', () => {
             console.log("connected to root");
-            info = null;
+            sendInfo();
+            lastInfoTime = now();
         });
 
         root.on('close', () => {
@@ -67,6 +69,24 @@ global.Server = function() {
                 root.send(JSON.stringify(data));
             }
         }
+    };
+
+    var sendInfo = () => {
+        // Send server info
+        let info = {
+            name: config.name,
+            address: "ws://" + config.addr + ":" + config.port,
+            observers: sim.players.filter(p => p.connected).length,
+            players: sim.players.filter(p => p.connected).map(p => { return {
+                name: p.name,
+                side: p.side,
+                ai: p.ai
+            }}),
+            type: sim.serverType,
+            version: VERSION,
+            state: sim.state
+        };
+        root.sendData(['setServer', info]);
     };
 
     connectToRoot();
@@ -113,26 +133,10 @@ global.Server = function() {
                     client.send(packet);
                 }
             });
-
-            // Send server info
-            let newInfo = {
-                name: config.name,
-                address: "ws://" + config.addr + ":" + config.port,
-                observers: sim.players.filter(p => p.connected).length,
-                players: sim.players.filter(p => p.connected).map(p => { return {
-                    name: p.name,
-                    side: p.side,
-                    ai: p.ai
-                }}),
-                type: sim.serverType,
-                version: VERSION,
-                state: sim.state
-            };
-
-            if(!simpleEquals(info, newInfo)) {
-                root.sendData(['setServer', newInfo]);
-                info = newInfo;
-            }
+        }
+        if(rightNow - lastInfoTime > 15000) {
+            sendInfo();
+            lastInfoTime = rightNow;
         }
     }, 17);
 };
