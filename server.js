@@ -111,8 +111,10 @@ global.Server = function() {
         });
 
         ws.on('close', e => {
-            players[id].connected = false;
-            delete players[id];
+            if(players[id]) {
+                players[id].connected = false;
+                delete players[id];
+            }
         });
     });
 
