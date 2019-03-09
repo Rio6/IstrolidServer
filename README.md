@@ -7,7 +7,6 @@ It basically just listens on a web socket server and sends everything it got to 
 
 ## What's needed
 - [nodejs](https://nodejs.org/en/)
-- [npm](https://www.npmjs.com/)
 
 ## Install
 1. Get the server code
