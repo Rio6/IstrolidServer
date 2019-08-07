@@ -53,19 +53,18 @@ serverWss.on('connection', (ws, req) => {
     ws.on('message', msg => {
         let data = JSON.parse(msg);
         switch(data[0]) {
-            case 'info': {
-                let name = data[1];
-                let infoDiff = data[2];
-                if(name && infoDiff) {
-                    ws.name = name;
+            case 'setServer': {
+                let infoDiff = data[1];
+                if(infoDiff.name && infoDiff) {
+                    ws.name = infoDiff.name;
 
                     // Broadcast to clients
                     let data = {};
-                    data[name] = infoDiff;
+                    data[infoDiff.name] = infoDiff;
                     rootWss.sendToAll(JSON.stringify(['serversDiff', data]));
 
                     // Update servers
-                    servers[name] = Object.assign(servers[name] || {}, infoDiff);
+                    servers[infoDiff.name] = Object.assign(servers[infoDiff.name] || {}, infoDiff);
                 }
                 break;
             }
