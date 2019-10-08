@@ -30,6 +30,14 @@ npm install .
 npm start
 ```
 
+## Server Name
+To help the players distinguish which servers are community hosted, add the start of your in game name
+to in the end of the server name, in brackets.
+For example, if you want to name your server "Feon", and your name is Johndoe2000, use "Feon (John)"
+as your server name.
+
+This also makes it easier for others to find you when there's a problem with the server.
+
 ## Root server proxy
 Root proxy is no longer required, but can still be used.
 I have one set up here `ws://istrolid-root.herokuapp.com/server`

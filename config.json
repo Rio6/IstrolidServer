@@ -1,5 +1,5 @@
 {
-    "name": "Server",
+    "name": "Server (Custom)",
     "port": 8080,
     "addr": "localhost",
     "root_addr": "ws://198.199.109.223:88"
