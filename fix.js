@@ -10,3 +10,4 @@ global.account = {
     hasDLC: () => true,
     hasDLCBonus: () => true
 };
+global.playSound = () => {};
