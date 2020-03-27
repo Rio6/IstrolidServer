@@ -76,7 +76,7 @@ global.Server = function() {
         let info = {
             name: config.name,
             address: "ws://" + config.addr + ":" + config.port,
-            observers: sim.players.filter(p => p.connected).length,
+            observers: sim.players.filter(p => p.connected && !p.ai).length,
             players: sim.players.filter(p => p.connected && !p.ai).map(p => { return {
                 name: p.name,
                 side: p.side,
