@@ -9,7 +9,7 @@ global.getCWBattleData = async function(players) {
         throw data.error;
     }
 
-    if(!data.sides || data.sides.length < 2) {
+    if(!data.sides || data.sides.length < 1) {
         throw new Error("Not enough info returned from Clanwars server");
     }
 

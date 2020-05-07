@@ -3494,35 +3494,36 @@ zjson - binary json sirelizer with some strange features
         return;
       }
 
-      for (let player of this.players) {
-        if (player.side !== "spectators") {
-          player.side = "alpha";
-        }
-      }
-
       this.cwBattleId = -1;
         getCWBattleData(
             this.players.filter(p => p.side !== "spectators")
             .map(p => {name: p.name}))
             .then(data => {
 
-        for (let i = 0; i < data.sides.length; i++) {
+        this.kickAllAis();
+        this.players.forEach(p => p.side = "spectatos");
+
+        for (let i = 0; i < Math.min(data.sides.length, 2); i++) {
           for (let pdata of data.sides[i].players) {
-            let player = this.players.find(p => !p.ai
-              && p.side !== "spectators" && p.name === pdata.name);
+            let player = this.players.find(p => !p.ai && p.name === pdata.name);
 
             if (!player) {
-              this.say("Player " + pdata.name + " not in game");
+              this.say("Player " + pdata.name + " not in server");
               this.countDown = 0;
               return;
             }
 
-            player.side = (i === 0) ? "alpha" : "beta";
+            player.side = ["alpha", "beta"][i] || "spectators";
             if (typeof(pdata.money) === "number")
               player.money = pdata.money;
             else
               player.money = this.defaultMoney;
           }
+        }
+
+        if (data.sides.length < 2) {
+            let aiNames = Object.keys(ais.all);
+            ais.useAi(aiNames[Math.floor(Math.random() * aiNames.length)]);
         }
 
         this.say("Starting battle " + data.id);
@@ -18623,4 +18624,4 @@ ais.all.nulitor = [{"parts":[{"pos":[0,0],"type":"Mount30","dir":0},{"pos":[-10,
 }).call(this);
 ;
 
-// vim: set ts=2 sw=2
+/* vim: set ts=2 sw=2 :*/
