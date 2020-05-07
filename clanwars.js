@@ -3,27 +3,38 @@ var url = require('url');
 var config = require('./config.json');
 
 global.getCWBattleData = async function(players) {
-    let data = JSON.parse(await getRequest(config.cw_start_url));
+    let data = JSON.parse(await postRequest(config.cw_start_url, {players: players}));
 
     if(data.error) {
-        throw new Error(data.error);
+        throw data.error;
     }
 
     if(!data.sides || data.sides.length < 2) {
-        throw new Error("Not enough sides");
+        throw new Error("Not enough info returned from Clanwars server");
     }
 
-    return {
-        alpha: data.sides[0],
-        beta: data.sides[1]
-    };
+    return data;
 }
 
-var getRequest = function(cwUrl) {
+var postRequest = function(cwUrl, data) {
     return new Promise((resolve, reject) => {
+        let json = JSON.stringify(data);
+        let options = url.parse(cwUrl);
+        options.method = 'POST';
+        options.headers = {
+            'Content-Type': 'application/json',
+            'Content-Length': json.length
+        };
+
         let resData = '';
-        let req = http.request(url.format(cwUrl), res => {
+        let req = http.request(options, res => {
             console.log("Clanwar Server Response", res.statusCode);
+
+            if(res.statusCode < 200 || res.statusCode > 299) {
+                reject(new Error("Clanwars server error: " + res.statusCode));
+                return;
+            }
+
             res.setEncoding('utf8');
 
             res.on('data', data => {
@@ -33,6 +44,8 @@ var getRequest = function(cwUrl) {
             res.on('end', () => resolve(resData));
             res.on('error', err => reject(err));
         });
+
+        req.write(json);
         req.end();
     });
 }

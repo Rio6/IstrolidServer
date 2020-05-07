@@ -3125,7 +3125,7 @@ zjson - binary json sirelizer with some strange features
 
     Sim.prototype.state = "waiting";
 
-    Sim.prototype.serverType = "3v3";
+    Sim.prototype.serverType = "clanwars";
 
     Sim.prototype.lastId = 0;
 
@@ -3136,13 +3136,7 @@ zjson - binary json sirelizer with some strange features
     Sim.prototype.nGamesPlayed = 0;
 
     Sim.prototype.validTypes = {
-      "sandbox": "sandbox",
-      "1v1": "1v1",
-      "1v1r": "1v1r",
-      "1v1t": "1v1t",
-      "2v2": "2v2",
-      "3v3": "3v3",
-      "survival": "survival"
+      "clanwars": "clanwars"
     };
 
     Sim.prototype.say = function(message) {
@@ -3183,6 +3177,10 @@ zjson - binary json sirelizer with some strange features
     }
 
     Sim.prototype.start = function() {
+      if (!this.cwRecieved) {
+        this.say("Clanwars server timed out");
+        return;
+      }
       var key, p, ref;
       this.net = {};
       this.step = 0;
@@ -3216,40 +3214,7 @@ zjson - binary json sirelizer with some strange features
     };
 
     Sim.prototype.configGame = function(p, config) {
-      var l, len1, player, ref;
-      print("config game!", config);
-      if (this.state !== "waiting") {
-        print("Can't set config on game in progress");
-        return;
-      }
-      if (!p.host) {
-        print("Can't set config when not a host");
-        return;
-      }
-      if (!this.local) {
-        ref = this.players;
-        for (l = 0, len1 = ref.length; l < len1; l++) {
-          player = ref[l];
-          if (player.host) {
-            continue;
-          }
-          player.side = "spectators";
-          if (player.ai) {
-            player.connected = false;
-          }
-        }
-      }
-      if (!this.validTypes[config.type]) {
-        print("Config type is not valid");
-        return;
-      }
-      if (this.serverType !== config.type) {
-        this.serverType = config.type;
-        this.say(p.name + " changed server type to " + config.type);
-        if (typeof serverTick === "function") {
-          serverTick();
-        }
-      }
+        this.startGame(p);
     };
 
     Sim.prototype.playersPerTeam = function() {
@@ -3392,12 +3357,8 @@ zjson - binary json sirelizer with some strange features
       if (player.kickTime > now() - 15000) {
         return;
       }
-      if (this.local && !this.galaxyStar && !this.challenge) {
-        player.side = side;
-        return;
-      }
-      if (side !== "spectators" && this.numInTeam(side) >= this.playersPerTeam()) {
-        return;
+      if (side !== "spectators") {
+        side = "alpha";
       }
       if (this.state !== "waiting") {
         return;
@@ -3521,13 +3482,6 @@ zjson - binary json sirelizer with some strange features
       if (real == null) {
         real = false;
       }
-      if (this.local) {
-        if (this.numInTeam("alpha") === 0 || this.numInTeam("beta") === 0) {
-          this.say("Warning: One team has no players. You should add an AI to that team.");
-        }
-        this.start();
-        return;
-      }
       if (!player.host) {
         print("A non-host player is trying to start game.");
         return;
@@ -3539,6 +3493,42 @@ zjson - binary json sirelizer with some strange features
       if (!this.canStart(true)) {
         return;
       }
+
+      for (let player of this.players) {
+        if (player.side !== "spectators") {
+          player.side = "alpha";
+        }
+      }
+
+      this.cwRecieved = false;
+      getCWBattleData(this.players).then(data => {
+        for (let i = 0; i < data.sides.length; i++) {
+          for (let pdata of data.sides[i].users) {
+            let player = this.players.find(p => !p.ai
+              && p.side !== "spectators" && p.name === pdata.username);
+
+            if (!player) {
+              this.say("Player " + pdata.username + " not in game");
+              this.countDown = 0;
+              return;
+            }
+
+            player.side = (i === 0) ? "alpha" : "beta";
+            player.money = pdata.money;
+          }
+        }
+
+        this.say("Starting battle " + data.id);
+        this.cwRecieved = true;
+      }).catch(e => {
+        if (e.message) {
+          this.say(e.message);
+        } else {
+          this.say("Could not start game");
+        }
+        this.countDown = 0;
+      });
+
       this.say("Game is about to start!");
       return this.countDown = 16 * 6;
     };
@@ -3547,21 +3537,9 @@ zjson - binary json sirelizer with some strange features
       if (sayStyff == null) {
         sayStyff = false;
       }
-      if (this.serverType === "survival") {
-        return survival.canStart(this);
-      }
-      if (this.serverType === "sandbox") {
-        return true;
-      }
-      if (this.numInTeam("alpha") !== this.playersPerTeam()) {
+      if (this.numInTeam("alpha") < 1) {
         if (sayStyff) {
-          this.say("Team alpha does not have enough players.");
-        }
-        return false;
-      }
-      if (this.numInTeam("beta") !== this.playersPerTeam()) {
-        if (sayStyff) {
-          this.say("Team beta does not have enough players.");
+          this.say("Game does not have enough players.");
         }
         return false;
       }
@@ -18618,3 +18596,5 @@ ais.all.nulitor = [{"parts":[{"pos":[0,0],"type":"Mount30","dir":0},{"pos":[-10,
 
 }).call(this);
 ;
+
+// set ts=2 sw=2
