@@ -16,6 +16,12 @@ global.getCWBattleData = async function(players) {
     return data;
 }
 
+global.sendCWBattleData = function(data) {
+    postRequest(config.cw_end_url, data).catch(err => {
+        console.warn("Clanwars game end error", err);
+    });
+}
+
 var postRequest = function(cwUrl, data) {
     return new Promise((resolve, reject) => {
         let json = JSON.stringify(data);
@@ -45,6 +51,7 @@ var postRequest = function(cwUrl, data) {
             res.on('error', err => reject(err));
         });
 
+        req.on('error', err => reject(err));
         req.write(json);
         req.end();
     });

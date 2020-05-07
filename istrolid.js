@@ -3177,7 +3177,7 @@ zjson - binary json sirelizer with some strange features
     }
 
     Sim.prototype.start = function() {
-      if (!this.cwRecieved) {
+      if (this.cwBattleId < 0) {
         this.say("Clanwars server timed out");
         return;
       }
@@ -3500,7 +3500,7 @@ zjson - binary json sirelizer with some strange features
         }
       }
 
-      this.cwRecieved = false;
+      this.cwBattleId = -1;
       getCWBattleData(this.players).then(data => {
         for (let i = 0; i < data.sides.length; i++) {
           for (let pdata of data.sides[i].users) {
@@ -3519,7 +3519,7 @@ zjson - binary json sirelizer with some strange features
         }
 
         this.say("Starting battle " + data.id);
-        this.cwRecieved = true;
+        this.cwBattleId = data.id;
       }).catch(e => {
         if (e.message) {
           this.say(e.message);
@@ -4208,6 +4208,25 @@ zjson - binary json sirelizer with some strange features
       if (this.serverType === "survival") {
         survival.endOfGame(this);
       }
+
+      sendCWBattleData({
+        id: this.cwBattleId,
+        sides: [
+          {
+            win: this.winningSide === "alpha",
+            money: this.players
+            .filter(p => p.side === "alpha")
+            .reduce((a, c) => a + c.money, 0)
+          },
+          {
+            win: this.winningSide === "beta",
+            money: this.players
+            .filter(p => p.side === "beta")
+            .reduce((a, c) => a + c.money, 0)
+          }
+        ]
+      });
+
       return this.state = "ended";
     };
 
