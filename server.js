@@ -1,6 +1,7 @@
 var config = require('./config.json');
 var WebSocket = require('ws');
-require('./fix');
+require('./fix.js');
+require('./clanwars.js');
 var Istrolid = require('./istrolid.js');
 
 const allowedCmds = ["playerJoin", "mouseMove", "playerSelected", "setRallyPoint", "buildRq", "stopOrder", "holdPositionOrder", "followOrder", "selfDestructOrder", "moveOrder", "configGame", "startGame", "addAi", "switchSide", "kickPlayer", "surrender"]
