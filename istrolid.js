@@ -3514,7 +3514,10 @@ zjson - binary json sirelizer with some strange features
             }
 
             player.side = (i === 0) ? "alpha" : "beta";
-            player.money = pdata.money;
+            if (typeof(pdata.money) === "number")
+              player.money = pdata.money;
+            else
+              player.money = this.defaultMoney;
           }
         }
 
@@ -18616,4 +18619,4 @@ ais.all.nulitor = [{"parts":[{"pos":[0,0],"type":"Mount30","dir":0},{"pos":[-10,
 }).call(this);
 ;
 
-// set ts=2 sw=2
+// vim: set ts=2 sw=2
