@@ -11,7 +11,7 @@ Sim.prototype.lastSimInterval = 0;
 
 global.Server = function() {
 
-    var wss = new WebSocket.Server({port: config.port});
+    var wss = new WebSocket.Server({port: process.env.PORT || config.port});
     var root = null;
 
     var players = {};
@@ -154,4 +154,5 @@ net.createServer(function (socket) {
         output: socket,
         terminal: true
     }).on('exit', () => socket.end());
+    socket.on('error', () => {});
 }).listen(5001, "localhost");
