@@ -3501,14 +3501,18 @@ zjson - binary json sirelizer with some strange features
       }
 
       this.cwBattleId = -1;
-      getCWBattleData(this.players).then(data => {
+        getCWBattleData(
+            this.players.filter(p => p.side !== "spectators")
+            .map(p => {name: p.name}))
+            .then(data => {
+
         for (let i = 0; i < data.sides.length; i++) {
-          for (let pdata of data.sides[i].users) {
+          for (let pdata of data.sides[i].players) {
             let player = this.players.find(p => !p.ai
-              && p.side !== "spectators" && p.name === pdata.username);
+              && p.side !== "spectators" && p.name === pdata.name);
 
             if (!player) {
-              this.say("Player " + pdata.username + " not in game");
+              this.say("Player " + pdata.name + " not in game");
               this.countDown = 0;
               return;
             }
