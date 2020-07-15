@@ -39,10 +39,9 @@ as your server name.
 This also makes it easier for others to find you when there's a problem with the server.
 
 ## Root server proxy
-Root proxy is no longer required, but can still be used.
-I have one set up here `ws://istrolid-root.herokuapp.com/server`
+Root proxy is no longer required, but can still be used. The code is in `rootProxy` branch.
 
-Just put it in root\_addr field in config.json, then you can access it through `http://istrolid.com/game.html?rootAddress=ws://istrolid-root.herokuapp.com`
+Just put its address in root\_addr field in config.json, then you can access it through `http://istrolid.com/game.html?rootAddress=ws://<your root address>`
 
 **Dont forget to open holes on your router**
 
